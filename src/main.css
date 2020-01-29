@@ -1,0 +1,36 @@
+.homeLead {
+  margin: auto;
+  width: 80%;
+  text-align: center;
+}
+
+.slideShow {
+  background: black;
+  height: 400px;
+}
+
+.navContainer {
+  background-color: #004e95;
+}
+
+.logoPH {
+  background-color: white;
+  height: 50px;
+  width: 150px;
+}
+
+.lead {
+  margin-top: 100px;
+}
+
+.homePara {
+  margin-top: 30px;
+}
+
+.homeBtn {
+  margin: auto;
+}
+
+.btnHome {
+  margin-top: 75px;
+}
