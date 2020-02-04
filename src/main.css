@@ -4,6 +4,33 @@
   text-align: center;
 }
 
+.validateLead {
+  margin: auto;
+  padding-top: 5%;
+  width: 80%;
+  text-align: center;
+}
+
+.validateBtn {
+  padding-top: 5%;
+}
+
+.validateContainer {
+  margin: auto;
+  width: 80%;
+  text-align: center;
+  margin-top: 5%;
+  background-color: #f2f4f5;
+  border-radius: 25px;
+}
+
+.validateForm {
+  margin: auto;
+  width: 80%;
+  padding-top: 5%;
+  padding-bottom: 5%;
+}
+
 .slideShow {
   background: black;
   height: 400px;

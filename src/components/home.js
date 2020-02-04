@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import "../main.css";
 
 class Home extends Component {
@@ -29,7 +30,9 @@ class Home extends Component {
             <button className="btn btn-lg btn-dark homeBtn">Tutors</button>
           </div>
           <div className="col-6 d-flex justify-content-center">
-            <button className="btn btn-lg btn-dark homeBtn">Students</button>
+            <Link to="/validate">
+              <button className="btn btn-lg btn-dark homeBtn">Students</button>
+            </Link>
           </div>
         </div>
       </div>
