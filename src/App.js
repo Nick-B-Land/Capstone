@@ -6,7 +6,9 @@ import StudentValidate from "./components/studentValidate.js";
 import TutoringCategories from "./components/tutoringCategories.js";
 import WaitListed from "./components/waitlisted.js";
 import TutorLogin from "./components/tutorLogin.js";
-import Dashboard from "./components/dashboard.js";
+import DashboardHome from "./components/dashboardHome.js";
+import DashboardProf from "./components/dashboardProf.js";
+import DashboardAnalytics from "./components/dashboardAnalytics.js";
 
 class App extends Component {
   render() {
@@ -38,7 +40,17 @@ class App extends Component {
           <Route
             exact
             path="/tutordashboard"
-            render={props => <Dashboard {...props} />}
+            render={props => <DashboardHome {...props} />}
+          />
+          <Route
+            exact
+            path="/tutorprofile"
+            render={props => <DashboardProf {...props} />}
+          />
+          <Route
+            exact
+            path="/tutoranalytics"
+            render={props => <DashboardAnalytics {...props} />}
           />
         </Switch>
       </BrowserRouter>
