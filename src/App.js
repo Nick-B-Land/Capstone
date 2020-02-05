@@ -5,6 +5,7 @@ import Nav from "./components/nav.js";
 import StudentValidate from "./components/studentValidate.js";
 import TutoringCategories from "./components/tutoringCategories.js";
 import WaitListed from "./components/waitlisted.js";
+import TutorLogin from "./components/tutorLogin.js";
 
 class App extends Component {
   render() {
@@ -27,6 +28,11 @@ class App extends Component {
             exact
             path="/waitlisted"
             render={props => <WaitListed {...props} />}
+          />
+          <Route
+            exact
+            path="/tutorlogin"
+            render={props => <TutorLogin {...props} />}
           />
         </Switch>
       </BrowserRouter>

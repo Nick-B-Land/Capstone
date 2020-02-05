@@ -5,7 +5,7 @@ import "../main.css";
 class Home extends Component {
   render() {
     return (
-      <div id="container-fluid">
+      <div className="container-fluid">
         <div className="row">
           <div className="slideShow col"></div>
         </div>
@@ -27,7 +27,9 @@ class Home extends Component {
         </div>
         <div className="row btnHome">
           <div className="col-6 d-flex justify-content-center">
-            <button className="btn btn-lg btn-dark homeBtn">Tutors</button>
+            <Link to="/tutorlogin">
+              <button className="btn btn-lg btn-dark homeBtn">Tutors</button>
+            </Link>
           </div>
           <div className="col-6 d-flex justify-content-center">
             <Link to="/validate">
