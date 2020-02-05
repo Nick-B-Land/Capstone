@@ -32,15 +32,47 @@ class DashboardHome extends Component {
           </ul>
         </nav>
         <div id="content">
-          <div class="container-fluid">
-            <div>
-              <ul class="list-group list-group-horizontal">
-                <li class="list-group-item">Day</li>
-                <li class="list-group-item">Month</li>
-                <li class="list-group-item">Week</li>
-              </ul>
+          <div class="container">
+            <div className="row">
+              <div>
+                <h2 id="dashboardtitle">Queue</h2>
+                <div className="col-10">
+                  <ul class="list-group list-group-vertical" id="studentlist">
+                    <li class="list-group-item disabled">Student Name</li>
+                    <li class="list-group-item active">Student Name</li>
+                    <li class="list-group-item">Student Name</li>
+                  </ul>
+                </div>
+              </div>
+              <div className="col-2">
+                <div class="dropdown" id="dropdowntutor">
+                  <button
+                    class="btn btn-secondary dropdown-toggle"
+                    type="button"
+                    id="dropdownMenuButton"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                    Select Reason
+                  </button>
+                  <div
+                    class="dropdown-menu"
+                    aria-labelledby="dropdownMenuButton"
+                  >
+                    <a class="dropdown-item" href="#">
+                      Finished
+                    </a>
+                    <a class="dropdown-item" href="#">
+                      No Show
+                    </a>
+                    <a class="dropdown-item" href="#">
+                      Cancelled
+                    </a>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div className="row"></div>
           </div>
         </div>
       </div>
