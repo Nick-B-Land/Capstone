@@ -31,16 +31,72 @@ class DashboardAnalytics extends Component {
             </Link>
           </ul>
         </nav>
-        <div id="content">
-          <div class="container-fluid">
-            <div>
-              <ul class="list-group list-group-horizontal">
-                <li class="list-group-item">Day</li>
-                <li class="list-group-item">Month</li>
-                <li class="list-group-item">Week</li>
-              </ul>
+        <div class="container dashAnal">
+          <div className="row">
+            <div className="col-6">
+              <div className="card">
+                <div className="card-body">
+                  <span>
+                    <h5>Number of Appointments Today</h5>
+                  </span>
+                  <span>
+                    <h6>5</h6>
+                  </span>
+                </div>
+              </div>
             </div>
-            <div className="row"></div>
+            <div className="col-6">
+              <div className="card">
+                <div className="card-body">
+                  <span>
+                    <h5>Number of Students Cancelled</h5>
+                  </span>
+                  <span>
+                    <h6>2</h6>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-6">
+              <div className="card">
+                <div className="card-body">
+                  <span>
+                    <h5>Average Length of Sessions</h5>
+                  </span>
+                  <span>
+                    <h6>30min</h6>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div className="col-6">
+              <div className="card">
+                <div className="card-body">
+                  <span>
+                    <h5>Number of No Shows</h5>
+                  </span>
+                  <span>
+                    <h6>1</h6>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col">
+              <div className="card">
+                <div className="card-body">
+                  <span>
+                    <h5>Hours Worked</h5>
+                  </span>
+                  <span>
+                    <h6>7.5</h6>
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
