@@ -25,6 +25,11 @@ class Dashboard extends Component {
             </li>
           </ul>
         </nav>
+        <div id="content">
+          <div class="container-fluid">
+            <div>Queue</div>
+          </div>
+        </div>
       </div>
     );
   }
