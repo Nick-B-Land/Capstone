@@ -6,7 +6,7 @@ class TutorLogin extends Component {
   render() {
     return (
       <div className="container">
-        <h1 className="validateLead">Enter Student Information</h1>
+        <h1 className="validateLead">Enter Tutor Information</h1>
         <div className="validateContainer">
           <form className="validateForm">
             <div className="form-group">
@@ -23,7 +23,7 @@ class TutorLogin extends Component {
               <input className="form-control" id="validPass" type="password" />
             </div>
             <div className="form-group validateBtn">
-              <Link to="/categories">
+              <Link to="/tutordashboard">
                 <button className="btn btn-lg btn-dark homeBtn">Login</button>
               </Link>
             </div>

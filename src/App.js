@@ -6,6 +6,7 @@ import StudentValidate from "./components/studentValidate.js";
 import TutoringCategories from "./components/tutoringCategories.js";
 import WaitListed from "./components/waitlisted.js";
 import TutorLogin from "./components/tutorLogin.js";
+import Dashboard from "./components/dashboard.js";
 
 class App extends Component {
   render() {
@@ -33,6 +34,11 @@ class App extends Component {
             exact
             path="/tutorlogin"
             render={props => <TutorLogin {...props} />}
+          />
+          <Route
+            exact
+            path="/tutordashboard"
+            render={props => <Dashboard {...props} />}
           />
         </Switch>
       </BrowserRouter>

@@ -16,7 +16,7 @@ class Nav extends Component {
           className="collapse navbar-collapse container-fluid"
           id="navbarNav"
         >
-          <ul className="navbar-nav mr-auto"></ul>
+          <ul className="navbar-nav mr-auto">Learner Success Services</ul>
         </div>
       </nav>
     );
