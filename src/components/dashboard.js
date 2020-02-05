@@ -15,13 +15,13 @@ class Dashboard extends Component {
               <ul class="collapse list-unstyled" id="pageSubmenu"></ul>
             </li>
             <li>
-              <a href="#">Home</a>
+              <a>Home</a>
             </li>
             <li>
-              <a href="#">Profile</a>
+              <a>Profile</a>
             </li>
             <li>
-              <a href="#">Analytics</a>
+              <a>Analytics</a>
             </li>
           </ul>
         </nav>
