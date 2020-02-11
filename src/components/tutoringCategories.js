@@ -21,7 +21,12 @@ const tutoringCategories = observer(
       return Cats.map(e => (
         <section key={e.doc._id}>
           {console.log(e.doc._id)}
-          <CategoryRender currentQ={e.doc.CurrentQ} ETA={e.doc.ETA} />
+          <CategoryRender
+            currentQ={e.doc.CurrentQ}
+            ETA={e.doc.ETA}
+            name={e.doc._id}
+            catStore={this.props.catStore}
+          />
         </section>
       ));
     };
@@ -32,7 +37,7 @@ const tutoringCategories = observer(
           <div className="categoryLead">
             <h1>Tutoring Categories</h1>
           </div>
-          {this.renderCategories()}
+          <div className="row row-cols-4">{this.renderCategories()}</div>
         </div>
       );
     }

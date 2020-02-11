@@ -11,11 +11,16 @@ const categoryRender = observer(
         ETA: this.props.ETA
       };
     }
+
+    handleWaitlist = () => {
+      this.props.catStore.Waitlist(this.props.name);
+    };
+
     render() {
       return (
-        <div className="col">
+        <div className="col catCard">
           <div className="card">
-            <div className="card-header">Writing</div>
+            <div className="card-header">{this.props.name}</div>
             <div className="card-body">
               <span>
                 <h5>
@@ -28,7 +33,9 @@ const categoryRender = observer(
                 </h6>
               </span>
               <Link to="/waitlisted">
-                <button className="btn btn-dark ">Waitlist</button>
+                <button className="btn btn-dark" onClick={this.handleWaitlist}>
+                  Waitlist
+                </button>
               </Link>
             </div>
           </div>
