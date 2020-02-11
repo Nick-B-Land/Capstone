@@ -2,8 +2,7 @@ import { observable } from "mobx";
 import PouchDB from "pouchdb";
 
 export let CatStore = observable({
-  Categories: [],
-  Fuckyourshit: "fucking work"
+  Categories: []
 });
 
 CatStore.Fetch = () => {

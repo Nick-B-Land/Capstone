@@ -8,7 +8,6 @@ const tutoringCategories = observer(
     componentDidMount = () => {
       //console.log(this.props.catStore.Categories[0].doc._id);
       //console.log(this.props.catStore.Categories);
-      console.log(this.props.catStore.Fuckyourshit);
     };
 
     renderCategories = () => {
