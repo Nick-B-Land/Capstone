@@ -11,6 +11,10 @@ import DashboardProf from "./components/dashboardProf.js";
 import DashboardAnalytics from "./components/dashboardAnalytics.js";
 
 class App extends Component {
+  componentDidMount = () => {
+    this.props.catStore.Fetch();
+  };
+
   render() {
     return (
       <BrowserRouter>
@@ -25,7 +29,9 @@ class App extends Component {
           <Route
             exact
             path="/categories"
-            render={props => <TutoringCategories {...props} />}
+            render={props => (
+              <TutoringCategories {...props} catStore={this.props.catStore} />
+            )}
           />
           <Route
             exact

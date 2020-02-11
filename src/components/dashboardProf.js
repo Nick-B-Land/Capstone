@@ -15,19 +15,13 @@ class DashboardProf extends Component {
               <ul class="collapse list-unstyled" id="pageSubmenu"></ul>
             </li>
             <Link to="/tutordashboard">
-              <li>
-                <a>Home</a>
-              </li>
+              <li>Home</li>
             </Link>
             <Link to="/tutorprofile">
-              <li>
-                <a>Profile</a>
-              </li>
+              <li>Profile</li>
             </Link>
             <Link to="/tutoranalytics">
-              <li>
-                <a>Analytics</a>
-              </li>
+              <li>Analytics</li>
             </Link>
           </ul>
         </nav>

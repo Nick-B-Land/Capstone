@@ -5,6 +5,8 @@
   "dependencies": {
     "bootstrap": "^4.4.1",
     "browser-router": "^0.2.0",
+    "mobx": "^5.15.4",
+    "mobx-react": "^6.1.7",
     "pouchdb": "^7.1.1",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
