@@ -6,6 +6,9 @@ class DashboardHome extends Component {
 
   componentDidMount = () => {
     this.props.tutorStore.Fetch();
+    let y = this.props.tutorStore.Tutor.programID;
+    let x = this.props.tutorStore.GetQueue(y);
+    console.log(x);
   };
 
   render() {

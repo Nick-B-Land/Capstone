@@ -23,50 +23,52 @@ const categoryRender = observer(
   "appointmentEnd": "getTime()"
 } */
 
-    createQ = () => {
-      let uuid = new Date().getTime();
+    /////////
+    ////////Moved this to cat store, will have to provide with student ID when called
 
-      let qObj = {
-        _id: uuid,
-        studentID: 201554111,
-        programID: this.props.name,
-        appointmentStart: 0,
-        appointmentEnd: 0
-      };
+    // createQ = () => {
+    //   let uuid = new Date().getTime();
+    //   var db = new PouchDB(
+    //     "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/programs"
+    //   );
 
-      var db = new PouchDB(
-        "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/programs"
-      );
-
-      let programID = this.props.name;
-      db.get(this.props.name)
-        .then(function(doc) {
-          //console.log(doc);
-          doc.activeQ.push(qObj);
-          return db.put(doc);
-        })
-        .then(function() {
-          db.get(programID);
-        })
-        .then(function(doc) {
-          console.log(doc);
-        });
-      // .then(function() {
-      //   // fetch again
-      //   return db.get(programID);
-      // })
-      // .catch(function(err) {
-      //   if (err.name === "conflict") {
-      //     db.get(programID).then(function(doc) {
-      //       doc.activeQ.push(qObj);
-      //     });
-      //   }
-      // });
-    };
+    //   let programID = this.props.name;
+    //   db.get(this.props.name)
+    //     .then(function(doc) {
+    //       //console.log(doc);
+    //       doc._rev = doc._rev;
+    //       let qObj = {
+    //         id: uuid,
+    //         studentID: 201554111,
+    //         programID: programID,
+    //         appointmentStart: 0,
+    //         appointmentEnd: 0
+    //       };
+    //       doc.activeQ.push(qObj);
+    //       return db.put(doc);
+    //     })
+    //     .then(function() {
+    //       db.get(programID);
+    //     })
+    //     .then(function(doc) {
+    //       console.log(doc);
+    //     });
+    //   // .then(function() {
+    //   //   // fetch again
+    //   //   return db.get(programID);
+    //   // })
+    //   // .catch(function(err) {
+    //   //   if (err.name === "conflict") {
+    //   //     db.get(programID).then(function(doc) {
+    //   //       doc.activeQ.push(qObj);
+    //   //     });
+    //   //   }
+    //   // });
+    // };
 
     handleWaitlist = () => {
+      //need to add student ID to function call once we are actaully collect
       this.props.catStore.Waitlist(this.props.name);
-      this.createQ();
     };
 
     render() {

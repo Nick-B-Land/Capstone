@@ -25,19 +25,29 @@ CatStore.Fetch = () => {
     });
 };
 
-CatStore.Waitlist = id => {
+CatStore.Waitlist = (programID, studentID) => {
   var db = new PouchDB(
     "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/programs"
   );
 
+  let uuid = new Date().getTime();
+
   CatStore.Categories.forEach(e => {
-    if (id === e.doc._id) {
+    if (programID === e.doc._id) {
       let l = e.doc.currentQ;
       let est = e.doc.ETA;
       db.get(e.doc._id)
         .then(function(doc) {
           doc.currentQ = l + 1;
-          doc.ETA = est + 15;
+          doc.ETA = est + doc.qLength;
+          let qObj = {
+            id: uuid,
+            studentID: 201554111,
+            programID: programID,
+            appointmentStart: 0,
+            appointmentEnd: 0
+          };
+          doc.activeQ.push(qObj);
           return db.put(doc);
         })
         .then(function() {
