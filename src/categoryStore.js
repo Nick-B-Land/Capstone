@@ -7,10 +7,8 @@ export let CatStore = observable({
 
 CatStore.Fetch = () => {
   var db = new PouchDB(
-    "https://3ea95abe-b57e-4081-872d-64f21675ceae-bluemix.cloudant.com/tutoring"
+    "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/programs"
   );
-
-  let loaded = false;
 
   db.allDocs({
     include_docs: true,
@@ -18,7 +16,6 @@ CatStore.Fetch = () => {
   })
     .then(function(result) {
       CatStore.Categories = result.rows;
-      loaded = true;
       //console.log(result.rows);
       //   console.log(CatStore.Categories);
       console.log(CatStore.Categories[3].doc._id);
@@ -26,22 +23,20 @@ CatStore.Fetch = () => {
     .catch(function(err) {
       console.log(err);
     });
-
-  if (loaded) return true;
 };
 
 CatStore.Waitlist = id => {
   var db = new PouchDB(
-    "https://3ea95abe-b57e-4081-872d-64f21675ceae-bluemix.cloudant.com/tutoring"
+    "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/programs"
   );
 
   CatStore.Categories.forEach(e => {
     if (id === e.doc._id) {
-      let l = e.doc.CurrentQ;
+      let l = e.doc.currentQ;
       let est = e.doc.ETA;
       db.get(e.doc._id)
         .then(function(doc) {
-          doc.CurrentQ = l + 1;
+          doc.currentQ = l + 1;
           doc.ETA = est + 15;
           return db.put(doc);
         })
@@ -49,7 +44,7 @@ CatStore.Waitlist = id => {
           return db.get(e.doc._id);
         })
         .then(function(doc) {
-          e.doc.CurrentQ = doc.CurrentQ;
+          e.doc.currentQ = doc.currentQ;
           e.doc.ETA = doc.ETA;
         });
     }

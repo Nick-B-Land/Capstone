@@ -3,6 +3,11 @@ import { Link } from "react-router-dom";
 
 class DashboardHome extends Component {
   state = {};
+
+  componentDidMount = () => {
+    this.props.tutorStore.Fetch();
+  };
+
   render() {
     return (
       <div class="wrapper">

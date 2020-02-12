@@ -46,17 +46,26 @@ class App extends Component {
           <Route
             exact
             path="/tutordashboard"
-            render={props => <DashboardHome {...props} />}
+            render={props => (
+              <DashboardHome {...props} tutorStore={this.props.tutorStore} />
+            )}
           />
           <Route
             exact
             path="/tutorprofile"
-            render={props => <DashboardProf {...props} />}
+            render={props => (
+              <DashboardProf {...props} tutorStore={this.props.tutorStore} />
+            )}
           />
           <Route
             exact
             path="/tutoranalytics"
-            render={props => <DashboardAnalytics {...props} />}
+            render={props => (
+              <DashboardAnalytics
+                {...props}
+                tutorStore={this.props.tutorStore}
+              />
+            )}
           />
         </Switch>
       </BrowserRouter>

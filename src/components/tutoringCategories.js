@@ -5,23 +5,17 @@ import { observer } from "mobx-react";
 
 const tutoringCategories = observer(
   class TutoringCategories extends Component {
-    componentDidMount = () => {
-      //console.log(this.props.catStore.Categories[0].doc._id);
-      //console.log(this.props.catStore.Categories);
-    };
+    componentDidMount = () => {};
 
     renderCategories = () => {
       let Cats = this.props.catStore.Categories;
-
-      // Cats.forEach(e=> {
-      //   return
-      // })
 
       return Cats.map(e => (
         <section key={e.doc._id}>
           {console.log(e.doc._id)}
           <CategoryRender
-            currentQ={e.doc.CurrentQ}
+            currentQ={e.doc.currentQ}
+            desc={e.doc.desc}
             ETA={e.doc.ETA}
             name={e.doc._id}
             catStore={this.props.catStore}
