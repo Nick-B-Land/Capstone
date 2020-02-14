@@ -60,6 +60,38 @@
   padding-bottom: 5%;
 }
 
+.hideEmailVerified {
+  display: none;
+}
+
+.showEmailVerified {
+  display: block;
+}
+
+.hidePhoneVerified {
+  display: none;
+}
+
+.showPhoneVerified {
+  display: block;
+}
+
+.hideSIDVerified {
+  display: none;
+}
+
+.showSIDVerified {
+  display: block;
+}
+
+.showCatBtn {
+  display: block;
+}
+
+.hideCatBtn {
+  display: none;
+}
+
 .slideShow {
   background: black;
   height: 400px;

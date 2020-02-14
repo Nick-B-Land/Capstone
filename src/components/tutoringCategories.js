@@ -12,7 +12,6 @@ const tutoringCategories = observer(
 
       return Cats.map(e => (
         <section key={e.doc._id}>
-          {console.log(e.doc._id)}
           <CategoryRender
             currentQ={e.doc.currentQ}
             desc={e.doc.desc}
