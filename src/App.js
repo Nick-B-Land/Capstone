@@ -13,6 +13,9 @@ import DashboardAnalytics from "./components/dashboardAnalytics.js";
 class App extends Component {
   componentDidMount = () => {
     this.props.catStore.Fetch();
+    // this.props.tutorStore.Fetch();
+    // let y = this.props.tutorStore.Tutor.programID;
+    // this.props.tutorStore.GetQueue(y);
   };
 
   render() {

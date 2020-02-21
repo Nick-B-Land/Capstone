@@ -67,8 +67,13 @@ const categoryRender = observer(
     // };
 
     handleWaitlist = () => {
-      //need to add student ID to function call once we are actaully collect
-      this.props.catStore.Waitlist(this.props.name);
+      //works off student ID now
+      //might have to add some methods to clear?
+      //unsure at this time
+      let sID = sessionStorage.getItem("studentID");
+      if (sID) {
+        this.props.catStore.Waitlist(this.props.name, sID);
+      } else this.props.catStore.Waitlist(this.props.name);
     };
 
     render() {

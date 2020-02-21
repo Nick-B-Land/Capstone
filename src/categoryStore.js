@@ -36,14 +36,26 @@ CatStore.Waitlist = (programID, studentID) => {
     if (programID === e.doc._id) {
       let l = e.doc.currentQ;
       let est = e.doc.ETA;
+      let date = new Date();
+      let hours = "";
+      let minutes = "";
+      if (date.getHours() > 12) hours = date.getHours() - 12;
+      else hours = date.getHours();
+      if (date.getMinutes() === 0) minutes = "00";
+      else if (date.getMinutes() < 10) minutes = 0 + date.getMinutes();
+      else minutes = date.getMinutes();
+
+      let time = hours + ":" + minutes;
       db.get(e.doc._id)
         .then(function(doc) {
           doc.currentQ = l + 1;
           doc.ETA = est + doc.qLength;
           let qObj = {
             id: uuid,
-            studentID: 201554111,
+            studentID: studentID,
             programID: programID,
+            date: date,
+            time: time,
             appointmentStart: 0,
             appointmentEnd: 0
           };

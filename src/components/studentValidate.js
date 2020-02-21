@@ -66,7 +66,7 @@ class StudentValidate extends Component {
       "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/students"
     );
 
-    sessionStorage.setItem("StudentID", this.state.sIDInput);
+    sessionStorage.setItem("studentID", this.state.sIDInput);
     let docExists = false;
     let studentObj = {
       _id: this.state.sIDInput,
