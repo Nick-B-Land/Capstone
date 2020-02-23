@@ -6,12 +6,12 @@ export let TutorStore = observable({
   Queue: []
 });
 
-TutorStore.Fetch = () => {
+TutorStore.Fetch = id => {
   var db = new PouchDB(
     "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/tutors"
   );
 
-  let id = "nicklandiam";
+  //let id = "nicklandiam";
   db.get(id).then(function(doc) {
     //console.log(doc);
     TutorStore.Tutor = doc;
@@ -117,6 +117,17 @@ TutorStore.EndAppointment = aID => {
       //for easier querying/indexing
       histDB.post(completedAppointment);
     });
+};
+
+TutorStore.ExtendAppointment = inc => {
+  var db = new PouchDB(
+    "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/programs"
+  );
+
+  db.get(TutorStore.Tutor.programID).then(function(doc) {
+    doc.ETA += inc;
+    return db.put(doc);
+  });
 };
 
 export default TutorStore;

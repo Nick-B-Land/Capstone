@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import PouchDB from "pouchdb";
 
 class TutorLogin extends Component {
   constructor(props) {
@@ -15,6 +15,9 @@ class TutorLogin extends Component {
     this.setState({ tutorEmail: e.target.value });
   };
 
+  //some basic email regex
+  //still need to work out password validation
+  //we should probably use JWT's
   validateEmail = () => {
     //let re = new RegExp("[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,}");
     let re = new RegExp(
@@ -29,12 +32,31 @@ class TutorLogin extends Component {
     this.setState({ tutorPassword: e.target.value });
   };
 
+  handleLogin = () => {
+    let db = new PouchDB(
+      "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/tutors"
+    );
+    //lose context of this inside api call for some reason
+    let x = this;
+    let tPass = this.state.tutorPassword;
+    if (this.state.emailValidated && this.state.tutorEmail !== "") {
+      let s = this.state.tutorEmail.search("@");
+      let tID = this.state.tutorEmail.substr(0, s);
+      db.get(tID).then(function(doc) {
+        if (tPass === doc.password) {
+          sessionStorage.setItem("Tutor", tID);
+          x.props.history.push("/tutordashboard");
+        } else alert("Invalid password");
+      });
+    } else alert("Please enter a valid email");
+  };
+
   render() {
     return (
       <div className="container">
         <h1 className="validateLead">Enter Tutor Information</h1>
         <div className="validateContainer">
-          <form className="validateForm">
+          <div className="validateForm">
             <div className="form-group">
               <label for="tutorEmail">Email address</label>
               <input
@@ -65,11 +87,14 @@ class TutorLogin extends Component {
               />
             </div>
             <div className="form-group validateBtn">
-              <Link to="/tutordashboard">
-                <button className="btn btn-lg btn-dark homeBtn">Login</button>
-              </Link>
+              <button
+                className="btn btn-lg btn-dark homeBtn"
+                onClick={this.handleLogin}
+              >
+                Login
+              </button>
             </div>
-          </form>
+          </div>
         </div>
       </div>
     );

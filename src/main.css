@@ -27,6 +27,27 @@
   text-align: center;
 }
 
+.currentQCard {
+  margin: auto;
+  width: 100%;
+  text-align: center;
+}
+
+.qCardBtns {
+  position: relative;
+  margin-top: 2.5%;
+}
+
+.qStartBtn {
+  position: relative;
+  right: 30%;
+}
+
+.qEndBtn {
+  position: relative;
+  left: 30%;
+}
+
 .validateBtn {
   padding-top: 5%;
 }
@@ -49,6 +70,15 @@
   width: 80%;
   text-align: center;
   margin-top: 15%;
+  background-color: #f2f4f5;
+  border-radius: 25px;
+}
+
+.emptyQContainer {
+  margin: auto;
+  width: 80%;
+  text-align: center;
+  margin-top: 5%;
   background-color: #f2f4f5;
   border-radius: 25px;
 }
@@ -111,8 +141,42 @@
   margin-top: 100px;
 }
 
+.appointmentHead {
+  margin: auto;
+}
+
 .homePara {
   margin-top: 30px;
+}
+
+.emptyQPara {
+  margin-top: 5%;
+  margin-bottom: 5%;
+}
+
+.trueQRow {
+  text-align: center;
+  margin-top: 1rem;
+  background-color: #a2a0a0;
+  color: white;
+  padding: 1rem;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+}
+
+.falseQRow {
+  padding: 1rem;
+  text-align: center;
+  margin-top: 1rem;
+  background-color: #f2f4f5;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+}
+
+.fullQContainer {
+  margin: auto;
+  text-align: center;
+  margin-top: 5%;
+  background-color: #f2f4f5;
+  border-radius: 25px;
 }
 
 .homeBtn {
