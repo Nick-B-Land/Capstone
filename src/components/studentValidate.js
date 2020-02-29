@@ -16,6 +16,11 @@ class StudentValidate extends Component {
     };
   }
 
+  componentDidMount = () => {
+    let s = sessionStorage.getItem("studentID");
+    if (s) this.props.history.push("/categories");
+  };
+
   handleEmail = e => {
     this.setState({ emailInput: e.target.value });
   };
@@ -67,23 +72,28 @@ class StudentValidate extends Component {
     );
 
     sessionStorage.setItem("studentID", this.state.sIDInput);
-    let docExists = false;
+    let docExists = true;
     let studentObj = {
       _id: this.state.sIDInput,
       programID: this.state.programInput,
       phone: this.state.phoneInput,
-      email: this.state.emailInput
+      email: this.state.emailInput,
+      notes: [],
+      totalAppointments: 0,
+      noShows: 0
     };
 
-    db.get(this.state.sIDInput).catch(function(err) {
-      if (err.status === 404) docExists = true;
-    });
-
-    if (!docExists) {
-      db.put(studentObj).catch(function(err) {
-        console.log(err);
+    db.get(this.state.sIDInput)
+      .catch(function(err) {
+        if (err.status === 404) docExists = false;
+      })
+      .then(() => {
+        if (!docExists) {
+          db.put(studentObj).catch(function(err) {
+            console.log(err);
+          });
+        }
       });
-    }
   };
 
   render() {

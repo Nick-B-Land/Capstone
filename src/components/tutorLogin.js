@@ -11,6 +11,11 @@ class TutorLogin extends Component {
     };
   }
 
+  componentDidMount = () => {
+    let t = sessionStorage.getItem("Tutor");
+    if (t) this.props.history.push("/tutordashboard");
+  };
+
   handleEmail = e => {
     this.setState({ tutorEmail: e.target.value });
   };

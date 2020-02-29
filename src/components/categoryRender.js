@@ -73,7 +73,7 @@ const categoryRender = observer(
       let sID = sessionStorage.getItem("studentID");
       if (sID) {
         this.props.catStore.Waitlist(this.props.name, sID);
-      } else this.props.catStore.Waitlist(this.props.name);
+      } else alert("Missing student ID");
     };
 
     render() {

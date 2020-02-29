@@ -8,7 +8,7 @@ class DashboardAnalytics extends Component {
       <div class="wrapper">
         <nav id="sidebar">
           <div class="sidebar-header">
-            <h3>Tutor Dashboard</h3>
+            <h3>Welcome {this.props.tutorStore.Tutor.id}</h3>
           </div>
           <ul class="list-unstyled components">
             <li class="active">

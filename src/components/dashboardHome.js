@@ -6,19 +6,11 @@ const dashboardHome = observer(
   class DashboardHome extends Component {
     constructor(props) {
       super(props);
-      this.state = {
-        Queue: [],
-        currentQID: 0
-      };
+      this.state = { activeAppointment: false };
     }
-    componentDidMount = async () => {
+    componentDidMount = () => {
       let tID = sessionStorage.getItem("Tutor");
-      await this.props.tutorStore.Fetch(tID);
-      console.log(this.props.tutorStore.Tutor);
-      let y = this.props.tutorStore.Tutor.programID;
-      console.log("programID in CDM " + y);
-      await this.props.tutorStore.GetQueue(y);
-      //this.getCurrentQ();
+      this.props.tutorStore.Fetch(tID);
     };
 
     isOdd = n => {
@@ -33,12 +25,10 @@ const dashboardHome = observer(
         this.props.tutorStore.Queue.forEach(e => {
           if (e.id < firstQ.id) firstQ = e;
         });
-
         minusCurrentQ = this.props.tutorStore.Queue.filter(
           e => e.id !== firstQ.id
         );
       }
-
       let counter = 0;
       if (this.props.tutorStore.Queue.length === 0) {
         return (
@@ -57,7 +47,7 @@ const dashboardHome = observer(
               }
               key={Math.random()}
             >
-              Student ID: {e.studentID}
+              Student ID: {e.studentID} | Time: {e.timeQueued}
             </div>
           </div>
         ));
@@ -67,11 +57,12 @@ const dashboardHome = observer(
     handleStartingAppointment = () => {
       let firstQ = this.props.tutorStore.Queue[0];
       this.props.tutorStore.Queue.forEach(e => {
-        // console.log(firstQ.id);
-        // console.log(e.id);
         if (e.id < firstQ.id) firstQ = e;
       });
-      this.props.tutorStore.StartAppointment(firstQ.id);
+      if (firstQ) {
+        this.props.tutorStore.StartAppointment(firstQ.id);
+        this.setState({ activeAppointment: true });
+      }
     };
 
     //repeating the same code for getting the id
@@ -81,11 +72,15 @@ const dashboardHome = observer(
     handleEndingAppointment = () => {
       let firstQ = this.props.tutorStore.Queue[0];
       this.props.tutorStore.Queue.forEach(e => {
-        // console.log(firstQ.id);
-        // console.log(e.id);
         if (e.id < firstQ.id) firstQ = e;
       });
-      this.props.tutorStore.EndAppointment(firstQ.id);
+      if (firstQ) {
+        this.props.tutorStore.EndAppointment(firstQ.id);
+        this.setState({ activeAppointment: false });
+      }
+      this.props.tutorStore.GetQueue(this.props.tutorStore.Tutor.programID);
+      this.renderQList();
+      this.getCurrentQ();
     };
 
     //shouldn't need 3 functions for this
@@ -107,141 +102,89 @@ const dashboardHome = observer(
     //will need some more work and refactoring
     //should be its own component and pass the id as a prop
     getCurrentQ = () => {
-      //console.log(this.props.tutorStore.Queue);
       let firstQ = this.props.tutorStore.Queue[0];
-      this.props.tutorStore.Queue.forEach(e => {
-        // console.log(firstQ.id);
-        // console.log(e.id);
-        if (e.id < firstQ.id) firstQ = e;
-      });
-      //if (firstQ) this.setState({ currentQID: firstQ.id });
       if (firstQ) {
-        return (
-          <div className="col currentQCard">
-            <div className="card">
-              <div className="card-header">Current Appointment</div>
-              <div className="card-body">
-                <div className="currentQBody">
-                  <span>
-                    <h6>
-                      Student ID : <b>{firstQ.studentID}</b>
-                    </h6>
-                  </span>
-                  <div className="qCardBtns">
-                    <button
-                      className="btn btn-dark qStartBtn"
-                      onClick={this.handleStartingAppointment}
-                    >
-                      Start Appointment
-                    </button>
-                    <button
-                      className="btn btn-dark qEndBtn"
-                      onClick={this.handleEndingAppointment}
-                    >
-                      End Appointment
-                    </button>
-                    {/* 
-                    was breaking other buttons for some reason
-                    also might not actually need this? could do auto 
-                    prompt when timer expires
-                    <div class="dropdown qDropBtn">
-                      <button
-                        className="btn btn-dark dropdown-toggle"
-                        type="button"
-                        id="dropdownMenuButton"
-                        data-toggle="dropdown"
-                        aria-haspopup="true"
-                        aria-expanded="false"
-                      >
-                        Extend
-                      </button>
-                      <div
-                        className="dropdown-menu"
-                        aria-labelledby="dropdownMenuButton"
-                      >
-                        <button
-                          className="dropdown-item"
-                          onClick={this.extend5}
-                        >
-                          5 Minutes
-                        </button>
-                        <button
-                          className="dropdown-item"
-                          onClick={this.extend10}
-                        >
-                          10 Minutes
-                        </button>
-                        <button
-                          className="dropdown-item"
-                          onClick={this.extend15}
-                        >
-                          15 Minutes
-                        </button>
-                      </div>
-                    </div> */}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        );
-      } else {
-        return (
-          <div className="col currentQCard">
-            <div className="card">
-              <div className="card-header">Current Appointment</div>
-              <div className="card-body">
-                <div className="currentQBody">
-                  <span>
-                    <h6>
-                      Student ID : <b>Queue is Empty!</b>
-                    </h6>
-                  </span>
-                  <div className="qCardBtns">
-                    <button
-                      className="btn btn-dark qStartBtn"
-                      onClick={this.handleStartingAppointment}
-                    >
-                      Start Appointment
-                    </button>
-                    <button
-                      className="btn btn-dark qEndBtn"
-                      onClick={this.handleEndingAppointment}
-                    >
-                      End Appointment
-                    </button>
-                  </div>
-                  {/* <div class="dropdown">
-                    <button
-                      className="btn btn-dark dropdown-toggle"
-                      type="button"
-                      id="dropdownMenuButton"
-                      data-toggle="dropdown"
-                      aria-haspopup="true"
-                    >
-                      Extend
-                    </button>
-                    <div
-                      className="dropdown-menu"
-                      aria-labelledby="dropdownMenuButton"
-                    >
-                      <button className="dropdown-item" onClick={this.extend5}>
-                        5 Minutes
-                      </button>
-                      <button className="dropdown-item" onClick={this.extend10}>
-                        10 Minutes
-                      </button>
-                      <button className="dropdown-item" onClick={this.extend15}>
-                        15 Minutes
-                      </button>
-                    </div>
-                  </div> */}
-                </div>
-              </div>
-            </div>
-          </div>
-        );
+        this.props.tutorStore.Queue.forEach(e => {
+          if (e.id < firstQ.id) firstQ = e;
+        });
       }
+      return (
+        <div className="col currentQCard">
+          <div className="card">
+            <div className="card-header">Current Appointment</div>
+            <div className="card-body">
+              <div className="currentQBody">
+                <span>
+                  <h6>
+                    Student ID :{" "}
+                    <b>{firstQ ? firstQ.studentID : "Queue is empty"}</b>
+                  </h6>
+                </span>
+                <div className="qBody">
+                  {this.state.activeAppointment
+                    ? "Appointment is started"
+                    : firstQ
+                    ? "Appointment ready to start"
+                    : "No appointments"}
+                </div>
+                <div className="qCardBtns">
+                  <button
+                    className="btn btn-dark qStartBtn"
+                    onClick={this.handleStartingAppointment}
+                  >
+                    Start Appointment
+                  </button>
+                  <button
+                    className="btn btn-dark qEndBtn"
+                    onClick={this.handleEndingAppointment}
+                  >
+                    End Appointment
+                  </button>
+                  {/* 
+              was breaking other buttons for some reason
+              also might not actually need this? could do auto 
+              prompt when timer expires
+              <div class="dropdown qDropBtn">
+                <button
+                  className="btn btn-dark dropdown-toggle"
+                  type="button"
+                  id="dropdownMenuButton"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  Extend
+                </button>
+                <div
+                  className="dropdown-menu"
+                  aria-labelledby="dropdownMenuButton"
+                >
+                  <button
+                    className="dropdown-item"
+                    onClick={this.extend5}
+                  >
+                    5 Minutes
+                  </button>
+                  <button
+                    className="dropdown-item"
+                    onClick={this.extend10}
+                  >
+                    10 Minutes
+                  </button>
+                  <button
+                    className="dropdown-item"
+                    onClick={this.extend15}
+                  >
+                    15 Minutes
+                  </button>
+                </div>
+              </div> */}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
     };
 
     //the side nav bar should be its own component and needs to be cleaned up
@@ -250,7 +193,7 @@ const dashboardHome = observer(
         <div class="wrapper">
           <nav id="sidebar">
             <div class="sidebar-header">
-              <h3>Tutor Dashboard</h3>
+              <h3>Welcome, {this.props.tutorStore.Tutor._id}</h3>
             </div>
             <ul class="list-unstyled components">
               <li class="active">
