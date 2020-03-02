@@ -1,14 +1,15 @@
 import React, { Component } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import Home from "./components/home.js";
+import Home from "./pages/home.js";
 import Nav from "./components/nav.js";
-import StudentValidate from "./components/studentValidate.js";
-import TutoringCategories from "./components/tutoringCategories.js";
-import WaitListed from "./components/waitlisted.js";
-import TutorLogin from "./components/tutorLogin.js";
-import DashboardHome from "./components/dashboardHome.js";
+import StudentValidate from "./pages/studentValidate.js";
+import TutoringCategories from "./pages/tutoringCategories.js";
+import WaitListed from "./pages/waitlisted.js";
+import TutorLogin from "./pages/tutorLogin.js";
+import DashboardHome from "./pages/dashboardHome.js";
 import DashboardProf from "./components/dashboardProf.js";
 import DashboardAnalytics from "./components/dashboardAnalytics.js";
+import AdminHome from "./pages/adminHome";
 import { observer } from "mobx-react";
 
 const app = observer(
@@ -71,6 +72,13 @@ const app = observer(
                   {...props}
                   tutorStore={this.props.tutorStore}
                 />
+              )}
+            />
+            <Route
+              exact
+              path="/adminhome"
+              render={props => (
+                <AdminHome {...props} tutorStore={this.props.tutorStore} />
               )}
             />
           </Switch>

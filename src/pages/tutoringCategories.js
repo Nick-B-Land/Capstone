@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import CategoryRender from "./categoryRender";
+import CategoryRender from "../components/categoryRender";
 import { observer } from "mobx-react";
 
 const tutoringCategories = observer(

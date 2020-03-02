@@ -49,8 +49,13 @@ class TutorLogin extends Component {
       let tID = this.state.tutorEmail.substr(0, s);
       db.get(tID).then(function(doc) {
         if (tPass === doc.password) {
-          sessionStorage.setItem("Tutor", tID);
-          x.props.history.push("/tutordashboard");
+          if (doc.role === "Tutor") {
+            sessionStorage.setItem("Tutor", tID);
+            x.props.history.push("/tutordashboard");
+          } else if (doc.role === "Admin") {
+            sessionStorage.setItem("Admin", tID);
+            x.props.history.push("/adminhome");
+          }
         } else alert("Invalid password");
       });
     } else alert("Please enter a valid email");

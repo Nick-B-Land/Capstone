@@ -87,7 +87,8 @@ TutorStore.EndAppointment = aID => {
           doc.currentQ = doc.currentQ - 1;
           doc.ETA = doc.ETA - doc.qLength;
           doc.activeQ = doc.activeQ.filter(e => e.id !== aID);
-          TutorStore.Tutor.Queue = doc.activeQ;
+          //TutorStore.Tutor.Queue = doc.activeQ;
+          TutorStore.Fetch(TutorStore.Tutor._id);
         }
       });
       return db.put(doc);
@@ -99,7 +100,6 @@ TutorStore.EndAppointment = aID => {
       return studDB.get(studentID);
     })
     .then(function(doc) {
-      console.log("updating student db " + doc._id);
       doc.totalAppointments = doc.totalAppointments + 1;
       return studDB.put(doc);
     });
