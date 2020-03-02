@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { observer } from "mobx-react";
+import PouchDB from "pouchdb";
+import SideNav from "../components/sideNav";
 
 const dashboardHome = observer(
   class DashboardHome extends Component {
@@ -11,6 +13,14 @@ const dashboardHome = observer(
     componentDidMount = () => {
       let tID = sessionStorage.getItem("Tutor");
       this.props.tutorStore.Fetch(tID);
+      let qDB = new PouchDB(
+        "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/programs"
+      );
+      qDB
+        .changes({ since: "now", live: true, include_docs: true })
+        .on("change", () => {
+          this.props.tutorStore.Fetch(tID);
+        });
     };
 
     isOdd = n => {
@@ -191,25 +201,7 @@ const dashboardHome = observer(
     render() {
       return (
         <div class="wrapper">
-          <nav id="sidebar">
-            <div class="sidebar-header">
-              <h3>Welcome, {this.props.tutorStore.Tutor._id}</h3>
-            </div>
-            <ul class="list-unstyled components">
-              <li class="active">
-                <ul class="collapse list-unstyled" id="pageSubmenu"></ul>
-              </li>
-              <Link to="/tutordashboard">
-                <li>Home</li>
-              </Link>
-              <Link to="/tutorprofile">
-                <li>Profile</li>
-              </Link>
-              <Link to="/tutoranalytics">
-                <li>Analytics</li>
-              </Link>
-            </ul>
-          </nav>
+          <SideNav tutorStore={this.props.tutorStore} />
           <div className="container">
             <div className="row row-cols-1">
               <h3 className="appointmentHead">Appointment Queue</h3>

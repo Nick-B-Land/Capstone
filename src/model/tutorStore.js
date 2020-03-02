@@ -25,6 +25,12 @@ TutorStore.Fetch = id => {
     });
 };
 
+TutorStore.Clear = () => {
+  TutorStore.Tutor = {};
+  TutorStore.Queue = [];
+  sessionStorage.removeItem("Tutor");
+};
+
 TutorStore.GetQueue = programID => {
   var db = new PouchDB(
     "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/programs"

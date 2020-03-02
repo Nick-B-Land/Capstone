@@ -192,29 +192,9 @@
 .btnHome {
   margin-top: 75px;
 }
-.wrapper {
-  display: flex;
-  width: 100%;
-  align-items: stretch;
-}
-.wrapper {
-  display: flex;
-  align-items: stretch;
-}
 
-#sidebar {
-  min-width: 250px;
-  max-width: 250px;
-  color: #f2f4f5;
-}
-
-#sidebar.active {
+.sideNav.active {
   margin-left: -250px;
-}
-#sidebar {
-  min-width: 250px;
-  max-width: 250px;
-  min-height: 100vh;
 }
 a[data-toggle="collapse"] {
   position: relative;
@@ -256,39 +236,52 @@ a:focus {
   transition: all 0.3s;
 }
 
-#sidebar {
-  /* don't forget to add all the previously mentioned styles here too */
+.wrapper {
+  display: flex;
+  width: 100%;
+  align-items: stretch;
+}
+
+.sideNav {
+  color: #f2f4f5;
+  width: 13%;
+  min-height: 100vh;
   background: #004e95;
   color: #fff;
   transition: all 0.3s;
 }
 
-#sidebar .sidebar-header {
+.sideNavHover:hover {
+  background-color: #f2f4f5;
+}
+
+.sidebar-header {
   padding: 20px;
   background: #004e95;
+  text-align: center;
 }
 
-#sidebar ul.components {
-  padding: 20px 0;
+.sideNav ul.components {
+  margin-top: 5%;
   border-bottom: 1px solid #004e95;
+  text-align: center;
 }
 
-#sidebar ul p {
+.sideNav ul p {
   color: #fff;
-  padding: 10px;
 }
 
-#sidebar ul li a {
+.sideNav ul li a {
   padding: 10px;
   font-size: 1.1em;
   display: block;
 }
-#sidebar ul li a:hover {
+.sideNav ul li a:hover {
   color: #004e95;
   background: #fff;
 }
 
-#sidebar ul li.active > a,
+.sideNav ul li.active > a,
 a[aria-expanded="true"] {
   color: #fff;
   background: #004e95;
