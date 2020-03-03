@@ -13,9 +13,6 @@ class SideNav extends Component {
           <Link to="/tutordashboard">
             <li className="sideNavHover">Home</li>
           </Link>
-          <Link to="/tutorprofile">
-            <li>Profile</li>
-          </Link>
           <Link to="/tutoranalytics">
             <li>Analytics</li>
           </Link>

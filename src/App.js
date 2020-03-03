@@ -15,11 +15,10 @@ import { observer } from "mobx-react";
 const app = observer(
   class App extends Component {
     componentDidMount = () => {
-      this.props.catStore.Fetch();
-      let t = sessionStorage.getItem("Tutor");
-      if (t) {
-        this.props.tutorStore.Fetch();
-      }
+      // let t = sessionStorage.getItem("Tutor");
+      // if (t) {
+      //   this.props.tutorStore.Fetch();
+      // }
     };
 
     render() {

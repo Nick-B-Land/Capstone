@@ -12,13 +12,14 @@ class StudentValidate extends Component {
       programInput: "Writing",
       emailValidated: true,
       sIDValidated: true,
-      phoneValidated: true
+      phoneValidated: true,
+      scene: 0
     };
   }
 
   componentDidMount = () => {
     let s = sessionStorage.getItem("studentID");
-    if (s) this.props.history.push("/categories");
+    //if (s) this.props.history.push("/categories");
   };
 
   handleEmail = e => {
@@ -36,10 +37,10 @@ class StudentValidate extends Component {
   };
 
   validateSID = () => {
-    let re = new RegExp("^[0-9]{6}$");
-    if (re.test(this.state.sIDInput) === false) {
-      this.setState({ sIDValidated: false });
-    } else this.setState({ sIDValidated: true });
+    // let re = new RegExp("^[0-9]{6}$");
+    // if (re.test(this.state.sIDInput) === false) {
+    //   this.setState({ sIDValidated: false });
+    // } else this.setState({ sIDValidated: true });
   };
 
   validatePhone = () => {
@@ -60,19 +61,18 @@ class StudentValidate extends Component {
 
   handleProgram = e => {
     this.setState({ programInput: e.target.value });
-    console.log(this.state.programInput);
   };
 
   //check if student exists in database, if not add and set ID to sessionStorage,
   //if exists, just set sessionStorage
   //works rn but for bad reasons, just errors out if ID exists, need better implementation
   handleStudent = () => {
-    var db = new PouchDB(
+    let db = new PouchDB(
       "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/students"
     );
 
     sessionStorage.setItem("studentID", this.state.sIDInput);
-    let docExists = true;
+    //let docExists = true;
     let studentObj = {
       _id: this.state.sIDInput,
       programID: this.state.programInput,
@@ -83,22 +83,88 @@ class StudentValidate extends Component {
       noShows: 0
     };
 
+    db.put(studentObj).catch(function(err) {
+      console.log(err);
+    });
+    // db.get(this.state.sIDInput)
+    //   .catch(function(err) {
+    //     if (err.status === 404) docExists = false;
+    //   })
+    //   .then(() => {
+    //     if (!docExists) {
+    //       db.put(studentObj).catch(function(err) {
+    //         console.log(err);
+    //       });
+    //     }
+    //   });
+  };
+
+  checkStudent = () => {
+    if (this.state.sIDInput.length === 0 || this.state.sIDInput.length < 6) {
+      alert("Invalid ID");
+      return;
+    }
+    let db = new PouchDB(
+      "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/students"
+    );
+    let x = this;
     db.get(this.state.sIDInput)
-      .catch(function(err) {
-        if (err.status === 404) docExists = false;
+      .then(function(doc) {
+        if (doc) {
+          sessionStorage.setItem("Student", x.state.sIDInput);
+          x.props.history.push("/categories");
+        }
       })
-      .then(() => {
-        if (!docExists) {
-          db.put(studentObj).catch(function(err) {
-            console.log(err);
-          });
+      .catch(function(err) {
+        console.log("id not found");
+        if (err.status === 404) {
+          x.setState({ scene: 1 });
         }
       });
   };
 
-  render() {
+  checkSID = () => {
     return (
-      <div className="container">
+      <div>
+        <h1 className="validateLead">Enter Your Student ID</h1>
+        <div className="validateContainer">
+          <form className="validateForm">
+            <div className="form-group">
+              <div className="form-group">
+                <label htmlFor="validID">Student ID</label>
+                <input
+                  className="form-control"
+                  id="validID"
+                  onInput={this.handleSID}
+                  onBlur={this.validateSID}
+                />
+                <div
+                  className={
+                    this.state.sIDValidated
+                      ? "hideSIDVerified card-body"
+                      : "showSIDVerified card-body"
+                  }
+                >
+                  Invalid StudentID!
+                </div>
+              </div>
+            </div>
+            <button
+              type="button"
+              className="btn btn-lg btn-dark"
+              onClick={this.checkStudent}
+            >
+              Go
+            </button>
+          </form>
+        </div>
+      </div>
+    );
+  };
+
+  firstTimeStudent = () => {
+    return (
+      <div>
         <h1 className="validateLead">Enter Student Information</h1>
         <div className="validateContainer">
           <form className="validateForm">
@@ -129,6 +195,7 @@ class StudentValidate extends Component {
                 id="validID"
                 onInput={this.handleSID}
                 onBlur={this.validateSID}
+                value={this.state.sIDInput}
               />
               <div
                 className={
@@ -201,6 +268,18 @@ class StudentValidate extends Component {
         </div>
       </div>
     );
+  };
+
+  renderScene = () => {
+    let s = this.state.scene;
+
+    if (s === 0) return this.checkSID();
+    else if (s === 1) return this.firstTimeStudent();
+    else return <h1>Oops</h1>;
+  };
+
+  render() {
+    return <div className="container">{this.renderScene()}</div>;
   }
 }
 

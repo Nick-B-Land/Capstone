@@ -5,7 +5,9 @@ import { observer } from "mobx-react";
 
 const tutoringCategories = observer(
   class TutoringCategories extends Component {
-    componentDidMount = () => {};
+    componentDidMount = () => {
+      this.props.catStore.Fetch();
+    };
 
     renderCategories = () => {
       let Cats = this.props.catStore.Categories;

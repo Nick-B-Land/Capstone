@@ -59,7 +59,7 @@ CatStore.Waitlist = (programID, studentID) => {
           doc.activeQ.push(qObj);
           return db.put(doc);
         })
-        .then(function() {
+        .then(() => {
           return db.get(e.doc._id);
         })
         .then(function(doc) {
