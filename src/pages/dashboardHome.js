@@ -201,7 +201,10 @@ const dashboardHome = observer(
     render() {
       return (
         <div class="wrapper">
-          <SideNav tutorStore={this.props.tutorStore} />
+          <SideNav
+            tutorStore={this.props.tutorStore}
+            history={this.props.history}
+          />
           <div className="container">
             <div className="row row-cols-1">
               <h3 className="appointmentHead">Appointment Queue</h3>

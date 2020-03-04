@@ -2,7 +2,10 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
 class SideNav extends Component {
-  state = {};
+  handleLogout = () => {
+    this.props.tutorStore.Clear();
+    this.props.history.push("/");
+  };
   render() {
     return (
       <nav className="sideNav">
@@ -17,6 +20,11 @@ class SideNav extends Component {
             <li>Analytics</li>
           </Link>
         </ul>
+        <span>
+          <button onClick={this.handleLogout} className="btn btn-dark">
+            Logout
+          </button>
+        </span>
       </nav>
     );
   }
