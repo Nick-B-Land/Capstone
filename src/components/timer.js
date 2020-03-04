@@ -12,6 +12,7 @@ export class Countdown extends Component {
         this.state={counter:this.props.time};
         //time: an object representing the time until the appt in a HH/MM/SS format
         this.time = {}
+        this.started = null
     }
 
     //This function takes an input in seconds, and converts it to an object in a HH/MM/SS format
@@ -32,6 +33,20 @@ export class Countdown extends Component {
         return obj;
     }
 
+    //function for when appt starts
+    //gets difference between the started time, which is established on the first trigger,
+    //and the end time, which is established on the second trigger. Additional functionality
+    //could, and should, be implemented, such as returning duration and using the result to
+    //store the appt duration in the db
+    StartAppt(s){
+        if(!s){
+            this.started = new Date()
+        } else {
+            let duration = this.secondsToTime((new Date().getTime() - this.started.getTime()) / 1000)
+            console.log("HOUR: " + duration.h + " MIN: " + duration.m + " SEC: " + duration.s)
+        }
+    }
+
     render(){
 
         //Timeout is set here, refreshing and updating the component every second
@@ -48,7 +63,9 @@ export class Countdown extends Component {
             <ol>
                 Hours: {this.time.h}<br></br>
                 Minutes: {this.time.m}<br></br>
-                Seconds: {this.time.s}
+                Seconds: {this.time.s}<br></br><br></br>
+
+                Click to start appointment: <button onClick={() => this.StartAppt(this.started)}>Start</button>
             </ol>
         )
     }
