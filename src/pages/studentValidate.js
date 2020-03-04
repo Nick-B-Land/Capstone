@@ -111,12 +111,11 @@ class StudentValidate extends Component {
     db.get(this.state.sIDInput)
       .then(function(doc) {
         if (doc) {
-          sessionStorage.setItem("Student", x.state.sIDInput);
+          sessionStorage.setItem("studentID", x.state.sIDInput);
           x.props.history.push("/categories");
         }
       })
       .catch(function(err) {
-        console.log("id not found");
         if (err.status === 404) {
           x.setState({ scene: 1 });
         }
