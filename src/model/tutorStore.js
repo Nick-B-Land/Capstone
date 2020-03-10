@@ -16,7 +16,9 @@ TutorStore.Fetch = id => {
 
   db.get(id)
     .then(function(doc) {
+      doc.isLoggedIn = true;
       TutorStore.Tutor = doc;
+      return db.put(doc);
     })
     .then(() => {
       qDB.get(TutorStore.Tutor.programID).then(function(doc) {
@@ -28,7 +30,18 @@ TutorStore.Fetch = id => {
 TutorStore.Clear = () => {
   TutorStore.Tutor = {};
   TutorStore.Queue = [];
+
+  let db = new PouchDB(
+    "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/tutors"
+  );
+
+  db.get(sessionStorage.getItem("Tutor")).then(function(doc) {
+    doc.isLoggedIn = false;
+    return db.put(doc);
+  });
+
   sessionStorage.removeItem("Tutor");
+
   console.log("I was clicked");
 };
 

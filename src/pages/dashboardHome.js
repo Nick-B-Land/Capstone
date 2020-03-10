@@ -3,14 +3,20 @@ import { Link } from "react-router-dom";
 import { observer } from "mobx-react";
 import PouchDB from "pouchdb";
 import SideNav from "../components/sideNav";
+import QNote from "../components/qNote";
 
 const dashboardHome = observer(
   class DashboardHome extends Component {
     constructor(props) {
       super(props);
-      this.state = { activeAppointment: false };
+      this.state = {
+        activeAppointment: false,
+        showAddNote: false,
+        noteText: "",
+        firstQID: null
+      };
     }
-    componentDidMount = () => {
+    componentDidMount = async () => {
       let tID = sessionStorage.getItem("Tutor");
       this.props.tutorStore.Fetch(tID);
       let qDB = new PouchDB(
@@ -21,6 +27,10 @@ const dashboardHome = observer(
         .on("change", () => {
           this.props.tutorStore.Fetch(tID);
         });
+    };
+
+    handleNoteText = e => {
+      this.setState({ noteText: e.target.value });
     };
 
     isOdd = n => {
@@ -93,17 +103,29 @@ const dashboardHome = observer(
       this.getCurrentQ();
     };
 
-    //shouldn't need 3 functions for this
-    extend5 = () => {
-      this.props.tutorStore.ExtendAppointment(5);
+    handleShowAddNote = () => {
+      this.setState({ showAddNote: !this.state.showAddNote });
     };
 
-    extend10 = () => {
-      this.props.tutorStore.ExtendAppointment(10);
-    };
+    handleNoteSubmit = () => {
+      let db = new PouchDB(
+        "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/students"
+      );
 
-    extend15 = () => {
-      this.props.tutorStore.ExtendAppointment(15);
+      let date = new Date();
+      let today = date.toLocaleDateString();
+      let noteObject = {
+        date: today,
+        tutor: sessionStorage.getItem("Tutor"),
+        description: this.state.noteText
+      };
+
+      db.get(this.props.tutorStore.Queue[0].studentID).then(function(doc) {
+        doc.notes.push(noteObject);
+        return db.put(doc);
+      });
+
+      this.refs.noteTextRef.value = "";
     };
 
     //running into errors with asynchronous shit
@@ -112,6 +134,8 @@ const dashboardHome = observer(
     //will need some more work and refactoring
     //should be its own component and pass the id as a prop
     getCurrentQ = () => {
+      //this.fetchQNotes();
+      console.log("getCurrentQ Called");
       let firstQ = this.props.tutorStore.Queue[0];
       if (firstQ) {
         this.props.tutorStore.Queue.forEach(e => {
@@ -137,6 +161,8 @@ const dashboardHome = observer(
                     ? "Appointment ready to start"
                     : "No appointments"}
                 </div>
+                <br />
+                {firstQ ? <QNote sID={firstQ.studentID} /> : null}
                 <div className="qCardBtns">
                   <button
                     className="btn btn-dark qStartBtn"
@@ -145,53 +171,38 @@ const dashboardHome = observer(
                     Start Appointment
                   </button>
                   <button
+                    className="btn btn-dark"
+                    onClick={this.handleShowAddNote}
+                  >
+                    Add Note
+                  </button>
+                  <button
                     className="btn btn-dark qEndBtn"
                     onClick={this.handleEndingAppointment}
                   >
                     End Appointment
                   </button>
-                  {/* 
-              was breaking other buttons for some reason
-              also might not actually need this? could do auto 
-              prompt when timer expires
-              <div class="dropdown qDropBtn">
-                <button
-                  className="btn btn-dark dropdown-toggle"
-                  type="button"
-                  id="dropdownMenuButton"
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                >
-                  Extend
-                </button>
-                <div
-                  className="dropdown-menu"
-                  aria-labelledby="dropdownMenuButton"
-                >
-                  <button
-                    className="dropdown-item"
-                    onClick={this.extend5}
-                  >
-                    5 Minutes
-                  </button>
-                  <button
-                    className="dropdown-item"
-                    onClick={this.extend10}
-                  >
-                    10 Minutes
-                  </button>
-                  <button
-                    className="dropdown-item"
-                    onClick={this.extend15}
-                  >
-                    15 Minutes
-                  </button>
-                </div>
-              </div> */}
                 </div>
               </div>
             </div>
+          </div>
+          <div
+            className={this.state.showAddNote ? "showAddNote" : "hideAddNote"}
+          >
+            <div className="input-group">
+              <div className="input-group-prepend">
+                <span className="input-group-text">Write a Note</span>
+              </div>
+              <textarea
+                className="form-control"
+                ref="noteTextRef"
+                aria-label="With textarea"
+                onChange={this.handleNoteText}
+              ></textarea>
+            </div>
+            <button className="btn btn-dark" onClick={this.handleNoteSubmit}>
+              Submit Note
+            </button>
           </div>
         </div>
       );

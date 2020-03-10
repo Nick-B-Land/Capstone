@@ -14,17 +14,23 @@ class SideNav extends Component {
         </div>
         <ul className="list-unstyled components">
           <Link to="/tutordashboard">
-            <li className="sideNavHover">Home</li>
+            <li className="sideNavLI">Home</li>
           </Link>
           <Link to="/tutoranalytics">
-            <li>Analytics</li>
+            <li className="sideNavLI">Analytics</li>
+          </Link>
+          <Link>
+            <li className="sideNavLI" onClick={this.handleLogout}>
+              {" "}
+              Logout{" "}
+            </li>
           </Link>
         </ul>
-        <span>
+        {/* <span>
           <button onClick={this.handleLogout} className="btn btn-dark">
             Logout
           </button>
-        </span>
+        </span> */}
       </nav>
     );
   }

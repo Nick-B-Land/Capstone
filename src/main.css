@@ -96,6 +96,22 @@
   padding-bottom: 5%;
 }
 
+.showQNotes {
+  display: block;
+}
+
+.hideQNotes {
+  display: none;
+}
+
+.showAddNote {
+  display: block;
+}
+
+.hideAddNote {
+  display: none;
+}
+
 .hideEmailVerified {
   display: none;
 }
@@ -242,17 +258,21 @@ a:focus {
   align-items: stretch;
 }
 
+.navbar {
+  min-height: 10vh;
+}
+
 .sideNav {
   color: #f2f4f5;
   width: 13%;
-  min-height: 100vh;
+  min-height: 90vh;
   background: #004e95;
   color: #fff;
   transition: all 0.3s;
 }
 
 .sideNavHover:hover {
-  background-color: #f2f4f5;
+  background-color: #2087bc;
 }
 
 .sidebar-header {
