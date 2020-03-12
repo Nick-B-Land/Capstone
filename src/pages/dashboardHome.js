@@ -4,6 +4,7 @@ import { observer } from "mobx-react";
 import PouchDB from "pouchdb";
 import SideNav from "../components/sideNav";
 import QNote from "../components/qNote";
+import CountdownTimer from "../components/countdownTimer";
 
 const dashboardHome = observer(
   class DashboardHome extends Component {
@@ -161,6 +162,8 @@ const dashboardHome = observer(
                     ? "Appointment ready to start"
                     : "No appointments"}
                 </div>
+                <br />
+                <CountdownTimer minutes={2} />
                 <br />
                 {firstQ ? <QNote sID={firstQ.studentID} /> : null}
                 <div className="qCardBtns">

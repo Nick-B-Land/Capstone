@@ -271,7 +271,7 @@ a:focus {
   transition: all 0.3s;
 }
 
-.sideNavHover:hover {
+.sideNavLI:hover {
   background-color: #2087bc;
 }
 
