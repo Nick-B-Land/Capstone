@@ -14,7 +14,10 @@ const dashboardHome = observer(
         activeAppointment: false,
         showAddNote: false,
         noteText: "",
-        firstQID: null
+        firstQID: null,
+        minutes: 0,
+        seconds: 0,
+        scene: "home"
       };
     }
     componentDidMount = async () => {
@@ -76,6 +79,7 @@ const dashboardHome = observer(
     };
 
     handleStartingAppointment = () => {
+      this.startTimer();
       let firstQ = this.props.tutorStore.Queue[0];
       this.props.tutorStore.Queue.forEach(e => {
         if (e.id < firstQ.id) firstQ = e;
@@ -129,6 +133,31 @@ const dashboardHome = observer(
       this.refs.noteTextRef.value = "";
     };
 
+    renderTimeoutScene = () => {
+      this.setState({ scene: "apppointmentTimeout" });
+      console.log("Timeout fired");
+    };
+
+    startTimer = () => {
+      this.setState({ minutes: 1 });
+      let interval = setInterval(() => {
+        if (this.state.seconds > 0) {
+          this.setState({ seconds: this.state.seconds - 1 });
+        }
+
+        if (this.state.seconds === 0) {
+          if (this.state.minutes === 0) {
+            clearInterval(interval);
+          } else {
+            this.setState({ minutes: this.state.minutes - 1 });
+            this.setState({ seconds: 59 });
+          }
+        }
+      }, 1000);
+
+      let timeout = setTimeout(this.renderTimeoutScene(), 1000);
+    };
+
     //running into errors with asynchronous shit
     //ive set them to await, but shit still fires
     //before the fetch calls are complete sometimes, causing crashes
@@ -163,7 +192,9 @@ const dashboardHome = observer(
                     : "No appointments"}
                 </div>
                 <br />
-                <CountdownTimer minutes={2} />
+                {this.state.activeAppointment
+                  ? this.state.minutes + " : " + this.state.seconds
+                  : null}
                 <br />
                 {firstQ ? <QNote sID={firstQ.studentID} /> : null}
                 <div className="qCardBtns">
