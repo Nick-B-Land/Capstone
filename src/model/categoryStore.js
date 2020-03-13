@@ -23,7 +23,7 @@ CatStore.Fetch = () => {
 };
 
 CatStore.Waitlist = (programID, studentID) => {
-  var db = new PouchDB(
+  let db = new PouchDB(
     "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/programs"
   );
   let d = new Date();

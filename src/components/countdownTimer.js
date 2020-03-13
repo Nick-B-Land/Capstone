@@ -10,18 +10,19 @@ class CountdownTimer extends Component {
   }
 
   componentDidMount = () => {
-    this.setState({ minutes: this.props.minutes });
-    let interval = setInterval(() => {
-      if (this.state.seconds > 0) {
-        this.setState({ seconds: this.state.seconds - 1 });
-      }
+    setInterval(() => {
+      if (this.state.seconds < 60)
+        this.setState({
+          seconds: this.state.seconds + 1
+        });
 
-      if (this.state.seconds === 0) {
-        if (this.state.minutes === 0) {
-          clearInterval(interval);
-        } else {
-          this.setState({ minutes: this.state.minutes - 1 });
-          this.setState({ seconds: 59 });
+      if (this.state.seconds === 60) {
+        if (this.state.minutes === 15) clearInterval(this.timer);
+        else {
+          this.setState({
+            minutes: this.state.minutes + 1
+          });
+          this.setState({ seconds: 0 });
         }
       }
     }, 1000);
