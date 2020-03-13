@@ -3,7 +3,8 @@ import { observable } from "mobx";
 
 export let TutorStore = observable({
   Tutor: {},
-  Queue: []
+  Queue: [],
+  QLength: null
 });
 
 TutorStore.Fetch = id => {
@@ -23,6 +24,7 @@ TutorStore.Fetch = id => {
     .then(() => {
       qDB.get(TutorStore.Tutor.programID).then(function(doc) {
         TutorStore.Queue = doc.activeQ;
+        TutorStore.QLength = doc.qLength;
       });
     });
 };

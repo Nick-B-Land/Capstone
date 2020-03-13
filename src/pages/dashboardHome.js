@@ -10,6 +10,8 @@ const dashboardHome = observer(
   class DashboardHome extends Component {
     constructor(props) {
       super(props);
+      this.min = React.createRef();
+      this.sec = React.createRef();
       this.state = {
         activeAppointment: false,
         showAddNote: false,
@@ -134,16 +136,51 @@ const dashboardHome = observer(
     };
 
     renderTimeoutScene = () => {
-      this.setState({ scene: "apppointmentTimeout" });
+      this.setState({ scene: "appointmentTimeout" });
       console.log("Timeout fired");
     };
 
-    startTimer = () => {
-      this.setState({ minutes: 1 });
+    handleExtend = () => {
+      this.setState({ scene: "extendedAppointment" });
+    };
+
+    extendTimer = () => {
+      // this.setState({ minutes: 0 });
+      // this.setState({ seconds: 0 });
+      this.timer = setInterval(async () => {
+        if (this.refs.sec.value < 60) this.refs.sec.value += 1;
+        // await this.setState({
+        //   seconds: this.state.seconds + 1
+        // });
+
+        if (this.refs.sec.value === 60) {
+          if (this.state.minutes === 15) clearInterval(this.timer);
+          else {
+            // await this.setState({
+            //   minutes: this.state.minutes + 1
+            // });
+            // await this.setState({ seconds: 0 });
+            this.refs.min.value += 1;
+            this.refs.sec.value += 1;
+          }
+        }
+      }, 1000);
+    };
+
+    startTimer = async () => {
+      //this is the proper value to use, for testing just setting to a minute
+      //await this.setState({ minutes: this.props.tutorStore.QLength });
+      await this.setState({ minutes: 1 });
+      let t = this.state.minutes * 60000;
+      console.log(t);
       let interval = setInterval(() => {
         if (this.state.seconds > 0) {
           this.setState({ seconds: this.state.seconds - 1 });
         }
+
+        // if (this.state.seconds < 10) {
+        //   this.setState({ seconds: "0" + this.state.seconds });
+        // }
 
         if (this.state.seconds === 0) {
           if (this.state.minutes === 0) {
@@ -155,7 +192,7 @@ const dashboardHome = observer(
         }
       }, 1000);
 
-      let timeout = setTimeout(this.renderTimeoutScene(), 1000);
+      setTimeout(this.renderTimeoutScene, t);
     };
 
     //running into errors with asynchronous shit
@@ -195,6 +232,7 @@ const dashboardHome = observer(
                 {this.state.activeAppointment
                   ? this.state.minutes + " : " + this.state.seconds
                   : null}
+                <br />
                 <br />
                 {firstQ ? <QNote sID={firstQ.studentID} /> : null}
                 <div className="qCardBtns">
@@ -242,6 +280,127 @@ const dashboardHome = observer(
       );
     };
 
+    renderHome = () => {
+      return (
+        <div className="container">
+          <div className="row row-cols-1">
+            <h3 className="appointmentHead">Appointment Queue</h3>
+            {this.renderQList()}
+          </div>
+          <div className="row">{this.getCurrentQ()}</div>
+        </div>
+      );
+    };
+
+    renderTimeoutOptions = () => {
+      return (
+        <div className="container">
+          <div className="col">
+            <div className="card">
+              <div className="card-header"> Appointment time is up!</div>
+              <div className="card-body">
+                <h3>Please pick a option</h3>
+                <br />
+                <br />
+                <span>
+                  <button className="btn btn-dark btn-lg">
+                    End Appointment
+                  </button>
+                  <button
+                    className="btn btn-dark btn-lg"
+                    onClick={this.handleExtend}
+                  >
+                    Extend
+                  </button>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    };
+
+    renderExtendScene = () => {
+      let firstQ = this.props.tutorStore.Queue[0];
+      if (firstQ) {
+        this.props.tutorStore.Queue.forEach(e => {
+          if (e.id < firstQ.id) firstQ = e;
+        });
+      }
+      return (
+        <div className="col currentQCard">
+          <div className="card">
+            <div className="card-header">Current Appointment</div>
+            <div className="card-body">
+              <div className="currentQBody">
+                <span>
+                  <h6>
+                    Student ID :{" "}
+                    <b>{firstQ ? firstQ.studentID : "Queue is empty"}</b>
+                  </h6>
+                </span>
+                <div className="qBody">Appointment is extended</div>
+                <br />
+                {/* {this.state.minutes + " : " + this.state.seconds} */}
+                {/* {this.refs.min.value + " : " + this.refs.sec.value} */}
+                <CountdownTimer />
+                <br />
+                <br />
+                {firstQ ? <QNote sID={firstQ.studentID} /> : null}
+                <div className="qCardBtns">
+                  <button
+                    className="btn btn-dark qStartBtn"
+                    onClick={this.handleStartingAppointment}
+                  >
+                    Start Appointment
+                  </button>
+                  <button
+                    className="btn btn-dark"
+                    onClick={this.handleShowAddNote}
+                  >
+                    Add Note
+                  </button>
+                  <button
+                    className="btn btn-dark qEndBtn"
+                    onClick={this.handleEndingAppointment}
+                  >
+                    End Appointment
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className={this.state.showAddNote ? "showAddNote" : "hideAddNote"}
+          >
+            <div className="input-group">
+              <div className="input-group-prepend">
+                <span className="input-group-text">Write a Note</span>
+              </div>
+              <textarea
+                className="form-control"
+                ref="noteTextRef"
+                aria-label="With textarea"
+                onChange={this.handleNoteText}
+              ></textarea>
+            </div>
+            <button className="btn btn-dark" onClick={this.handleNoteSubmit}>
+              Submit Note
+            </button>
+          </div>
+        </div>
+      );
+    };
+
+    renderScene = () => {
+      let scene = this.state.scene;
+
+      if (scene === "home") return this.renderHome();
+      else if (scene === "appointmentTimeout")
+        return this.renderTimeoutOptions();
+      else if (scene === "extendedAppointment") return this.renderExtendScene();
+    };
+
     //the side nav bar should be its own component and needs to be cleaned up
     render() {
       return (
@@ -250,13 +409,7 @@ const dashboardHome = observer(
             tutorStore={this.props.tutorStore}
             history={this.props.history}
           />
-          <div className="container">
-            <div className="row row-cols-1">
-              <h3 className="appointmentHead">Appointment Queue</h3>
-              {this.renderQList()}
-            </div>
-            <div className="row">{this.getCurrentQ()}</div>
-          </div>
+          {this.renderScene()}
         </div>
       );
     }
