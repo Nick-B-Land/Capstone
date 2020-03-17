@@ -6,6 +6,7 @@ class SideNav extends Component {
     this.props.tutorStore.Clear();
     this.props.history.push("/");
   };
+
   render() {
     return (
       <nav className="sideNav">
@@ -14,10 +15,14 @@ class SideNav extends Component {
         </div>
         <ul className="list-unstyled components">
           <Link to="/tutordashboard">
-            <li className="sideNavLI">Home</li>
+            <li className="sideNavLI" onClick={this.props.home}>
+              Home
+            </li>
           </Link>
-          <Link to="/tutoranalytics">
-            <li className="sideNavLI">Analytics</li>
+          <Link>
+            <li className="sideNavLI" onClick={this.props.analytics}>
+              Analytics
+            </li>
           </Link>
           <Link>
             <li className="sideNavLI" onClick={this.handleLogout}>

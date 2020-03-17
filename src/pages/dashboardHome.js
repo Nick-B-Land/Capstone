@@ -5,6 +5,7 @@ import PouchDB from "pouchdb";
 import SideNav from "../components/sideNav";
 import QNote from "../components/qNote";
 import CountdownTimer from "../components/countdownTimer";
+import DashboardAnalytics from "../components/dashboardAnalytics";
 
 const dashboardHome = observer(
   class DashboardHome extends Component {
@@ -392,6 +393,11 @@ const dashboardHome = observer(
       );
     };
 
+    renderAnalyticsScene = () => {
+      console.log(this.props.tutorStore.Tutor);
+      return <DashboardAnalytics tutorStore={this.props.tutorStore} />;
+    };
+
     renderScene = () => {
       let scene = this.state.scene;
 
@@ -399,6 +405,16 @@ const dashboardHome = observer(
       else if (scene === "appointmentTimeout")
         return this.renderTimeoutOptions();
       else if (scene === "extendedAppointment") return this.renderExtendScene();
+      else if (scene === "analytics") return this.renderAnalyticsScene();
+    };
+
+    handleAnalyticsScene = () => {
+      this.setState({ scene: "analytics" });
+      console.log(this.state.scene);
+    };
+
+    handleHomeScene = () => {
+      this.setState({ scene: "home" });
     };
 
     //the side nav bar should be its own component and needs to be cleaned up
@@ -408,6 +424,8 @@ const dashboardHome = observer(
           <SideNav
             tutorStore={this.props.tutorStore}
             history={this.props.history}
+            analytics={this.handleAnalyticsScene}
+            home={this.handleHomeScene}
           />
           {this.renderScene()}
         </div>

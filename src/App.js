@@ -63,16 +63,7 @@ const app = observer(
                 <DashboardProf {...props} tutorStore={this.props.tutorStore} />
               )}
             />
-            <Route
-              exact
-              path="/tutoranalytics"
-              render={props => (
-                <DashboardAnalytics
-                  {...props}
-                  tutorStore={this.props.tutorStore}
-                />
-              )}
-            />
+            )} />
             <Route
               exact
               path="/adminhome"
