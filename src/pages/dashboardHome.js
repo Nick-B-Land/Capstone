@@ -20,12 +20,17 @@ const dashboardHome = observer(
         firstQID: null,
         minutes: 0,
         seconds: 0,
-        scene: "home"
+        scene: "home",
+        interval: null
       };
     }
     componentDidMount = async () => {
       let tID = sessionStorage.getItem("Tutor");
-      this.props.tutorStore.Fetch(tID);
+      await this.props.tutorStore.Fetch(tID);
+      // if (!this.props.tutorStore.Tutor._id) {
+      //   await this.props.tutorStore.Fetch(tID);
+      //   console.log(this.props.tutorStore.Tutor);
+      // }
       let qDB = new PouchDB(
         "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/programs"
       );
@@ -64,7 +69,8 @@ const dashboardHome = observer(
           </div>
         );
       } else {
-        return minusCurrentQ.map(e => (
+        let reverseMinusCurrentQ = minusCurrentQ.reverse();
+        return reverseMinusCurrentQ.map(e => (
           <div className="col">
             <div
               className={
@@ -106,6 +112,7 @@ const dashboardHome = observer(
         this.props.tutorStore.EndAppointment(firstQ.id);
         this.setState({ activeAppointment: false });
       }
+      this.setState({ scene: "home" });
       this.props.tutorStore.GetQueue(this.props.tutorStore.Tutor.programID);
       this.renderQList();
       this.getCurrentQ();
@@ -138,6 +145,7 @@ const dashboardHome = observer(
 
     renderTimeoutScene = () => {
       this.setState({ scene: "appointmentTimeout" });
+      clearInterval(this.state.interval);
       console.log("Timeout fired");
     };
 
@@ -304,7 +312,10 @@ const dashboardHome = observer(
                 <br />
                 <br />
                 <span>
-                  <button className="btn btn-dark btn-lg">
+                  <button
+                    className="btn btn-dark btn-lg"
+                    onClick={this.handleEndingAppointment}
+                  >
                     End Appointment
                   </button>
                   <button

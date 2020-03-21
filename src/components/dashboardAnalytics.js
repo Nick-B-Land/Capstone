@@ -43,66 +43,91 @@ const dashboardAnalytics = observer(
       let aCount = 0;
 
       matches.docs.forEach(e => {
-        //first colon in time string, used to find position of hours, mins, secs
-        let startColon = e.appointmentStart.indexOf(":");
-        let endColon = e.appointmentEnd.indexOf(":");
+        if (e.appointmentStart && e.appointmentEnd) {
+          //first colon in time string, used to find position of hours, mins, secs
+          let startColon = e.appointmentStart.indexOf(":");
+          let endColon = e.appointmentEnd.indexOf(":");
 
-        //handle single or double digit hours (5 or 11)
-        let endH;
-        if (endColon === 1) {
-          endH = parseInt(e.appointmentEnd.charAt(0));
-        } else if (endColon === 2) {
-          endH = parseInt(e.appointmentEnd.substr(0, 1));
-        }
+          //handle single or double digit hours (5 or 11)
+          let end24 = e.appointmentEnd.substr(e.appointmentEnd.length - 2);
+          //console.log(end24);
+          let endH;
+          if (endColon === 1) {
+            endH = parseInt(e.appointmentEnd.charAt(0));
+            if (end24 === "PM") {
+              if (endH === 12) endH = 0;
+              else endH = endH + 12;
+            }
+          } else if (endColon === 2) {
+            endH = parseInt(e.appointmentEnd.substr(0, 1));
+            if (end24 === "PM") {
+              if (endH === 12) endH = 0;
+              else endH = endH + 12;
+            }
+          }
 
-        let endM = parseInt(
-          e.appointmentEnd.substr(endColon + 1, endColon + 2)
-        );
-        let endS = parseInt(
-          e.appointmentEnd.substr(endColon + 4, endColon + 5)
-        );
+          let endM = parseInt(
+            e.appointmentEnd.substr(endColon + 1, endColon + 2)
+          );
+          let endS = parseInt(
+            e.appointmentEnd.substr(endColon + 4, endColon + 5)
+          );
 
-        let startH;
-        if (startColon === 1) {
-          startH = parseInt(e.appointmentStart.charAt(0));
-        } else if (startColon === 2) {
-          startH = parseInt(e.appointmentStart.substr(0, 1));
-        }
+          let start24 = e.appointmentEnd.substr(e.appointmentStart.length - 2);
+          let startH;
+          if (startColon === 1) {
+            startH = parseInt(e.appointmentStart.charAt(0));
+            if (start24 === "PM") {
+              if (startH === 12) startH = 0;
+              else startH = startH + 12;
+            }
+          } else if (startColon === 2) {
+            startH = parseInt(e.appointmentStart.substr(0, 1));
+          }
 
-        let startM = parseInt(
-          e.appointmentStart.substr(startColon + 1, startColon + 2)
-        );
-        let startS = parseInt(
-          e.appointmentStart.substr(startColon + 4, startColon + 5)
-        );
-        console.log("history ID " + e._id);
-        console.log(
-          "STARTTIME = hour " + startH + " min " + startM + " sec " + startS
-        );
-        console.log("ENDTIME = hour " + endH + " min " + endM + " sec " + endS);
+          let startM = parseInt(
+            e.appointmentStart.substr(startColon + 1, startColon + 2)
+          );
+          let startS = parseInt(
+            e.appointmentStart.substr(startColon + 4, startColon + 5)
+          );
+          // console.log("history ID " + e._id);
+          // console.log(
+          //   "STARTTIME = hour " + startH + " min " + startM + " sec " + startS
+          // );
+          // console.log(
+          //   "ENDTIME = hour " + endH + " min " + endM + " sec " + endS
+          // );
 
-        //convert everything to seconds
-        let endT = endM * 60 + endS;
-        let startT = startM * 60 + startS;
+          //convert everything to seconds
+          let endT = endH * 3600 + endM * 60 + endS;
+          let startT = startH * 3600 + startM * 60 + startS;
 
-        //hours match, simple math
-        if (endH === startH) {
           let timeToAdd = endT - startT;
-          console.log("length in minutes " + timeToAdd / 60);
           totalLength += timeToAdd;
           aCount += 1;
         } else {
-          // when end hour is greater than start
-          //find start minutes to the hour, add to normal end minutes
-          // will only handle 1 hour difference, but that should be fine for us
-          let diff1 = 60 - startM;
-          console.log("start minute difference " + diff1);
-          console.log("end min " + endM);
-          let timeToAdd = (diff1 + endM) * 60 - startS + endS;
-          console.log("length in minutes " + timeToAdd / 60);
-          totalLength += timeToAdd;
-          aCount += 1;
+          console.log(e.appointmentStart);
         }
+
+        // //hours match, simple math
+        // if (endH === startH) {
+        //   let timeToAdd = endT - startT;
+        //   console.log("length in minutes " + timeToAdd / 60);
+        //   totalLength += timeToAdd;
+        //   aCount += 1;
+        // } else {
+        //   // when end hour is greater than start
+        //   //find start minutes to the hour, add to normal end minutes
+        //   // will only handle 1 hour difference, but that should be fine for us
+        //   let diff1 = 60 - startM;
+        //   console.log("start minute difference " + diff1);
+        //   console.log("end min " + endM);
+        //   let timeToAdd = (diff1 + endM) * 60 - startS + endS;
+        //   console.log("length in minutes " + timeToAdd / 60);
+        //   totalLength += timeToAdd;
+        //   aCount += 1;
+        // }
       });
 
       //calculate average and convert to minutes

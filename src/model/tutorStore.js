@@ -7,7 +7,7 @@ export let TutorStore = observable({
   QLength: null
 });
 
-TutorStore.Fetch = id => {
+TutorStore.Fetch = async id => {
   var db = new PouchDB(
     "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/tutors"
   );
@@ -15,7 +15,8 @@ TutorStore.Fetch = id => {
     "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/programs"
   );
 
-  db.get(id)
+  await db
+    .get(id)
     .then(function(doc) {
       doc.isLoggedIn = true;
       TutorStore.Tutor = doc;
@@ -27,6 +28,41 @@ TutorStore.Fetch = id => {
         TutorStore.QLength = doc.qLength;
       });
     });
+
+  // const tID = id;
+  // let tutorPromise = new Promise((resolve, reject) => {
+  //   db.get(tID)
+  //     .then(function(doc) {
+  //       console.log(id);
+  //       doc.isLoggedIn = true;
+  //       //TutorStore.Tutor = doc;
+  //       db.put(doc);
+  //       resolve(doc);
+  //     })
+  //     .catch(function(err) {
+  //       reject(err);
+  //     });
+  // });
+
+  // let qPromise = new Promise((resolve, reject) => {
+  //   qDB
+  //     .get(TutorStore.Tutor.programID)
+  //     .then(function(doc) {
+  //       //TutorStore.Queue = doc.activeQ;
+  //       TutorStore.QLength = doc.qLength;
+  //       resolve(doc);
+  //     })
+  //     .catch(function(err) {
+  //       reject(err);
+  //     });
+  // });
+
+  // let t = await tutorPromise;
+  // TutorStore.Tutor = t;
+  // let q = await qPromise;
+  // TutorStore.Queue = q.activeQ;
+  // TutorStore.QLength = q.qLength;
+  // console.log(TutorStore.Tutor);
 };
 
 TutorStore.Clear = () => {
