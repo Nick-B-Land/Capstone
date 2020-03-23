@@ -3,6 +3,27 @@ import { Link } from "react-router-dom";
 import "../main.css";
 
 class Home extends Component {
+  state = {
+    data: null
+  };
+
+  componentDidMount() {
+    // Call our fetch function below once the component mounts
+  this.callBackendAPI()
+    .then(res => this.setState({ data: res.express }))
+    .catch(err => console.log(err));
+}
+  // Fetches our GET route from the Express server. (Note the route we are fetching matches the GET route from server.js
+callBackendAPI = async () => {
+  const response = await fetch('/SMS', {method : 'POST'});
+  const body = await response.json();
+
+  if (response.status !== 200) {
+    throw Error(body.message) 
+  }
+  return body;
+};
+
   render() {
     return (
       <div className="container-fluid">
@@ -24,6 +45,7 @@ class Home extends Component {
             pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
             culpa qui officia deserunt mollit anim id est laborum.
           </p>
+          <p>{this.state.data}</p>
         </div>
         <div className="row btnHome">
           <div className="col-6 d-flex justify-content-center">

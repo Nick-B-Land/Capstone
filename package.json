@@ -5,6 +5,8 @@
   "dependencies": {
     "bootstrap": "^4.4.1",
     "browser-router": "^0.2.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
     "mobx": "^5.15.4",
     "mobx-react": "^6.1.7",
     "pouchdb": "^7.1.1",
@@ -34,5 +36,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "proxy": "http://localhost:5000/",
+  "devDependencies": {
+    "twilio": "^3.40.0"
   }
 }
