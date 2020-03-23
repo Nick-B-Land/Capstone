@@ -8,14 +8,93 @@ const dashboardAnalytics = observer(
     constructor(props) {
       super(props);
       PouchDB.plugin(PouchdbFind);
-      this.state = { appCount: 0, avgLength: 0 };
+      this.state = { appCount: 0, avgLength: 0, highestCat: "" };
     }
 
     componentDidMount = () => {
       this.getAppointmentNumber();
       this.getAvgAppointmentLength();
+      this.getMostUsedCat();
     };
 
+    getMostUsedCat = async () => {
+      let pdb = new PouchDB(
+        "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/programs"
+      );
+      let promiseX = new Promise((resolve, reject) => {
+        pdb
+          .allDocs({
+            include_docs: true
+          })
+          .then(function(result) {
+            resolve(result);
+          })
+          .catch(function(err) {
+            reject(err);
+          });
+      });
+      let catProm = await promiseX;
+      let catArr = [];
+      catProm.rows.forEach(e => {
+        let catOb = { name: e.id, count: 0 };
+        catArr.push(catOb);
+      });
+      console.log(catProm);
+      let db = new PouchDB(
+        "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/history"
+      );
+      let promiseY = new Promise((resolve, reject) => {
+        db.allDocs({
+          include_docs: true
+        })
+          .then(function(doc) {
+            resolve(doc);
+          })
+          .catch(function(err) {
+            reject(err);
+          });
+      });
+      console.log(catArr);
+      let histProm = await promiseY;
+      console.log(histProm);
+      // histProm.rows.forEach(e => {
+      //   let fuck = e.doc.programID;
+      //   catProm.rows.forEach(i => {
+      //     if (i.name === e.doc.programID) {
+      //       i.count += 1;
+      //       i.name = e.doc.programID;
+      //     }
+      //   });
+      // });
+      // for (let e of histProm.rows) {
+      //   for (let i of catProm.rows) {
+      //     if (i.name === e.doc.programID) {
+      //       console.log(e);
+      //       i.count += 1;
+      //       i.name = e.doc.programID;
+      //     }
+      //   }
+      // }
+      for (let i = 0; i < histProm.rows.length; i++) {
+        for (let e = 0; e < catProm.rows.length; e++) {
+          console.log(i.doc);
+          // if (e.name === i.doc.programID) {
+          //   console.log(i);
+          //   e.count += 1;
+          //   e.name = i.doc.programID;
+          // }
+        }
+      }
+      let high = 0;
+      let highCat = "";
+      catProm.rows.forEach(e => {
+        if (e.count > high) {
+          high = e.count;
+          highCat = e.name;
+        }
+      });
+      this.setState({ highestCat: highCat });
+    };
     //calculate a tutors average appointment length
     getAvgAppointmentLength = async () => {
       let db = new PouchDB(
@@ -201,7 +280,7 @@ const dashboardAnalytics = observer(
                     <h5>Number of Students Cancelled</h5>
                   </span>
                   <span>
-                    <h6>2</h6>
+                    <h6>{this.state.highestCat}</h6>
                   </span>
                 </div>
               </div>
