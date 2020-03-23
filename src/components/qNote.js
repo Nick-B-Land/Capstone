@@ -60,15 +60,30 @@ const qNote = observer(
     };
 
     renderQNotes = () => {
+      let sortedQ = this.state.currentQNotes;
+
+      sortedQ.sort((a, b) => {
+        if (a.date < b.date) return -1;
+
+        if (a.date > b.date) return 1;
+
+        return 0;
+      });
+
       if (this.state.currentQNotes.length === 0) {
         return <h3>No notes added</h3>;
       } else {
-        return this.state.currentQNotes.map(e => (
-          <div key={Math.random()}>
-            <h4>Date: {e.date}</h4>
-            <h4>Tutor: {e.tutor}</h4>
-            <p>Description: {e.description}</p>
-          </div>
+        return sortedQ.map(e => (
+          // <div >
+          //   <h4>Date: {e.date}</h4>
+          //   <h4>Tutor: {e.tutor}</h4>
+          //   <p>Description: {e.description}</p>
+          // </div>
+          <tr key={Math.random()}>
+            <td>{e.date}</td>
+            <td>{e.tutor}</td>
+            <td>{e.description}</td>
+          </tr>
         ));
       }
     };
@@ -85,7 +100,16 @@ const qNote = observer(
           </button>
           <div className={this.state.visibility ? "showQNotes" : "hideQNotes"}>
             <br />
-            {this.renderQNotes()}
+            <table>
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Tutor</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>{this.renderQNotes()}</tbody>
+            </table>
           </div>
         </div>
       );
