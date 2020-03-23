@@ -1,19 +1,19 @@
 import React, { Component } from "react";
 
 class CountdownTimer extends Component {
+  _isMounted = false;
   constructor(props) {
     super(props);
     this.state = {
       minutes: 0,
       seconds: 0,
-      interval: null,
-      isMounted: false
+      interval: null
     };
   }
 
   componentDidMount = () => {
-    this.setState({ isMounted: true });
-    if (this.state.isMounted) {
+    this._isMounted = true;
+    if (this._isMounted) {
       let interval = setInterval(() => {
         if (this.state.seconds < 60)
           this.setState({
@@ -36,7 +36,7 @@ class CountdownTimer extends Component {
 
   componentWillUnmount = () => {
     clearInterval(this.state.interval);
-    this.setState({ isMounted: false });
+    this._isMounted = false;
   };
 
   renderTimer = () => {

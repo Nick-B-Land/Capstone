@@ -70,7 +70,7 @@ const dashboardHome = observer(
       } else {
         let reverseMinusCurrentQ = minusCurrentQ.reverse();
         return reverseMinusCurrentQ.map(e => (
-          <div className="col">
+          <div className="col" key={e.id}>
             <div
               className={
                 this.isOdd(counter++)
