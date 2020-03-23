@@ -64,7 +64,7 @@ const qNote = observer(
         return <h3>No notes added</h3>;
       } else {
         return this.state.currentQNotes.map(e => (
-          <div>
+          <div key={Math.random()}>
             <h4>Date: {e.date}</h4>
             <h4>Tutor: {e.tutor}</h4>
             <p>Description: {e.description}</p>
