@@ -11,17 +11,16 @@ const dashboardHome = observer(
   class DashboardHome extends Component {
     constructor(props) {
       super(props);
-      this.min = React.createRef();
-      this.sec = React.createRef();
       this.state = {
         activeAppointment: false,
         showAddNote: false,
-        noteText: "",
+        noteText: null,
         firstQID: null,
         minutes: 0,
         seconds: 0,
         scene: "home",
-        interval: null
+        interval: null,
+        timeout: null
       };
     }
     componentDidMount = async () => {
@@ -112,6 +111,8 @@ const dashboardHome = observer(
         this.props.tutorStore.EndAppointment(firstQ.id);
         this.setState({ activeAppointment: false });
       }
+      clearInterval(this.state.interval);
+      clearTimeout(this.state.timeout);
       this.setState({ scene: "home" });
       this.props.tutorStore.GetQueue(this.props.tutorStore.Tutor.programID);
       this.renderQList();
@@ -135,17 +136,27 @@ const dashboardHome = observer(
         description: this.state.noteText
       };
 
-      db.get(this.props.tutorStore.Queue[0].studentID).then(function(doc) {
-        doc.notes.push(noteObject);
-        return db.put(doc);
-      });
-
-      this.refs.noteTextRef.value = "";
+      if (
+        this.props.tutorStore.Queue.length !== 0 &&
+        this.state.noteText !== null
+      ) {
+        console.log("wtf tho");
+        db.get(this.props.tutorStore.Queue[0].studentID)
+          .then(function(doc) {
+            doc.notes.push(noteObject);
+            return db.put(doc);
+          })
+          .catch(function(err) {
+            console.log(err);
+          });
+        this.refs.noteTextRef.value = "";
+      }
     };
 
     renderTimeoutScene = () => {
       this.setState({ scene: "appointmentTimeout" });
       clearInterval(this.state.interval);
+      if (this.state.timeout) clearTimeout(this.state.timeout);
       console.log("Timeout fired");
     };
 
@@ -201,7 +212,9 @@ const dashboardHome = observer(
         }
       }, 1000);
 
-      setTimeout(this.renderTimeoutScene, t);
+      this.setState({ interval: interval });
+      let timeout = setTimeout(this.renderTimeoutScene, t);
+      this.setState({ timeout: timeout });
     };
 
     //running into errors with asynchronous shit
@@ -431,7 +444,7 @@ const dashboardHome = observer(
     //the side nav bar should be its own component and needs to be cleaned up
     render() {
       return (
-        <div class="wrapper">
+        <div className="wrapper">
           <SideNav
             tutorStore={this.props.tutorStore}
             history={this.props.history}

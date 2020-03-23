@@ -65,6 +65,9 @@ CatStore.Waitlist = (programID, studentID) => {
         .then(function(doc) {
           e.doc.currentQ = doc.currentQ;
           e.doc.ETA = doc.ETA;
+        })
+        .catch(function(err) {
+          console.log(err);
         });
     }
   });

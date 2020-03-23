@@ -12,36 +12,51 @@ import PouchDB from "pouchdb";
 
 const qNote = observer(
   class QNote extends Component {
+    _isMounted = false;
     constructor(props) {
       super(props);
       this.state = { visibility: false, currentQNotes: [] };
     }
 
     componentDidMount = () => {
+      this._isMounted = true;
       let db = new PouchDB(
         "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/students"
       );
-      this.fetchQNotes();
+      console.log(this._isMounted);
+      if (this._isMounted) this.fetchQNotes();
       db.changes({ since: "now", live: true, include_docs: true }).on(
         "change",
         () => {
-          this.fetchQNotes();
+          if (this._isMounted) this.fetchQNotes();
         }
       );
     };
 
-    fetchQNotes = () => {
+    componentWillUnmount = () => {
+      this._isMounted = false;
+    };
+
+    fetchQNotes = async () => {
       let db = new PouchDB(
         "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/students"
       );
       let x = this;
       if (this.props.sID) {
-        db.get(this.props.sID).then(function(doc) {
-          x.setState({ currentQNotes: doc.notes });
+        let p = new Promise((resolve, reject) => {
+          db.get(this.props.sID)
+            .then(function(doc) {
+              //x.setState({ currentQNotes: doc.notes });
+              resolve(doc.notes);
+            })
+            .catch(function(err) {
+              //console.log(err);
+              reject(err);
+            });
         });
+        let s = await p;
+        this.setState({ currentQNotes: s });
       }
-
-      console.log(this.state.currentQNotes);
     };
 
     renderQNotes = () => {

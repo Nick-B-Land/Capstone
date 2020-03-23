@@ -180,7 +180,7 @@ const dashboardAnalytics = observer(
 
     render() {
       return (
-        <div class="container dashAnal">
+        <div className="container dashAnal">
           <div className="row">
             <div className="col-6">
               <div className="card">

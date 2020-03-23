@@ -68,7 +68,7 @@ class TutorLogin extends Component {
         <div className="validateContainer">
           <div className="validateForm">
             <div className="form-group">
-              <label for="tutorEmail">Email address</label>
+              <label htmlFor="tutorEmail">Email address</label>
               <input
                 type="email"
                 className="form-control"
@@ -88,7 +88,7 @@ class TutorLogin extends Component {
               </div>
             </div>
             <div className="form-group">
-              <label for="validPass">Password</label>
+              <label htmlFor="validPass">Password</label>
               <input
                 className="form-control"
                 id="validPass"
