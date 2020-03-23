@@ -39,7 +39,6 @@ const dashboardAnalytics = observer(
         let catOb = { name: e.id, count: 0 };
         catArr.push(catOb);
       });
-      console.log(catProm);
       let db = new PouchDB(
         "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/history"
       );
@@ -54,40 +53,17 @@ const dashboardAnalytics = observer(
             reject(err);
           });
       });
-      console.log(catArr);
       let histProm = await promiseY;
-      console.log(histProm);
-      // histProm.rows.forEach(e => {
-      //   let fuck = e.doc.programID;
-      //   catProm.rows.forEach(i => {
-      //     if (i.name === e.doc.programID) {
-      //       i.count += 1;
-      //       i.name = e.doc.programID;
-      //     }
-      //   });
-      // });
-      // for (let e of histProm.rows) {
-      //   for (let i of catProm.rows) {
-      //     if (i.name === e.doc.programID) {
-      //       console.log(e);
-      //       i.count += 1;
-      //       i.name = e.doc.programID;
-      //     }
-      //   }
-      // }
-      for (let i = 0; i < histProm.rows.length; i++) {
-        for (let e = 0; e < catProm.rows.length; e++) {
-          console.log(i.doc);
-          // if (e.name === i.doc.programID) {
-          //   console.log(i);
-          //   e.count += 1;
-          //   e.name = i.doc.programID;
-          // }
-        }
-      }
+      histProm.rows.forEach(e => {
+        catArr.forEach(i => {
+          if (i.name === e.doc.programID) {
+            i.count += 1;
+          }
+        });
+      });
       let high = 0;
       let highCat = "";
-      catProm.rows.forEach(e => {
+      catArr.forEach(e => {
         if (e.count > high) {
           high = e.count;
           highCat = e.name;
