@@ -11,8 +11,8 @@ const categoryRender = observer(
         currentQ: this.props.currentQ,
         ETA: this.props.ETA,
         message: {
-          to: '',
-          body: ''
+          to: '+15872150723',
+          body: 'Test'
         },
         error: false
       };
@@ -83,26 +83,10 @@ const categoryRender = observer(
     sendSMS = () => {
         fetch('/SMS',{
           method: 'POST',
-          body: 'This is a Test'
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(this.state.message)
         })
-        .then(res => res)
-        .then (data => {
-          if (data.success){
-            this.setState({
-              error: false,
-              message: {
-                to: '+15872150723',
-                body: 'Test'
-              }
-            })
-            console.log("It worked")
-          }
-          else {
-            this.setState({
-              error: true
-            })
-          }
-        });
+        .then(res => res.json())
       }
 
       both = () => {

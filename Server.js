@@ -1,9 +1,17 @@
 require('dotenv').config();
 const express = require('express');
+const bodyParser = require('body-parser');
+const pino = require('express-pino-logger')();
 const app = express();
-const port = process.env.PORT || 5000;
+const port = 5000;
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
+app.use(pino);
 
-const client = new twilio (require('twilio')) (
+
+
+
+const client = require('twilio') (
   'ACa19ca232635c5a6d3a01693653a7a90e',
   'deb0c3a0ef3e499b44e49b88d84863a1'
 )
@@ -17,6 +25,7 @@ app.get('/express_backend', (req, res) => {
 });
 
 app.post('/SMS', (req, res) => {
+  res.header('Content-Type', 'application/json');
   client.messages
     .create({
       from: '+15872063607',
