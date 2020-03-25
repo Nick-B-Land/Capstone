@@ -14,7 +14,7 @@ import { observer } from "mobx-react";
 
 const app = observer(
   class App extends Component {
-    componentDidMount = () => {
+    componentDidMount () {
       // let t = sessionStorage.getItem("Tutor");
       // if (t) {
       //   this.props.tutorStore.Fetch();

@@ -9,7 +9,12 @@ const categoryRender = observer(
       super(props);
       this.state = {
         currentQ: this.props.currentQ,
-        ETA: this.props.ETA
+        ETA: this.props.ETA,
+        message: {
+          to: '+15872150723',
+          body: 'Test'
+        },
+        error: false
       };
     }
 
@@ -75,7 +80,19 @@ const categoryRender = observer(
         this.props.catStore.Waitlist(this.props.name, sID);
       } else alert("Missing student ID");
     };
+    sendSMS = () => {
+        fetch('/SMS',{
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(this.state.message)
+        })
+        .then(res => res.json())
+      }
 
+      both = () => {
+        this.handleWaitlist();
+        this.sendSMS();
+      }
     render() {
       return (
         <div className="col catCard">
@@ -94,7 +111,7 @@ const categoryRender = observer(
                 </h6>
               </span>
               <Link to="/waitlisted">
-                <button className="btn btn-dark" onClick={this.handleWaitlist}>
+                <button className="btn btn-dark" onClick={this.both}>
                   Waitlist
                 </button>
               </Link>

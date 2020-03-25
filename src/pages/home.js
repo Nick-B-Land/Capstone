@@ -3,6 +3,10 @@ import { Link } from "react-router-dom";
 import "../main.css";
 
 class Home extends Component {
+  state = {
+    data: null
+  };
+  
   render() {
     return (
       <div className="container-fluid">
@@ -24,6 +28,7 @@ class Home extends Component {
             pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
             culpa qui officia deserunt mollit anim id est laborum.
           </p>
+          <p>{this.state.data}</p>
         </div>
         <div className="row btnHome">
           <div className="col-6 d-flex justify-content-center">
