@@ -10,10 +10,6 @@ const categoryRender = observer(
       this.state = {
         currentQ: this.props.currentQ,
         ETA: this.props.ETA,
-        message: {
-          to: '+15872150723',
-          body: 'Test'
-        },
         error: false
       };
     }
@@ -80,19 +76,48 @@ const categoryRender = observer(
         this.props.catStore.Waitlist(this.props.name, sID);
       } else alert("Missing student ID");
     };
-    sendSMS = () => {
-        fetch('/SMS',{
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify(this.state.message)
-        })
-        .then(res => res.json())
-      }
 
-      both = () => {
-        this.handleWaitlist();
-        this.sendSMS();
-      }
+    sendSMS = async () => {
+      let sID = sessionStorage.getItem("studentID");
+      let db = new PouchDB(
+        "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/students"
+      );
+
+      let sInfoPromise = new Promise((resolve, reject) => {
+        db.get(sID)
+          .then(function(doc) {
+            resolve(doc);
+          })
+          .catch(function(err) {
+            reject(err);
+          });
+      });
+
+      let sInfo = await sInfoPromise;
+
+      let message = {
+        to: "+" + sInfo.phone,
+        message:
+          "You have entered the queue for " +
+          this.props.name +
+          " tutoring. \n Your appointment should be ready in " +
+          this.props.ETA +
+          " minutes. \n Thank you for using Learner Success Services"
+      };
+
+      console.log(message);
+      fetch("/SMS", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(message)
+      }).then(res => res.json());
+    };
+
+    handleWaitAndSMS = () => {
+      this.handleWaitlist();
+      this.sendSMS();
+    };
+
     render() {
       return (
         <div className="col catCard">
@@ -111,7 +136,10 @@ const categoryRender = observer(
                 </h6>
               </span>
               <Link to="/waitlisted">
-                <button className="btn btn-dark" onClick={this.both}>
+                <button
+                  className="btn btn-dark"
+                  onClick={this.handleWaitAndSMS}
+                >
                   Waitlist
                 </button>
               </Link>
