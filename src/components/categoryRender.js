@@ -97,7 +97,7 @@ const categoryRender = observer(
 
       let message = {
         to: "+" + sInfo.phone,
-        message:
+        body:
           "You have entered the queue for " +
           this.props.name +
           " tutoring. \n Your appointment should be ready in " +
@@ -105,12 +105,15 @@ const categoryRender = observer(
           " minutes. \n Thank you for using Learner Success Services"
       };
 
-      console.log(message);
+      //console.log(message);
       fetch("/SMS", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(message)
-      }).then(res => res.json());
+      }).then(res => {
+        res.json();
+        console.log(res);
+      });
     };
 
     handleWaitAndSMS = () => {
