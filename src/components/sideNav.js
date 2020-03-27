@@ -30,6 +30,12 @@ class SideNav extends Component {
               Logout{" "}
             </li>
           </Link>
+          <Link>
+            <li className="sideNavLI" onClick={this.props.test}>
+              {" "}
+              Test{" "}
+            </li>
+          </Link>
         </ul>
         {/* <span>
           <button onClick={this.handleLogout} className="btn btn-dark">

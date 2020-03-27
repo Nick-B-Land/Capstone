@@ -96,7 +96,7 @@ const categoryRender = observer(
       let sInfo = await sInfoPromise;
 
       let message = {
-        to: "+" + sInfo.phone,
+        to: "+1" + sInfo.phone,
         body:
           "You have entered the queue for " +
           this.props.name +

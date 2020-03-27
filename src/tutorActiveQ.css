@@ -1,0 +1,22 @@
+.tutorActiveDiv {
+  background-color: #1d7dbc;
+  color: #fff;
+  border-radius: 5rem;
+  border-width: 0.75rem;
+  border-color: #17406b;
+  border-style: solid;
+}
+
+.qBtn {
+  background-color: #cb7d1d !important;
+  color: #fff !important;
+  font-weight: bold !important;
+}
+
+.rBtn {
+  margin-right: 10%;
+}
+
+.lBtn {
+  margin-left: 10%;
+}
