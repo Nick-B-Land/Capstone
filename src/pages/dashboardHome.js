@@ -217,6 +217,16 @@ const dashboardHome = observer(
       this.setState({ timeout: timeout });
     };
 
+    handleNoShow = () => {
+      let firstQ = this.props.tutorStore.Queue[0];
+      this.props.tutorStore.Queue.forEach(e => {
+        if (e.id < firstQ.id) firstQ = e;
+      });
+      if (firstQ) {
+        this.props.tutorStore.NoShow(firstQ.id);
+      }
+    };
+
     //running into errors with asynchronous shit
     //ive set them to await, but shit still fires
     //before the fetch calls are complete sometimes, causing crashes
@@ -275,6 +285,11 @@ const dashboardHome = observer(
                     onClick={this.handleEndingAppointment}
                   >
                     End Appointment
+                  </button>
+                  <button
+                    onClick={this.handleNoShow}
+                  >
+                    Mark as no show
                   </button>
                 </div>
               </div>

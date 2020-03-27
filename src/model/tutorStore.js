@@ -197,4 +197,55 @@ TutorStore.ExtendAppointment = inc => {
     });
 };
 
+TutorStore.NoShow = aID => {
+
+  var db = new PouchDB(
+    "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/programs"
+  );
+
+  let histDB = new PouchDB(
+    "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/history"
+  );
+
+  let studDB = new PouchDB(
+    "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/students"
+  );
+
+  let completedAppointment = {};
+  let studentID = 0;
+  let date = new Date();
+
+  db.get(TutorStore.Tutor.programID)
+    .then(function(doc) {
+      doc.activeQ.forEach(e => {
+        if (aID === e.id) {
+          studentID = e.studentID;
+          completedAppointment = e;
+          completedAppointment._id = completedAppointment.id.toString();
+          completedAppointment.tutor = TutorStore.Tutor._id;
+          completedAppointment.noShow = true;
+          completedAppointment.cancelled = false;
+          doc.currentQ = doc.currentQ - 1;
+          doc.ETA = doc.ETA - doc.qLength;
+          doc.activeQ = doc.activeQ.filter(e => e.id !== aID);
+          TutorStore.Fetch(TutorStore.Tutor._id);
+        }
+      });
+      return db.put(doc);
+    })
+    .then(function() {
+      histDB.put(completedAppointment);
+    })
+    .then(function() {
+      return studDB.get(studentID);
+    })
+    .then(function(doc) {
+      doc.noShows = doc.noShows + 1;
+      return studDB.put(doc);
+    })
+    .catch(function(err) {
+      console.log(err);
+    });
+}
+
 export default TutorStore;
