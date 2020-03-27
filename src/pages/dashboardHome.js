@@ -22,7 +22,8 @@ const dashboardHome = observer(
         seconds: 0,
         scene: "home",
         interval: null,
-        timeout: null
+        timeout: null,
+        activeQ: null
       };
     }
     componentDidMount = async () => {
@@ -315,11 +316,24 @@ const dashboardHome = observer(
       );
     };
 
+    handleActiveQ = e => {
+      this.setState({ activeQ: e });
+    };
+
     renderHome = () => {
       return (
         <div className="container">
-          <div className="row row-cols-1">
-            <TutorQList tutorStore={this.props.tutorStore} />
+          <div className="row">
+            <div className="col-4">
+              <TutorQList
+                tutorStore={this.props.tutorStore}
+                setActiveQ={this.handleActiveQ}
+              />
+            </div>
+            <div className="col-8">
+              <TutorActiveQ activeQ={this.state.activeQ} />
+              <div className="row"></div>
+            </div>
           </div>
         </div>
       );
@@ -441,7 +455,8 @@ const dashboardHome = observer(
         return this.renderTimeoutOptions();
       else if (scene === "extendedAppointment") return this.renderExtendScene();
       else if (scene === "analytics") return this.renderAnalyticsScene();
-      else if (scene === "test") return <TutorActiveQ />;
+      else if (scene === "test")
+        return <TutorActiveQ activeQ={this.state.activeQ} />;
     };
 
     handleAnalyticsScene = () => {
