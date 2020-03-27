@@ -6,6 +6,7 @@ import SideNav from "../components/sideNav";
 import QNote from "../components/qNote";
 import CountdownTimer from "../components/countdownTimer";
 import DashboardAnalytics from "../components/dashboardAnalytics";
+import TutorQList from "../components/tutorQList";
 
 const dashboardHome = observer(
   class DashboardHome extends Component {
@@ -321,10 +322,8 @@ const dashboardHome = observer(
       return (
         <div className="container">
           <div className="row row-cols-1">
-            <h3 className="appointmentHead">Appointment Queue</h3>
-            {this.renderQList()}
+            <TutorQList tutorStore={this.props.tutorStore} />
           </div>
-          <div className="row">{this.getCurrentQ()}</div>
         </div>
       );
     };
