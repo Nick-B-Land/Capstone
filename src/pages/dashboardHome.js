@@ -7,6 +7,7 @@ import QNote from "../components/qNote";
 import CountdownTimer from "../components/countdownTimer";
 import DashboardAnalytics from "../components/dashboardAnalytics";
 import TutorQList from "../components/tutorQList";
+import TutorActiveQ from "../components/tutorActiveQ";
 
 const dashboardHome = observer(
   class DashboardHome extends Component {
@@ -287,11 +288,7 @@ const dashboardHome = observer(
                   >
                     End Appointment
                   </button>
-                  <button
-                    onClick={this.handleNoShow}
-                  >
-                    Mark as no show
-                  </button>
+                  <button onClick={this.handleNoShow}>Mark as no show</button>
                 </div>
               </div>
             </div>
@@ -444,6 +441,7 @@ const dashboardHome = observer(
         return this.renderTimeoutOptions();
       else if (scene === "extendedAppointment") return this.renderExtendScene();
       else if (scene === "analytics") return this.renderAnalyticsScene();
+      else if (scene === "test") return <TutorActiveQ />;
     };
 
     handleAnalyticsScene = () => {
@@ -453,6 +451,9 @@ const dashboardHome = observer(
 
     handleHomeScene = () => {
       this.setState({ scene: "home" });
+    };
+    handleTestScene = () => {
+      this.setState({ scene: "test" });
     };
 
     //the side nav bar should be its own component and needs to be cleaned up
@@ -464,6 +465,7 @@ const dashboardHome = observer(
             history={this.props.history}
             analytics={this.handleAnalyticsScene}
             home={this.handleHomeScene}
+            test={this.handleTestScene}
           />
           {this.renderScene()}
         </div>
