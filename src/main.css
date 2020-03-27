@@ -164,7 +164,8 @@
 }
 
 .appointmentHead {
-  margin: auto;
+  margin: 0;
+  display: inline-block;
 }
 
 .homePara {
@@ -179,8 +180,8 @@
 .trueQRow {
   text-align: center;
   margin-top: 1rem;
-  background-color: #a2a0a0;
-  color: white;
+  background-color: #2087bc;
+  color: #fff;
   padding: 1rem;
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
 }
@@ -189,7 +190,8 @@
   padding: 1rem;
   text-align: center;
   margin-top: 1rem;
-  background-color: #f2f4f5;
+  background-color: #17406b;
+  color: #fff;
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
 }
 

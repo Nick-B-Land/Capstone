@@ -7,7 +7,6 @@ import QNote from "../components/qNote";
 import CountdownTimer from "../components/countdownTimer";
 import DashboardAnalytics from "../components/dashboardAnalytics";
 import TutorQList from "../components/tutorQList";
-import TutorActiveQ from "../components/tutorActiveQ";
 
 const dashboardHome = observer(
   class DashboardHome extends Component {
@@ -28,7 +27,6 @@ const dashboardHome = observer(
     componentDidMount = async () => {
       let tID = sessionStorage.getItem("Tutor");
       await this.props.tutorStore.Fetch(tID);
-      console.log(this.props.tutorStore.Tutor);
       // if (!this.props.tutorStore.Tutor._id) {
       //   await this.props.tutorStore.Fetch(tID);
       //   console.log(this.props.tutorStore.Tutor);
@@ -220,6 +218,16 @@ const dashboardHome = observer(
       this.setState({ timeout: timeout });
     };
 
+    handleNoShow = () => {
+      let firstQ = this.props.tutorStore.Queue[0];
+      this.props.tutorStore.Queue.forEach(e => {
+        if (e.id < firstQ.id) firstQ = e;
+      });
+      if (firstQ) {
+        this.props.tutorStore.NoShow(firstQ.id);
+      }
+    };
+
     //running into errors with asynchronous shit
     //ive set them to await, but shit still fires
     //before the fetch calls are complete sometimes, causing crashes
@@ -279,6 +287,11 @@ const dashboardHome = observer(
                   >
                     End Appointment
                   </button>
+                  <button
+                    onClick={this.handleNoShow}
+                  >
+                    Mark as no show
+                  </button>
                 </div>
               </div>
             </div>
@@ -309,10 +322,8 @@ const dashboardHome = observer(
       return (
         <div className="container">
           <div className="row row-cols-1">
-            <h3 className="appointmentHead">Appointment Queue</h3>
-            {this.renderQList()}
+            <TutorQList tutorStore={this.props.tutorStore} />
           </div>
-          <div className="row">{this.getCurrentQ()}</div>
         </div>
       );
     };
@@ -433,7 +444,6 @@ const dashboardHome = observer(
         return this.renderTimeoutOptions();
       else if (scene === "extendedAppointment") return this.renderExtendScene();
       else if (scene === "analytics") return this.renderAnalyticsScene();
-      else if (scene === "test") return <TutorActiveQ />;
     };
 
     handleAnalyticsScene = () => {
@@ -445,10 +455,6 @@ const dashboardHome = observer(
       this.setState({ scene: "home" });
     };
 
-    handleTestScene = () => {
-      this.setState({ scene: "test" });
-    };
-
     //the side nav bar should be its own component and needs to be cleaned up
     render() {
       return (
@@ -458,7 +464,6 @@ const dashboardHome = observer(
             history={this.props.history}
             analytics={this.handleAnalyticsScene}
             home={this.handleHomeScene}
-            test={this.handleTestScene}
           />
           {this.renderScene()}
         </div>
