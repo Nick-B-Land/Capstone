@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "../tutorActiveQ.css";
+import PouchDB from "pouchdb";
 
 //
 // Props
@@ -24,6 +25,7 @@ class TutorActiveQ extends Component {
   componentDidMount = () => {
     // if (this.props.activeQ !== null)
     //   this.setState({ isFull: true, appointmentState: "readyToStart" });
+    this.checkActiveAppointment();
   };
 
   componentDidUpdate = prevProps => {
@@ -34,6 +36,31 @@ class TutorActiveQ extends Component {
         scene: "appointmentReady"
       });
     }
+  };
+
+  checkActiveAppointment = async () => {
+    let tdb = new PouchDB(
+      "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/tutors"
+    );
+
+    let t = this;
+    console.log(this.props.tutorStore.Tutor._id);
+    let aPromise = new Promise((resolve, reject) => {
+      tdb
+        .get(t.props.tutorStore.Tutor._id)
+        .then(function(doc) {
+          if (Object.keys(doc.activeAppointment).length === 0) {
+            resolve(doc.activeAppointment);
+          } else reject("empty");
+        })
+        .catch(function(err) {
+          console.log(err);
+        });
+    });
+
+    let appointment = await aPromise;
+
+    console.log(appointment);
   };
 
   setAppointmentStatus = () => {

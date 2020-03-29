@@ -70,6 +70,21 @@ const tutorQList = observer(
       if (this.props.tutorStore.Queue.length !== 0) {
         this.props.setActiveQ(this.props.tutorStore.Queue[0]);
         let aID = this.props.tutorStore.Queue[0].id;
+
+        let tdb = new PouchDB(
+          "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/tutors"
+        );
+
+        tdb
+          .get(this.tutorStore.Tutor._id)
+          .then(function(doc) {
+            doc.activeAppointment = this.props.tutorStore.Queue[0];
+            db.put(doc);
+          })
+          .catch(function(doc) {
+            console.log(doc);
+          });
+
         let qPromise = new Promise((resolve, reject) => {
           db.get(this.props.tutorStore.Tutor.programID)
             .then(function(doc) {

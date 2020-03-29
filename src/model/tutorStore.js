@@ -7,7 +7,7 @@ export let TutorStore = observable({
   QLength: null
 });
 
-TutorStore.Fetch = async id => {
+TutorStore.Fetch = id => {
   var db = new PouchDB(
     "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/tutors"
   );
@@ -22,6 +22,7 @@ TutorStore.Fetch = async id => {
         db.put(doc);
       }
       TutorStore.Tutor = doc;
+      console.log(TutorStore.Tutor);
     })
     .then(() => {
       qDB.get(TutorStore.Tutor.programID).then(function(doc) {
@@ -37,7 +38,6 @@ TutorStore.Fetch = async id => {
   // let tutorPromise = new Promise((resolve, reject) => {
   //   db.get(tID)
   //     .then(function(doc) {
-  //       console.log(id);
   //       doc.isLoggedIn = true;
   //       //TutorStore.Tutor = doc;
   //       db.put(doc);
@@ -62,11 +62,13 @@ TutorStore.Fetch = async id => {
   // });
 
   // let t = await tutorPromise;
+  // console.log(t);
   // TutorStore.Tutor = t;
+  // console.log(TutorStore.Tutor._id);
   // let q = await qPromise;
+  // console.log(q);
   // TutorStore.Queue = q.activeQ;
   // TutorStore.QLength = q.qLength;
-  // console.log(TutorStore.Tutor);
 };
 
 TutorStore.Clear = () => {
@@ -198,7 +200,6 @@ TutorStore.ExtendAppointment = inc => {
 };
 
 TutorStore.NoShow = aID => {
-
   var db = new PouchDB(
     "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/programs"
   );
@@ -213,7 +214,6 @@ TutorStore.NoShow = aID => {
 
   let completedAppointment = {};
   let studentID = 0;
-  let date = new Date();
 
   db.get(TutorStore.Tutor.programID)
     .then(function(doc) {
@@ -246,6 +246,6 @@ TutorStore.NoShow = aID => {
     .catch(function(err) {
       console.log(err);
     });
-}
+};
 
 export default TutorStore;

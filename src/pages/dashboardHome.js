@@ -29,10 +29,6 @@ const dashboardHome = observer(
     componentDidMount = async () => {
       let tID = sessionStorage.getItem("Tutor");
       await this.props.tutorStore.Fetch(tID);
-      // if (!this.props.tutorStore.Tutor._id) {
-      //   await this.props.tutorStore.Fetch(tID);
-      //   console.log(this.props.tutorStore.Tutor);
-      // }
       let qDB = new PouchDB(
         "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/programs"
       );
@@ -41,6 +37,8 @@ const dashboardHome = observer(
         .on("change", () => {
           this.props.tutorStore.Fetch(tID);
         });
+
+      console.log(this.props.tutorStore.Tutor._id);
     };
 
     handleNoteText = e => {
@@ -331,7 +329,10 @@ const dashboardHome = observer(
               />
             </div>
             <div className="col-8">
-              <TutorActiveQ activeQ={this.state.activeQ} />
+              <TutorActiveQ
+                activeQ={this.state.activeQ}
+                tutorStore={this.props.tutorStore}
+              />
               <div className="row"></div>
             </div>
           </div>
