@@ -87,7 +87,7 @@ class TutorActiveQ extends Component {
 
   renderEmptyQ = () => {
     return (
-      <div className="row d-flex justify-content-end">
+      <div className="row d-flex">
         <div className="tutorActiveDiv">
           <div className="row">
             <h3>No Appointment Selected</h3>
