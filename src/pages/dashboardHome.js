@@ -23,12 +23,20 @@ const dashboardHome = observer(
         scene: "home",
         interval: null,
         timeout: null,
-        activeQ: null
+        activeQ: null,
+        ts: null,
+        q: null
       };
     }
     componentDidMount = async () => {
       let tID = sessionStorage.getItem("Tutor");
-      await this.props.tutorStore.Fetch(tID);
+      let response = await this.props.tutorStore.FetchTutor(tID);
+      this.props.tutorStore.Tutor = response;
+      await this.setState({ ts: response });
+      this.props.tutorStore.Tutor = this.state.ts;
+      let qResp = await this.props.tutorStore.FetchQueue();
+      await this.setState({ q: qResp.activeQ });
+      this.props.tutorStore.Queue = this.state.q;
       let qDB = new PouchDB(
         "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/programs"
       );
@@ -38,7 +46,7 @@ const dashboardHome = observer(
           this.props.tutorStore.Fetch(tID);
         });
 
-      console.log(this.props.tutorStore.Tutor._id);
+      // console.log(this.props.tutorStore.Tutor._id);
     };
 
     handleNoteText = e => {
@@ -319,6 +327,8 @@ const dashboardHome = observer(
     };
 
     renderHome = () => {
+      const tid = sessionStorage.getItem("Tutor");
+      console.log(tid);
       return (
         <div className="container">
           <div className="row">
@@ -332,6 +342,7 @@ const dashboardHome = observer(
               <TutorActiveQ
                 activeQ={this.state.activeQ}
                 tutorStore={this.props.tutorStore}
+                tID={tid}
               />
               <div className="row"></div>
             </div>

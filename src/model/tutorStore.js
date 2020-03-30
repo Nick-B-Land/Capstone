@@ -7,32 +7,51 @@ export let TutorStore = observable({
   QLength: null
 });
 
-TutorStore.Fetch = id => {
-  var db = new PouchDB(
+TutorStore.FetchTutor = async id => {
+  let db = new PouchDB(
     "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/tutors"
   );
-  var qDB = new PouchDB(
+  let qDB = new PouchDB(
     "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/programs"
   );
 
-  db.get(id)
+  return db
+    .get(id)
     .then(function(doc) {
-      if (!doc.isLoggedIn) {
-        doc.isLoggedIn = true;
-        db.put(doc);
-      }
-      TutorStore.Tutor = doc;
-      console.log(TutorStore.Tutor);
-    })
-    .then(() => {
-      qDB.get(TutorStore.Tutor.programID).then(function(doc) {
-        TutorStore.Queue = doc.activeQ;
-        TutorStore.QLength = doc.qLength;
-      });
+      return doc;
     })
     .catch(function(err) {
       console.log(err);
     });
+
+  // db.get(id)
+  //   .then(function(doc) {
+  //     if (!doc.isLoggedIn) {
+  //       doc.isLoggedIn = true;
+  //       db.put(doc);
+  //     }
+  //     //TutorStore.Tutor = doc;
+  //     return doc;
+  //   })
+  //   .then(function(doc) {
+  //     TutorStore.Tutor = doc;
+  //   })
+  //   .then(() => {
+  //     qDB
+  //       .get(TutorStore.Tutor.programID)
+  //       .then(function(doc) {
+  //         // TutorStore.Queue = doc.activeQ;
+  //         // TutorStore.QLength = doc.qLength;
+  //         return doc;
+  //       })
+  //       .then(function(doc) {
+  //         TutorStore.Queue = doc.activeQ;
+  //         TutorStore.QLength = doc.qLength;
+  //       });
+  //   })
+  //   .catch(function(err) {
+  //     console.log(err);
+  //   });
 
   // const tID = id;
   // let tutorPromise = new Promise((resolve, reject) => {
@@ -69,6 +88,22 @@ TutorStore.Fetch = id => {
   // console.log(q);
   // TutorStore.Queue = q.activeQ;
   // TutorStore.QLength = q.qLength;
+};
+
+TutorStore.FetchQueue = () => {
+  let qDB = new PouchDB(
+    "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/programs"
+  );
+
+  return qDB
+    .get(TutorStore.Tutor.programID)
+    .then(function(doc) {
+      console.log(doc);
+      return doc;
+    })
+    .catch(function(err) {
+      console.log(err);
+    });
 };
 
 TutorStore.Clear = () => {
