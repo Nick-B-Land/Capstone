@@ -10,6 +10,7 @@
   margin: 0;
   display: inline-block;
   padding-left: 1em;
+  padding-right: 8em;
 }
 
 .trueQRow {
@@ -28,4 +29,8 @@
   background-color: #17406b;
   color: #fff;
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+}
+
+.tHome {
+  padding-top: 2em;
 }

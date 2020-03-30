@@ -322,19 +322,12 @@ const dashboardHome = observer(
 
     renderHome = () => {
       return (
-        <div className="container">
-          <div className="row">
-            <div className="col-4">
-              <TutorQList
-                tutorStore={this.props.tutorStore}
-                setActiveQ={this.handleActiveQ}
-              />
-            </div>
-            <div className="col-8">
-              <TutorActiveQ activeQ={this.state.activeQ} />
-              <div className="row"></div>
-            </div>
-          </div>
+        <div className="d-flex tHome">
+          <TutorQList
+            tutorStore={this.props.tutorStore}
+            setActiveQ={this.handleActiveQ}
+          />
+          <TutorActiveQ activeQ={this.state.activeQ} />
         </div>
       );
     };
