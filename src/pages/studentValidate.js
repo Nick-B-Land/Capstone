@@ -29,7 +29,7 @@ class StudentValidate extends Component {
   validateEmail = () => {
     //let re = new RegExp("[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,}");
     let re = new RegExp(
-      "^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$"
+      "^[a-zA-Z0-9.!#$%&’*+\/=?^_`{|}~-]+@+(mybvc.ca)*$", 'i'
     );
     if (re.test(this.state.emailInput) === false) {
       this.setState({ emailValidated: false });
@@ -43,10 +43,29 @@ class StudentValidate extends Component {
     // } else this.setState({ sIDValidated: true });
   };
 
-  validatePhone = () => {
-    let re = new RegExp("^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-s./0-9]*$");
+  cleanPhone = async() => {
+
+    let fixedNumber = null;
+
+    if (this.state.phoneInput.length === 13) {
+
+      if (this.state.phoneInput.charAt(0) === '(' && this.state.phoneInput.charAt(4) === ')' && this.state.phoneInput.charAt(8) === '-') {
+
+        fixedNumber = this.state.phoneInput.substring(1,4) + this.state.phoneInput.substring(5,8) + this.state.phoneInput.substring(9)
+        return fixedNumber
+      }
+    }
+  }
+
+  validatePhone = async() => {
+    let re = new RegExp("^[0-9]*$");
     //let re = new RegExp("^[0-9]{6}$");
-    if (re.test(this.state.phoneInput) === false) {
+
+    let cleanedNumber = await this.cleanPhone()
+    if (this.state.phoneInput.length === 13) 
+      this.setState({phoneInput: cleanedNumber})
+
+    if (re.test(this.state.phoneInput) === false || this.state.phoneInput.length !== 10) {
       this.setState({ phoneValidated: false });
     } else this.setState({ phoneValidated: true });
   };
@@ -213,6 +232,7 @@ class StudentValidate extends Component {
                 id="validPhone"
                 onInput={this.handlePhone}
                 onBlur={this.validatePhone}
+                maxLength = "13"
               />
               <div
                 className={
