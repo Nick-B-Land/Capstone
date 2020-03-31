@@ -326,16 +326,41 @@ const dashboardHome = observer(
       this.setState({ activeQ: e });
     };
 
+    // renderHome = () => {
+    //   const tid = sessionStorage.getItem("Tutor");
+    //   console.log(tid);
+    //   return (
+    //     <div className="d-flex tHome">
+    //       <TutorQList
+    //         tutorStore={this.props.tutorStore}
+    //         setActiveQ={this.handleActiveQ}
+    //       />
+    //       <TutorActiveQ activeQ={this.state.activeQ} />
+    //     </div>
+    //   );
+    // };
+
     renderHome = () => {
       const tid = sessionStorage.getItem("Tutor");
       console.log(tid);
       return (
-        <div className="d-flex tHome">
-          <TutorQList
-            tutorStore={this.props.tutorStore}
-            setActiveQ={this.handleActiveQ}
-          />
-          <TutorActiveQ activeQ={this.state.activeQ} />
+        <div className="container-fluid">
+          <div className="row">
+            <div className="col-4">
+              <TutorQList
+                tutorStore={this.props.tutorStore}
+                setActiveQ={this.handleActiveQ}
+              />
+            </div>
+            <div className="col-8 ">
+              <TutorActiveQ
+                activeQ={this.state.activeQ}
+                tutorStore={this.props.tutorStore}
+                tID={tid}
+              />
+              <div className="row"></div>
+            </div>
+          </div>
         </div>
       );
     };

@@ -1,16 +1,12 @@
 .getNextApp {
-  float: right;
   background-color: #db7c1d !important;
   color: #fff !important;
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
-  margin-right: 2em;
 }
 
 .appointmentHead {
   margin: 0;
-  display: inline-block;
-  padding-left: 1em;
-  padding-right: 8em;
+  white-space: nowrap;
 }
 
 .trueQRow {

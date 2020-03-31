@@ -105,18 +105,22 @@ const tutorQList = observer(
 
     render() {
       return (
-        <div className="container">
-          <div>
-            <h3 className="appointmentHead">Appointment Queue</h3>
-            <button
-              type="button"
-              className="getNextApp btn btn-default"
-              onClick={this.getActiveQ}
-            >
-              Get Next Appointment
-            </button>
-            <div className="container-fluid">{this.renderQList()}</div>
+        <div className="row d-flex">
+          <div className="row ">
+            <div className="d-flex justify-content-start">
+              <h3 className="appointmentHead">Appointment Queue</h3>
+            </div>
+            <div className="d-flex justify-content-end">
+              <button
+                type="button"
+                className="getNextApp btn btn-default"
+                onClick={this.getActiveQ}
+              >
+                Get Next Appointment
+              </button>
+            </div>
           </div>
+          <div className="container-fluid">{this.renderQList()}</div>
         </div>
       );
     }
