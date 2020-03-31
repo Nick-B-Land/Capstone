@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { observer } from "mobx-react";
 import "../tutorQList.css";
 import PouchDB from "pouchdb";
+import { toJS } from "mobx";
 
 //
 // Props -
@@ -15,15 +16,36 @@ const tutorQList = observer(
       super(props);
       this.state = {
         activeAppointment: false,
-        firstQID: null
+        firstQID: null,
+        btnState: true
       };
     }
     componentDidMount = () => {
       if (this.props.tutorStore.Queue.length !== 0)
         console.log(this.props.tutorStore.Queue[0].id);
+
+      this.checkBtn();
+      console.log(this.state.btnState);
+    };
+
+    componentDidUpdate = () => {
+      this.checkBtn();
     };
     isOdd = n => {
       if (n % 2 === 0) return true;
+    };
+
+    checkBtn = () => {
+      let tdb = new PouchDB(
+        "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/tutors"
+      );
+
+      let tttt = this;
+      tdb.get(sessionStorage.getItem("Tutor")).then(function(doc) {
+        if (doc.activeAppointment.id) {
+          tttt.setState({ btnState: false });
+        }
+      });
     };
 
     renderQList = () => {
@@ -68,18 +90,24 @@ const tutorQList = observer(
       );
 
       if (this.props.tutorStore.Queue.length !== 0) {
-        this.props.setActiveQ(this.props.tutorStore.Queue[0]);
+        //this.props.setActiveQ(this.props.tutorStore.Queue[0]);
         let aID = this.props.tutorStore.Queue[0].id;
 
         let tdb = new PouchDB(
           "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/tutors"
         );
 
+        let qPop = this.props.tutorStore.Queue[0];
+        let tID = sessionStorage.getItem("Tutor");
+
         tdb
-          .get(this.tutorStore.Tutor._id)
+          .get(tID)
           .then(function(doc) {
-            doc.activeAppointment = this.props.tutorStore.Queue[0];
-            db.put(doc);
+            doc.activeAppointment = qPop;
+            return tdb.put(doc);
+          })
+          .then(() => {
+            return tdb.get(tID);
           })
           .catch(function(doc) {
             console.log(doc);
@@ -111,13 +139,24 @@ const tutorQList = observer(
               <h3 className="appointmentHead">Appointment Queue</h3>
             </div>
             <div className="d-flex justify-content-end">
-              <button
-                type="button"
-                className="getNextApp btn btn-default"
-                onClick={this.getActiveQ}
-              >
-                Get Next Appointment
-              </button>
+              {this.state.btnState ? (
+                <button
+                  type="button"
+                  className="getNextApp btn btn-default"
+                  onClick={this.getActiveQ}
+                >
+                  Get Next Appointment
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  className="getNextApp btn btn-default"
+                  onClick={this.getActiveQ}
+                  disabled
+                >
+                  Get Next Appointment
+                </button>
+              )}
             </div>
           </div>
           <div className="container-fluid">{this.renderQList()}</div>

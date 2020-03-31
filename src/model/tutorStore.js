@@ -90,6 +90,44 @@ TutorStore.FetchTutor = async id => {
   // TutorStore.QLength = q.qLength;
 };
 
+TutorStore.Fetch = id => {
+  let db = new PouchDB(
+    "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/tutors"
+  );
+  let qDB = new PouchDB(
+    "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/programs"
+  );
+
+  db.get(id)
+    .then(function(doc) {
+      if (!doc.isLoggedIn) {
+        doc.isLoggedIn = true;
+        db.put(doc);
+      }
+      //TutorStore.Tutor = doc;
+      return doc;
+    })
+    .then(function(doc) {
+      TutorStore.Tutor = doc;
+    })
+    .then(() => {
+      qDB
+        .get(TutorStore.Tutor.programID)
+        .then(function(doc) {
+          // TutorStore.Queue = doc.activeQ;
+          // TutorStore.QLength = doc.qLength;
+          return doc;
+        })
+        .then(function(doc) {
+          TutorStore.Queue = doc.activeQ;
+          TutorStore.QLength = doc.qLength;
+        });
+    })
+    .catch(function(err) {
+      console.log(err);
+    });
+};
+
 TutorStore.FetchQueue = () => {
   let qDB = new PouchDB(
     "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/programs"
@@ -129,7 +167,7 @@ TutorStore.Clear = () => {
 };
 
 TutorStore.GetQueue = programID => {
-  var db = new PouchDB(
+  let db = new PouchDB(
     "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/programs"
   );
   db.get(programID)
@@ -143,25 +181,38 @@ TutorStore.GetQueue = programID => {
 
 //time formatting probably needs some work
 TutorStore.StartAppointment = aID => {
-  var db = new PouchDB(
-    "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/programs"
+  let db = new PouchDB(
+    "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/tutors"
   );
 
   let date = new Date();
   let time = date.toLocaleTimeString();
-  db.get(TutorStore.Tutor.programID)
+
+  db.get(TutorStore.Tutor._id)
     .then(function(doc) {
-      doc.activeQ.forEach(e => {
-        if (aID === e.id) {
-          e.appointmentStart = time;
-          console.log("Appointment started at " + time);
-        }
-      });
+      doc.activeAppointment.appointmentStart = time;
       return db.put(doc);
+    })
+    .then(() => {
+      return db.get(TutorStore.Tutor._id);
     })
     .catch(function(err) {
       console.log(err);
     });
+  // db.get(TutorStore.Tutor.programID)
+  //   .then(function(doc) {
+  //     doc.activeQ.forEach(e => {
+  //       console.log(aID + " " + e.id);
+  //       if (aID === e.id) {
+  //         e.appointmentStart = time;
+  //         console.log("Appointment started at " + time);
+  //       }
+  //     });
+  //     return db.put(doc);
+  //   })
+  //   .catch(function(err) {
+  //     console.log(err);
+  //   });
 };
 
 TutorStore.EndAppointment = aID => {

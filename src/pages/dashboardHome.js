@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import { observer } from "mobx-react";
 import PouchDB from "pouchdb";
 import SideNav from "../components/sideNav";
@@ -46,7 +45,7 @@ const dashboardHome = observer(
           this.props.tutorStore.Fetch(tID);
         });
 
-      // console.log(this.props.tutorStore.Tutor._id);
+      console.log(this.props.tutorStore.Queue);
     };
 
     handleNoteText = e => {
