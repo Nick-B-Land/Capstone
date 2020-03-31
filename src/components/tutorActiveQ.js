@@ -3,6 +3,8 @@ import "../tutorActiveQ.css";
 import PouchDB from "pouchdb";
 import { observer } from "mobx-react";
 import { get, toJS } from "mobx";
+import TutorStore from "../model/tutorStore";
+import CountUpTimer from "./countdownTimer";
 
 //
 // Props
@@ -10,7 +12,8 @@ import { get, toJS } from "mobx";
 // activeQ - The current q object being served
 //
 
-// appointmentStates - readyToStart, Started, Extended, Ended
+// scenes - empty, readyToStart, timedOut
+// appointmentStates - readyToStart, Started,  Extended, Ended
 
 const tutorActiveQ = observer(
   class TutorActiveQ extends Component {
@@ -24,14 +27,12 @@ const tutorActiveQ = observer(
         scene: "empty",
         AA: null,
         interval: null,
-        timeout: null
+        timeout: null,
+        started: false
       };
     }
 
     componentDidMount = () => {
-      // if (this.props.activeQ !== null)
-      //   this.setState({ isFull: true, appointmentState: "readyToStart" });
-
       let tdb = new PouchDB(
         "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/tutors"
       );
@@ -67,13 +68,20 @@ const tutorActiveQ = observer(
         tdb
           .get(t)
           .then(function(doc) {
-            console.log(doc);
             if (Object.keys(doc.activeAppointment).length !== 0) {
-              tttt.setState({
-                isFull: true,
-                appointmentState: "readyToStart",
-                scene: "appointmentReady"
-              });
+              if (doc.activeAppointment.appointmentStart !== 0)
+                tttt.setState({
+                  started: true,
+                  appointmentState: "started",
+                  scene: "appointmentReady"
+                });
+              else if (doc.activeAppointment.appointmentEnd === 0) {
+                tttt.setState({
+                  isFull: true,
+                  appointmentState: "readyToStart",
+                  scene: "appointmentReady"
+                });
+              }
               resolve(doc.activeAppointment);
             }
           })
@@ -83,8 +91,6 @@ const tutorActiveQ = observer(
       });
 
       let appointment = await aPromise;
-
-      console.log(appointment);
     };
 
     setAppointmentStatus = () => {
@@ -110,21 +116,39 @@ const tutorActiveQ = observer(
       }
     };
 
+    handleEndingAppointment = () => {
+      this.props.tutorStore.EndAppointment();
+      clearInterval(this.state.interval);
+      clearTimeout(this.state.timeout);
+      this.setState({ scene: "empty" });
+    };
+
+    handleNoShow = () => {
+      this.props.tutorStore.NoShow();
+      clearInterval(this.state.interval);
+      clearTimeout(this.state.timeout);
+      this.setState({ scene: "empty" });
+    };
+
+    setExtendScene = () => {
+      this.setState({ scene: "extended" });
+    };
+
+    renderTimeoutScene = () => {
+      this.setState({ scene: "timedOut" });
+      clearInterval(this.state.interval);
+      if (this.state.timeout) clearTimeout(this.state.timeout);
+    };
+
     startTimer = async () => {
       //this is the proper value to use, for testing just setting to a minute
       //await this.setState({ minutes: this.props.tutorStore.QLength });
-      await this.setState({ minutes: 1 });
+      await this.setState({ minutes: 1, seconds: 0 });
       let t = this.state.minutes * 60000;
-      console.log(t);
       let interval = setInterval(() => {
         if (this.state.seconds > 0) {
           this.setState({ seconds: this.state.seconds - 1 });
         }
-
-        // if (this.state.seconds < 10) {
-        //   this.setState({ seconds: "0" + this.state.seconds });
-        // }
-
         if (this.state.seconds === 0) {
           if (this.state.minutes === 0) {
             clearInterval(interval);
@@ -178,14 +202,64 @@ const tutorActiveQ = observer(
                   Start Appointment
                 </button>
               ) : (
-                <button className="btn btn-lg qBtn lBtn">
+                <button
+                  className="btn btn-lg qBtn lBtn"
+                  onClick={this.handleEndingAppointment}
+                >
                   {" "}
                   End Appointment
                 </button>
               )}
-              <button className="btn btn-lg qBtn rBtn d-flex flex-row-reverse">
+              {this.state.started ? null : (
+                <button
+                  className="btn btn-lg qBtn rBtn d-flex flex-row-reverse"
+                  onClick={this.handleNoShow}
+                >
+                  {" "}
+                  No Show
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      );
+    };
+
+    renderExtendedQ = () => {
+      let currentAppointment = toJS(
+        this.props.tutorStore.Tutor.activeAppointment,
+        false
+      );
+      if (currentAppointment) {
+        console.log(currentAppointment.studentID);
+      }
+      return (
+        <div className="row d-flex justify-content-end">
+          <div className="tutorActiveDiv">
+            <div className="row">
+              <div className="col-4 text-center">
+                <h2>
+                  <CountUpTimer />
+                </h2>
+              </div>
+              <div className="col-8 text-center">
                 {" "}
-                No Show
+                <h2>
+                  Student Name -
+                  {currentAppointment ? currentAppointment.studentID : "Oops"}
+                </h2>{" "}
+              </div>
+            </div>
+            <div className="row d-flex justify-content-center">
+              <h3>{this.setAppointmentStatus()}</h3>
+            </div>
+            <div className="row d-flex justify-content-around">
+              <button
+                className="btn btn-lg qBtn lBtn"
+                onClick={this.handleEndingAppointment}
+              >
+                {" "}
+                End Appointment
               </button>
             </div>
           </div>
@@ -205,11 +279,40 @@ const tutorActiveQ = observer(
       );
     };
 
+    renderTimedOut = () => {
+      return (
+        <div className="row d-flex justify-content-end">
+          <div className="tutorActiveDiv">
+            <div className="row d-flex justify-content-between">
+              <button
+                className="btn btn-lg qBtn lBtn"
+                onClick={this.setExtendScene}
+              >
+                {" "}
+                Extend Appointment
+              </button>
+              <button
+                className="btn btn-lg qBtn lBtn"
+                onClick={this.handleEndingAppointment}
+              >
+                {" "}
+                End Appointment
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+    };
+
     renderScene = () => {
       if (this.state.scene === "empty") {
         return this.renderEmptyQ();
       } else if (this.state.scene === "appointmentReady") {
         return this.renderActiveQ();
+      } else if (this.state.scene === "timedOut") {
+        return this.renderTimedOut();
+      } else if (this.state.scene === "extended") {
+        return this.renderExtendedQ();
       }
     };
 

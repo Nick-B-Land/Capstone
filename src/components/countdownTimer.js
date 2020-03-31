@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-class CountdownTimer extends Component {
+class CountUpTimer extends Component {
   _isMounted = false;
   constructor(props) {
     super(props);
@@ -60,4 +60,4 @@ class CountdownTimer extends Component {
   }
 }
 
-export default CountdownTimer;
+export default CountUpTimer;

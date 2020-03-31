@@ -23,7 +23,6 @@ const qNote = observer(
       let db = new PouchDB(
         "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/students"
       );
-      console.log(this._isMounted);
       if (this._isMounted) this.fetchQNotes();
       db.changes({ since: "now", live: true, include_docs: true }).on(
         "change",
@@ -31,6 +30,10 @@ const qNote = observer(
           if (this._isMounted) this.fetchQNotes();
         }
       );
+    };
+
+    componentDidUpdate = () => {
+      this.fetchQNotes();
     };
 
     componentWillUnmount = () => {
@@ -74,11 +77,6 @@ const qNote = observer(
         return <h3>No notes added</h3>;
       } else {
         return sortedQ.map(e => (
-          // <div >
-          //   <h4>Date: {e.date}</h4>
-          //   <h4>Tutor: {e.tutor}</h4>
-          //   <p>Description: {e.description}</p>
-          // </div>
           <tr key={Math.random()}>
             <td>{e.date}</td>
             <td>{e.tutor}</td>

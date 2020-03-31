@@ -44,7 +44,7 @@ const tutorQList = observer(
       tdb.get(sessionStorage.getItem("Tutor")).then(function(doc) {
         if (doc.activeAppointment.id) {
           tttt.setState({ btnState: false });
-        }
+        } else tttt.setState({ btnState: true });
       });
     };
 
