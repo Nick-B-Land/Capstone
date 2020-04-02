@@ -1,0 +1,15 @@
+.showQNotes {
+  display: block;
+}
+
+.hideQNotes {
+  display: none;
+}
+
+.showAddNote {
+  display: block;
+}
+
+.hideAddNote {
+  display: none;
+}

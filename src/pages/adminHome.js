@@ -1,14 +1,19 @@
 import React, { Component } from "react";
 import { observer } from "mobx-react";
-import { Link } from "react-router-dom";
 import PouchDB from "pouchdb";
 import HistoryRender from "../components/historyRender";
+import AdminSideNav from "../components/adminSideNav";
+import AdminTutors from "../components/adminTutors";
 
 const adminHome = observer(
   class AdminHome extends Component {
-    state = {
-      history: []
-    };
+    constructor(props) {
+      super(props);
+      this.state = {
+        scene: "tutor",
+        history: []
+      };
+    }
 
     componentDidMount = () => {
       let db = new PouchDB(
@@ -22,7 +27,6 @@ const adminHome = observer(
       })
         .then(function(result) {
           x.setState({ history: result.rows });
-          console.log(x.state.history);
         })
         .catch(function(err) {
           console.log(err);
@@ -31,40 +35,64 @@ const adminHome = observer(
 
     renderHistory = () => {
       return this.state.history.map(e => (
-        <section key={this.props.id}>
-          <HistoryRender
-            id={e.doc.id}
-            sID={e.doc.studentID}
-            pID={e.doc.programID}
-            date={e.doc.date}
-            timeQD={e.doc.timeQueued}
-            aStart={e.doc.appointmentStart}
-            aEnd={e.doc.appointmentEnd}
-            tutor={e.doc.tutor}
-          />
-        </section>
+        <div className="col">
+          <section key={e.doc.id}>
+            <HistoryRender
+              id={e.doc.id}
+              sID={e.doc.studentID}
+              pID={e.doc.programID}
+              date={e.doc.date}
+              timeQD={e.doc.timeQueued}
+              aStart={e.doc.appointmentStart}
+              aEnd={e.doc.appointmentEnd}
+              tutor={e.doc.tutor}
+            />
+          </section>
+        </div>
       ));
+    };
+
+    handleTutorScene = () => {
+      this.setState({ scene: "tutor" });
+    };
+
+    handleCategoriesScene = () => {
+      this.setState({ scene: "categories" });
+    };
+
+    handleAnalyticsScene = () => {
+      this.setState({ scene: "analytics" });
+    };
+
+    handleHistoryScene = () => {
+      this.setState({ scene: "history" });
+    };
+
+    renderScene = () => {
+      let scene = this.state.scene;
+      if (scene === "tutor") {
+        return <AdminTutors />;
+      } else if (scene === "categories") {
+        return <h1>cat to be added</h1>;
+      } else if (scene === "analytics") {
+        return <h1>anals to be added</h1>;
+      } else if (scene === "history") {
+        return <div className="row">{this.renderHistory()}</div>;
+      }
     };
 
     render() {
       return (
         <div class="wrapper">
-          <nav id="sidebar">
-            <div class="sidebar-header">
-              <h3>Admin Dashboard</h3>
-            </div>
-            <ul class="list-unstyled components">
-              <li class="active">
-                <ul class="collapse list-unstyled" id="pageSubmenu"></ul>
-              </li>
-              <Link to="/adminhome">
-                <li>Home</li>
-              </Link>
-            </ul>
-          </nav>
-          <div className="container">
-            <div className="row">{this.renderHistory()}</div>
-          </div>
+          <AdminSideNav
+            tutorStore={this.props.tutorStore}
+            history={this.props.history}
+            tutorScene={this.handleTutorScene}
+            catScene={this.handleCategoriesScene}
+            analyticsScene={this.handleAnalyticsScene}
+            historyScene={this.handleHistoryScene}
+          />
+          <div className="container-fluid">{this.renderScene()}</div>
         </div>
       );
     }

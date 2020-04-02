@@ -13,7 +13,9 @@ class TutorLogin extends Component {
 
   componentDidMount = () => {
     let t = sessionStorage.getItem("Tutor");
+    let a = sessionStorage.getItem("Admin");
     if (t) this.props.history.push("/tutordashboard");
+    else if (a) this.props.history.push("/adminhome");
   };
 
   handleEmail = e => {

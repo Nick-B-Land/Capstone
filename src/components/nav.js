@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 //import { Logo } from "../logo.png";
-import "../main.css";
+import "../css/main.css";
 
 class Nav extends Component {
   render() {

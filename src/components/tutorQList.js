@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { observer } from "mobx-react";
-import "../tutorQList.css";
+import "../css/tutorQList.css";
 import PouchDB from "pouchdb";
 import { toJS } from "mobx";
 

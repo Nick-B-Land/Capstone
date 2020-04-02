@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "../tutorActiveQ.css";
+import "../css/tutorActiveQ.css";
 import PouchDB from "pouchdb";
 import { observer } from "mobx-react";
 import { get, toJS } from "mobx";

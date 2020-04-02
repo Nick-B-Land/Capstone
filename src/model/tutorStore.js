@@ -162,8 +162,7 @@ TutorStore.Clear = () => {
     });
 
   sessionStorage.removeItem("Tutor");
-
-  console.log("I was clicked");
+  sessionStorage.removeItem("Admin");
 };
 
 TutorStore.GetQueue = programID => {

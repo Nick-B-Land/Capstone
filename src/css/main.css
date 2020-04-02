@@ -96,22 +96,6 @@
   padding-bottom: 5%;
 }
 
-.showQNotes {
-  display: block;
-}
-
-.hideQNotes {
-  display: none;
-}
-
-.showAddNote {
-  display: block;
-}
-
-.hideAddNote {
-  display: none;
-}
-
 .hideEmailVerified {
   display: none;
 }

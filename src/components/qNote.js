@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { observer } from "mobx-react";
 import PouchDB from "pouchdb";
+import "../css/qNote.css";
 
 //
 // QNote -
@@ -15,7 +16,13 @@ const qNote = observer(
     _isMounted = false;
     constructor(props) {
       super(props);
-      this.state = { visibility: false, currentQNotes: [] };
+      this.state = {
+        visibility: false,
+        currentQNotes: [],
+        showAddNote: false,
+        noteText: null,
+        cleared: false
+      };
     }
 
     componentDidMount = () => {
@@ -32,8 +39,10 @@ const qNote = observer(
       );
     };
 
-    componentDidUpdate = () => {
+    componentDidUpdate = async () => {
       this.fetchQNotes();
+      if (!this.props.sID && !this.state.cleared)
+        await this.setState({ currentQNotes: [], cleared: true });
     };
 
     componentWillUnmount = () => {
@@ -57,8 +66,9 @@ const qNote = observer(
               reject(err);
             });
         });
+
         let s = await p;
-        this.setState({ currentQNotes: s });
+        await this.setState({ currentQNotes: s, cleared: false });
       }
     };
 
@@ -86,16 +96,55 @@ const qNote = observer(
       }
     };
 
+    handleNoteText = e => {
+      this.setState({ noteText: e.target.value });
+    };
+
     handleNoteClick = () => {
       this.setState({ visibility: !this.state.visibility });
     };
 
+    handleShowAddNote = () => {
+      this.setState({ showAddNote: !this.state.showAddNote });
+    };
+
+    handleNoteSubmit = () => {
+      let db = new PouchDB(
+        "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/students"
+      );
+
+      let date = new Date();
+      let today = date.toLocaleDateString();
+      let noteObject = {
+        date: today,
+        tutor: sessionStorage.getItem("Tutor"),
+        description: this.state.noteText
+      };
+
+      if (this.state.noteText !== null && this.props.sID) {
+        db.get(this.props.sID)
+          .then(function(doc) {
+            doc.notes.push(noteObject);
+            return db.put(doc);
+          })
+          .catch(function(err) {
+            console.log(err);
+          });
+        this.refs.noteTextRef.value = "";
+      } else console.log("failed to post " + this.props.sID);
+    };
+
     render() {
       return (
-        <div>
-          <button onClick={this.handleNoteClick} className="btn btn-dark">
-            {this.state.visibility ? "Hide Notes" : "Show Notes"}
-          </button>
+        <div className="container-fluid">
+          <div className="row d-flex justify-content-around">
+            <button onClick={this.handleNoteClick} className="btn btn-dark">
+              {this.state.visibility ? "Hide Notes" : "Show Notes"}
+            </button>
+            <button className="btn btn-dark" onClick={this.handleShowAddNote}>
+              Add Note
+            </button>
+          </div>
           <div className={this.state.visibility ? "showQNotes" : "hideQNotes"}>
             <br />
             <table>
@@ -108,6 +157,26 @@ const qNote = observer(
               </thead>
               <tbody>{this.renderQNotes()}</tbody>
             </table>
+          </div>
+          <div
+            className={this.state.showAddNote ? "showAddNote" : "hideAddNote"}
+          >
+            <div className="input-group">
+              <div className="input-group-prepend">
+                <span className="input-group-text">Write a Note</span>
+              </div>
+              <textarea
+                className="form-control"
+                ref="noteTextRef"
+                aria-label="With textarea"
+                onChange={this.handleNoteText}
+              ></textarea>
+            </div>
+            <div className="row d-flex justify-content-around">
+              <button className="btn btn-dark" onClick={this.handleNoteSubmit}>
+                Submit Note
+              </button>
+            </div>
           </div>
         </div>
       );

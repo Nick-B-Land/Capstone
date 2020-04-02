@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import "../main.css";
+import "../css/main.css";
 
 class Home extends Component {
   state = {
     data: null
   };
-  
+
   render() {
     return (
       <div className="container-fluid">
