@@ -76,10 +76,32 @@ const tutoringCategories = observer(
     render() {
       return (
         <div className="container">
-          <div className="categoryLead">
-            <h1>Tutoring Categories</h1>
+          <div className="row">
+            <div className="col categoryLead">
+              <h1>Peer Tutoring Categories</h1>
+              <p>
+                Find information on when and where a verified peer tutor will be
+                available
+              </p>
+            </div>
+          </div>
+          <div className="row row-cols-4">{this.renderPeerCategories()}</div>
+          <div className="row">
+            <div className="col categoryLead">
+              <h1>Tutoring Categories</h1>
+              <p>
+                Queue up for one on one tutoring with a member of the LSS staff
+              </p>
+            </div>
           </div>
           <div className="row row-cols-4">{this.renderCategories()}</div>
+          <div className="row">
+            <div className="col categoryLead">
+              <h1>Tutoring Appointments</h1>
+              <p>Book an appointment with a LSS learning coach</p>
+            </div>
+          </div>
+          <div className="row row-cols-4">appointment tutors here</div>
         </div>
       );
     }
