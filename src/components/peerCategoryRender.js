@@ -39,7 +39,7 @@ class PeerCategoryRender extends Component {
       if (this.props.tuesdayTimes.length === 0) {
         return (
           <div className="row">
-            <div className="coll">
+            <div className="col">
               <h3>No times for this day</h3>
             </div>
           </div>

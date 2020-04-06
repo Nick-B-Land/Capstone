@@ -1,20 +1,55 @@
 import React, { Component } from "react";
 import CategoryRender from "../components/categoryRender";
 import PouchDB from "pouchdb";
+import PouchdbFind from "pouchdb-find";
 import { observer } from "mobx-react";
 import PeerCategoryRender from "../components/peerCategoryRender";
+import AppointmentCategoryRender from "../components/appointmentCategoryRender";
 
 const tutoringCategories = observer(
   class TutoringCategories extends Component {
     constructor(props) {
       super(props);
-      this.state = { peerCategories: [] };
+      PouchDB.plugin(PouchdbFind);
+      this.state = {
+        peerCategories: [],
+        appointmentTutors: [],
+        scene: "main",
+        selectedAppointmentTutor: null,
+      };
     }
 
     componentDidMount = async () => {
       this.props.catStore.Fetch();
       await this.fetchPeerTutoring();
-      console.log(this.state.peerCategories);
+      await this.fetchAppointmentTutors();
+      console.log(this.state.appointmentTutors);
+    };
+
+    fetchAppointmentTutors = async () => {
+      let taDB = new PouchDB(
+        "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/tutors"
+      );
+
+      let taPromise = new Promise((resolve, reject) => {
+        taDB
+          .find({
+            selector: {
+              role: { $eq: "appointment" },
+            },
+          })
+          .then(function (result) {
+            resolve(result);
+          })
+          .catch(function (err) {
+            console.log(err);
+            reject(err);
+          });
+      });
+
+      let taResult = await taPromise;
+      let tutors = taResult.docs;
+      await this.setState({ appointmentTutors: tutors });
     };
 
     fetchPeerTutoring = async () => {
@@ -56,6 +91,21 @@ const tutoringCategories = observer(
       ));
     };
 
+    renderAppointmentCategories = () => {
+      let at = this.state.appointmentTutors;
+
+      return at.map((e) => (
+        <section key={e._id}>
+          <AppointmentCategoryRender
+            id={e._id}
+            firstName={e.firstName}
+            lastName={e.lastName}
+            bookingScene={this.handleBookingScene}
+          />
+        </section>
+      ));
+    };
+
     renderPeerCategories = () => {
       let pc = this.state.peerCategories;
 
@@ -73,7 +123,15 @@ const tutoringCategories = observer(
       ));
     };
 
-    render() {
+    handleBookingScene = (e) => {
+      this.setState({ scene: "booking", selectedAppointmentTutor: e });
+    };
+
+    handleMainScene = () => {
+      this.setState({ scene: "main" });
+    };
+
+    renderMainScene = () => {
       return (
         <div className="container">
           <div className="row">
@@ -101,9 +159,44 @@ const tutoringCategories = observer(
               <p>Book an appointment with a LSS learning coach</p>
             </div>
           </div>
-          <div className="row row-cols-4">appointment tutors here</div>
+          <div className="row row-cols-4">
+            {this.renderAppointmentCategories()}
+          </div>
         </div>
       );
+    };
+
+    renderBookingScene = () => {
+      return (
+        <div className="container">
+          <div className="row">
+            <div className="col">{this.state.selectedAppointmentTutor}</div>
+          </div>
+          <div className="row">
+            <div className="col">
+              <button
+                className="btn btn-lg btn-dark"
+                onClick={this.handleMainScene}
+              >
+                Back
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+    };
+
+    renderScene = () => {
+      let scene = this.state.scene;
+      if (scene === "main") {
+        return <>{this.renderMainScene()}</>;
+      } else if (scene === "booking") {
+        return <>{this.renderBookingScene()}</>;
+      }
+    };
+
+    render() {
+      return <> {this.renderScene()} </>;
     }
   }
 );
