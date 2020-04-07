@@ -5,6 +5,18 @@ import PouchdbFind from "pouchdb-find";
 import { observer } from "mobx-react";
 import PeerCategoryRender from "../components/peerCategoryRender";
 import AppointmentCategoryRender from "../components/appointmentCategoryRender";
+import CategoryAppointmentBooking from "../components/categoryAppointmentBooking";
+
+//
+// Props -
+//
+//
+
+// ----- TODO -----
+//
+// Add prop list
+// Normalize and finish styling
+//
 
 const tutoringCategories = observer(
   class TutoringCategories extends Component {
@@ -98,6 +110,7 @@ const tutoringCategories = observer(
         <section key={e._id}>
           <AppointmentCategoryRender
             id={e._id}
+            tutor={e}
             firstName={e.firstName}
             lastName={e.lastName}
             bookingScene={this.handleBookingScene}
@@ -167,23 +180,14 @@ const tutoringCategories = observer(
     };
 
     renderBookingScene = () => {
-      return (
-        <div className="container">
-          <div className="row">
-            <div className="col">{this.state.selectedAppointmentTutor}</div>
-          </div>
-          <div className="row">
-            <div className="col">
-              <button
-                className="btn btn-lg btn-dark"
-                onClick={this.handleMainScene}
-              >
-                Back
-              </button>
-            </div>
-          </div>
-        </div>
-      );
+      let t = this.state.selectedAppointmentTutor;
+      if (t !== null)
+        return (
+          <CategoryAppointmentBooking
+            tutor={this.state.selectedAppointmentTutor}
+            mainScene={this.handleMainScene}
+          />
+        );
     };
 
     renderScene = () => {

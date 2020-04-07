@@ -22,7 +22,7 @@ class AppointmentCategoryRender extends Component {
           <div className="col">
             <button
               className="btn bookBtn"
-              onClick={() => this.props.bookingScene(this.props.id)}
+              onClick={() => this.props.bookingScene(this.props.tutor)}
             >
               Book Appointment
             </button>
