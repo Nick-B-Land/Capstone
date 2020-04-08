@@ -1,0 +1,9 @@
+.rowSelected {
+  background-color: #1d7dbc;
+  color: #fff;
+}
+
+.rowDefault {
+  background-color: #17406b;
+  color: #fff;
+}
