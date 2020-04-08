@@ -45,3 +45,13 @@
   color: #fff;
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
 }
+
+.addTutorbtn {
+  margin-top: 1em;
+  margin-left: 1.5em;
+}
+
+.editTutorHead {
+  margin-right: auto;
+  margin-left: auto;
+}

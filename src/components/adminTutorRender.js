@@ -91,7 +91,7 @@ class AdminTutorRender extends Component {
 
   renderTutor = () => {
     return (
-      <div>
+      <>
         <div
           className={
             this.props.rowType
@@ -282,7 +282,7 @@ class AdminTutorRender extends Component {
             </div>
           </div>
         </div>
-      </div>
+      </>
     );
   };
 
