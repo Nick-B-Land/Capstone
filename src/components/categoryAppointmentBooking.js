@@ -118,17 +118,28 @@ class CategoryAppointmentBooking extends Component {
     return availableTimes;
   };
 
-  handleRowClick = (e) => {
+  handleRowClick = (time) => {
     let sArray = this.state.selectedTimes;
-    sArray.push(e);
-    this.setState({ selectedTimes: sArray });
+    let remove = sArray.includes(time);
+    if (remove) {
+      sArray = sArray.filter((e) => e !== time);
+      this.setState({ selectedTimes: sArray });
+    } else {
+      sArray.push(time);
+      this.setState({ selectedTimes: sArray });
+    }
+    console.log(this.state.selectedTimes);
   };
 
   renderDayAppointments = () => {
     let availableTimes = this.getAvailableTimes();
 
     return availableTimes.map((e) => (
-      <AppointmentBookingRow timeSlot={e} rowClick={this.handleRowClick} />
+      <AppointmentBookingRow
+        timeSlot={e}
+        selectedTimes={this.state.selectedTimes}
+        rowClick={this.handleRowClick}
+      />
     ));
   };
 
@@ -137,12 +148,7 @@ class CategoryAppointmentBooking extends Component {
       <div className="col">
         <div className="row d-flex justify-content-center">
           <div className="col">
-            <h3>
-              {this.state.date
-                ? this.state.date.getMonth() + " " + this.state.date.getDate()
-                : "No Date"}
-            </h3>
-            <h3>Available Appointments</h3>
+            <h3>Available Appointments ({this.state.selectedTimes.length})</h3>
           </div>
         </div>
         <div className="row">
@@ -223,6 +229,8 @@ class CategoryAppointmentBooking extends Component {
         console.log(err);
       });
 
+    this.setState({ selectedTimes: [] });
+    alert("Appointment booked!");
     this.props.mainScene();
   };
 
