@@ -11,9 +11,9 @@
     "express-pino-logger": "^4.0.0",
     "history": "^4.10.1",
     "mobx": "^5.15.4",
-    "mobx-react": "^6.1.7",
+    "mobx-react": "^6.2.2",
     "pino": "^5.17.0",
-    "pouchdb": "^7.1.1",
+    "pouchdb": "^7.2.1",
     "pouchdb-find": "^7.2.1",
     "react": "^16.13.1",
     "react-calendar": "^3.0.1",
@@ -44,6 +44,6 @@
   },
   "proxy": "http://localhost:5000/",
   "devDependencies": {
-    "twilio": "^3.40.0"
+    "twilio": "^3.42.1"
   }
 }
