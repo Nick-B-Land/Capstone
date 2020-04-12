@@ -233,9 +233,42 @@ const dashboardAnalytics = observer(
       this.setState({ appCount: c });
     };
 
+    //TODO Analytics
+  /*
+    Students/day,month,year
+    New students this month
+    Number of students/department
+  */
+
+  getStudentsPerTime = async(time) => {
+    let date = new Date();
+    let db = new PouchDB(
+      "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/history"
+    );
+
+    let x = this;
+    let promise = new Promise((resolve, reject) => {
+      db.find({
+        selector: {
+          tutor: { $eq: x.props.tutorStore.Tutor._id }
+        }
+      })
+        .then(function(result) {
+          resolve(result);
+        })
+        .catch(function(err) {
+          console.log(err);
+          reject(err);
+        });
+    });
+
+    let matches = await promise;
+    console.log(matches);
+  }
+
     render() {
       return (
-        <div className="container dashAnal">
+        <div test={this.getStudentsPerTime("sec")} className="container dashAnal">
           <div className="row">
             <div className="col-6">
               <div className="card">
