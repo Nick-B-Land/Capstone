@@ -154,20 +154,6 @@ class AdminTutors extends Component {
     } else this.setState({ phoneValidated: true, addBtnState: true });
   };
 
-  handleEmailInput = (e) => {
-    this.getID();
-    this.setState({ emailInput: e.target.value });
-  };
-
-  validateEmail = () => {
-    let re = new RegExp(
-      "^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$"
-    );
-    if (re.test(this.state.emailInput) === false) {
-      this.setState({ emailValidated: false, addBtnState: false });
-    } else this.setState({ emailValidated: true, addBtnState: true });
-  };
-
   handleAddressInput = (e) => {
     this.setState({ addressInput: e.target.value, addBtnState: true });
   };
@@ -190,11 +176,6 @@ class AdminTutors extends Component {
   handleLNameInput = (e) => {
     this.setState({ lNameInput: e.target.value });
   };
-  getID = () => {
-    let id = this.state.emailInput.split("@")[0];
-    console.log(id);
-    this.setState({ tutorId: this.state.emailInput.split("@")[0] });
-  };
 
   handleTutor = () => {
     let db = new PouchDB(
@@ -202,13 +183,13 @@ class AdminTutors extends Component {
     );
 
     let tutorObj = {
-      _id: this.state.tutorId,
+      _id: this.props._id,
       password: this.state.passInput,
       firstName: this.state.fNameInput,
       lastName: this.state.lNameInput,
       programID: this.state.progInput,
       phoneNumber: this.state.phoneInput,
-      email: this.state.emailInput,
+      email: this.props.email,
       streetAddress: this.state.addressInput,
       city: this.state.cityInput,
       province: this.state.provinceInput,
@@ -312,7 +293,7 @@ class AdminTutors extends Component {
                 </div>
               </div>
             </div>
-            <div className="row d-flex falseEditRow">
+            {/* <div className="row d-flex falseEditRow">
               <div className="col-6 text-center">
                 <h4>Email</h4>
               </div>
@@ -332,7 +313,7 @@ class AdminTutors extends Component {
                   Invalid Email!
                 </div>
               </div>
-            </div>
+            </div> */}
             <div className="row d-flex falseEditRow">
               <div className="col-6 text-center">
                 <h4>Street Address</h4>

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PouchDB from "pouchdb";
+import Modal from "react-bootstrap/Modal";
 
 //
 // Props -
@@ -17,12 +18,11 @@ import PouchDB from "pouchdb";
 //
 
 // ----- TODO ------
-// Input validation for entry into db
 // Functionality on delete to remove tutor from db - should have a warning step
 // Force a rerender on a successful update of tutor DB
 // (Not a 100% needed, but would be nice. Might have to be done in AdminTutors)
 //
-
+// if we want id to be updated everytime we nned to add more functionality
 class AdminTutorRender extends Component {
   constructor(props) {
     super(props);
@@ -41,6 +41,7 @@ class AdminTutorRender extends Component {
       updateBtnState: false,
       phoneValidated: true,
       emailValidated: true,
+      showDeletePopup: false,
     };
   }
 
@@ -78,7 +79,15 @@ class AdminTutorRender extends Component {
   };
 
   handlePhoneInput = (e) => {
-    this.setState({ phoneInput: e.target.value, updateBtnState: true });
+    this.setState({ phoneInput: e.target.value });
+  };
+
+  showDeletePopupVisability = () => {
+    this.setState({ showDeletePopup: true });
+  };
+
+  hideDeletePopupVisabilty = () => {
+    this.setState({ showDeletePopup: false });
   };
 
   cleanPhone = async () => {
@@ -111,21 +120,8 @@ class AdminTutorRender extends Component {
       re.test(this.state.phoneInput) === false ||
       this.state.phoneInput.length !== 10
     ) {
-      this.setState({ phoneValidated: false });
-    } else this.setState({ phoneValidated: true });
-  };
-
-  handleEmailInput = (e) => {
-    this.setState({ emailInput: e.target.value, updateBtnState: true });
-  };
-
-  validateEmail = () => {
-    let re = new RegExp(
-      "^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$"
-    );
-    if (re.test(this.state.emailInput) === false) {
-      this.setState({ emailValidated: false });
-    } else this.setState({ emailValidated: true });
+      this.setState({ phoneValidated: false, updateBtnState: false });
+    } else this.setState({ phoneValidated: true, updateBtnState: true });
   };
 
   handleAddressInput = (e) => {
@@ -142,6 +138,14 @@ class AdminTutorRender extends Component {
 
   handleRoleInput = (e) => {
     this.setState({ roleInput: e.target.value, updateBtnState: true });
+  };
+
+  handleDeleteTutor = () => {
+    let db = new PouchDB(
+      "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/tutors"
+    );
+
+    // have to fix id logic in order to grab id
   };
 
   renderTutor = () => {
@@ -167,8 +171,37 @@ class AdminTutorRender extends Component {
               >
                 Edit tutor
               </button>
-              <button className="btn btn-lg tutorBtn">Delete tutor</button>
+              <button
+                className="btn btn-lg tutorBtn"
+                onClick={this.showDeletePopupVisability}
+              >
+                Delete tutor
+              </button>
             </div>
+            <Modal show={this.state.showDeletePopup}>
+              <Modal.Header>
+                <Modal.Title>Warning</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                Are you sure you want to delete {this.props.fName}{" "}
+                {this.props.lName} once deleted it cannot be reversed!
+              </Modal.Body>
+              <Modal.Footer>
+                {" "}
+                <button
+                  onClick={this.hideDeletePopupVisabilty}
+                  className="btn btn-secondary"
+                >
+                  No
+                </button>{" "}
+                <button
+                  onClick={this.hideDeletePopupVisabilty}
+                  className="btn btn-primary"
+                >
+                  Yes
+                </button>
+              </Modal.Footer>
+            </Modal>
           </div>
         </div>
         <div className={this.state.showEdit ? "showEdit" : "hideEdit"}>
@@ -271,34 +304,6 @@ class AdminTutorRender extends Component {
                   }
                 >
                   Invalid Phone Number!
-                </div>
-              </div>
-            </div>
-            <div
-              className={
-                this.props.rowType
-                  ? "row d-flex trueEditRow"
-                  : "row d-flex falseEditRow"
-              }
-            >
-              <div className="col-6 text-center">
-                <h4>Email</h4>
-              </div>
-              <div className="col-6 text-center">
-                <input
-                  className="form-control"
-                  defaultValue={this.state.emailInput}
-                  onChange={this.handleEmailInput}
-                  onBlur={this.validateEmail}
-                />
-                <div
-                  className={
-                    this.state.emailValidated
-                      ? "hideEmailVerified card-body"
-                      : "showEmailVerified card-body"
-                  }
-                >
-                  Invalid Email!
                 </div>
               </div>
             </div>
@@ -430,15 +435,16 @@ class AdminTutorRender extends Component {
           doc.phoneNumber = t.state.phoneInput;
         }
 
-        //
         // Since ID runs off email, need proper validation first
         // Will have to update ._id here to whatever comes before
         // @ in email
-        //
+
         // if (
         //   t.state.emailInput !== t.props.email &&
         //   t.state.emailInput.trim() !== ""
         // ) {
+        //   doc._id = t.state.emailInput.split("@")[0];
+        //   console.log(doc._id);
         //   doc.email = t.state.emailInput;
         // }
 
