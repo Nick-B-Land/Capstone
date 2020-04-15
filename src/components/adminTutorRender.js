@@ -36,7 +36,11 @@ class AdminTutorRender extends Component {
       cityInput: this.props.city,
       provinceInput: this.props.province,
       roleInput: this.props.role,
-      updateBtnState: false
+      fNameInput: this.props.fName,
+      lNameInput: this.props.lName,
+      updateBtnState: false,
+      phoneValidated: true,
+      emailValidated: true,
     };
   }
 
@@ -57,35 +61,86 @@ class AdminTutorRender extends Component {
     this.setState({ showEdit: !this.state.showEdit });
   };
 
-  handlePassInput = e => {
+  handlePassInput = (e) => {
     this.setState({ passInput: e.target.value, updateBtnState: true });
   };
 
-  handleProgInput = e => {
+  handleFNameInput = (e) => {
+    this.setState({ fNameInput: e.target.value, updateBtnState: true });
+  };
+
+  handleLNameInput = (e) => {
+    this.setState({ lNameInput: e.target.value, updateBtnState: true });
+  };
+
+  handleProgInput = (e) => {
     this.setState({ progInput: e.target.value, updateBtnState: true });
   };
 
-  handlePhoneInput = e => {
+  handlePhoneInput = (e) => {
     this.setState({ phoneInput: e.target.value, updateBtnState: true });
   };
 
-  handleEmailInput = e => {
+  cleanPhone = async () => {
+    let fixedNumber = null;
+
+    if (this.state.phoneInput.length === 13) {
+      if (
+        this.state.phoneInput.charAt(0) === "(" &&
+        this.state.phoneInput.charAt(4) === ")" &&
+        this.state.phoneInput.charAt(8) === "-"
+      ) {
+        fixedNumber =
+          this.state.phoneInput.substring(1, 4) +
+          this.state.phoneInput.substring(5, 8) +
+          this.state.phoneInput.substring(9);
+        return fixedNumber;
+      }
+    }
+  };
+
+  validatePhone = async () => {
+    let re = new RegExp("^[0-9]*$");
+    //let re = new RegExp("^[0-9]{6}$");
+
+    let cleanedNumber = await this.cleanPhone();
+    if (this.state.phoneInput.length === 13)
+      this.setState({ phoneInput: cleanedNumber });
+
+    if (
+      re.test(this.state.phoneInput) === false ||
+      this.state.phoneInput.length !== 10
+    ) {
+      this.setState({ phoneValidated: false });
+    } else this.setState({ phoneValidated: true });
+  };
+
+  handleEmailInput = (e) => {
     this.setState({ emailInput: e.target.value, updateBtnState: true });
   };
 
-  handleAddressInput = e => {
+  validateEmail = () => {
+    let re = new RegExp(
+      "^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$"
+    );
+    if (re.test(this.state.emailInput) === false) {
+      this.setState({ emailValidated: false });
+    } else this.setState({ emailValidated: true });
+  };
+
+  handleAddressInput = (e) => {
     this.setState({ addressInput: e.target.value, updateBtnState: true });
   };
 
-  handleCityInput = e => {
+  handleCityInput = (e) => {
     this.setState({ cityInput: e.target.value, updateBtnState: true });
   };
 
-  handleProvinceInput = e => {
+  handleProvinceInput = (e) => {
     this.setState({ provinceInput: e.target.value, updateBtnState: true });
   };
 
-  handleRoleInput = e => {
+  handleRoleInput = (e) => {
     this.setState({ roleInput: e.target.value, updateBtnState: true });
   };
 
@@ -101,7 +156,9 @@ class AdminTutorRender extends Component {
         >
           <div className="col">
             <div className="row d-flex justify-content-center">
-              <h3>Tutor: {this.props.email}</h3>
+              <h3>
+                Tutor: {this.props.fName} {this.props.lName}
+              </h3>
             </div>
             <div className="row d-flex justify-content-around">
               <button
@@ -142,6 +199,42 @@ class AdminTutorRender extends Component {
               }
             >
               <div className="col-6 text-center">
+                <h4>First Name</h4>
+              </div>
+              <div className="col-6 text-center">
+                <input
+                  className="form-control"
+                  defaultValue={this.state.fNameInput}
+                  onChange={this.handleFNameInput}
+                />
+              </div>
+            </div>
+            <div
+              className={
+                this.props.rowType
+                  ? "row d-flex trueEditRow"
+                  : "row d-flex falseEditRow"
+              }
+            >
+              <div className="col-6 text-center">
+                <h4>Last Name</h4>
+              </div>
+              <div className="col-6 text-center">
+                <input
+                  className="form-control"
+                  defaultValue={this.state.lNameInput}
+                  onChange={this.handleLNameInput}
+                />
+              </div>
+            </div>
+            <div
+              className={
+                this.props.rowType
+                  ? "row d-flex trueEditRow"
+                  : "row d-flex falseEditRow"
+              }
+            >
+              <div className="col-6 text-center">
                 <h4>Program ID</h4>
               </div>
               <div className="col-6 text-center">
@@ -167,7 +260,18 @@ class AdminTutorRender extends Component {
                   className="form-control"
                   defaultValue={this.state.phoneInput}
                   onChange={this.handlePhoneInput}
+                  onBlur={this.validatePhone}
+                  maxLength="13"
                 />
+                <div
+                  className={
+                    this.state.phoneValidated
+                      ? "hidePhoneVerified card-body"
+                      : "showPhoneVerified card-body"
+                  }
+                >
+                  Invalid Phone Number!
+                </div>
               </div>
             </div>
             <div
@@ -185,7 +289,17 @@ class AdminTutorRender extends Component {
                   className="form-control"
                   defaultValue={this.state.emailInput}
                   onChange={this.handleEmailInput}
+                  onBlur={this.validateEmail}
                 />
+                <div
+                  className={
+                    this.state.emailValidated
+                      ? "hideEmailVerified card-body"
+                      : "showEmailVerified card-body"
+                  }
+                >
+                  Invalid Email!
+                </div>
               </div>
             </div>
             <div
@@ -294,7 +408,7 @@ class AdminTutorRender extends Component {
     let t = this;
     tDB
       .get(this.props.id)
-      .then(function(doc) {
+      .then(function (doc) {
         if (
           t.state.passInput !== t.props.pass &&
           t.state.passInput.trim() !== ""
@@ -361,7 +475,7 @@ class AdminTutorRender extends Component {
       .then(() => {
         return tDB.get(t.props.id);
       })
-      .catch(function(err) {
+      .catch(function (err) {
         console.log(err);
       });
   };
