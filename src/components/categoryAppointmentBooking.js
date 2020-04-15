@@ -144,11 +144,16 @@ class CategoryAppointmentBooking extends Component {
   };
 
   renderDayView = () => {
+    let availTimes = this.getAvailableTimes();
     return (
       <div className="col">
         <div className="row d-flex justify-content-center">
           <div className="col">
-            <h3>Available Appointments ({this.state.selectedTimes.length})</h3>
+            <h3>Available Appointments ({availTimes.length})</h3>
+            <p className="font-weight-bolder">
+              Please select an appointment time. You can select up to 3
+              consecutive slots
+            </p>
           </div>
         </div>
         <div className="row">
@@ -238,34 +243,39 @@ class CategoryAppointmentBooking extends Component {
     let date = this.state.date;
     return (
       <div className="container">
-        <div className="row">
-          <div className="col">
-            <button
-              className="btn btn-lg btn-dark"
-              onClick={this.props.mainScene}
-            >
-              Back
-            </button>
+        <div className="row d-flex justify-content-center">
+          <div className="col-6">
+            <div className="row">
+              <div className="col-2"></div>
+              <div className="col-8">
+                <Calendar
+                  defaultValue={new Date()}
+                  onChange={this.handleCalenderChange}
+                  value={this.state.date}
+                />
+              </div>
+              <div className="col-2"></div>
+            </div>
+            <div className="row d-flex">
+              <div className="col-2"></div>
+              <div className="col-8">
+                <button
+                  className="btn btn-block bookBtn"
+                  onClick={this.handleBooking}
+                >
+                  Book Appointment
+                </button>
+                <button
+                  className="btn btn-block bookBtn"
+                  onClick={this.props.mainScene}
+                >
+                  Back
+                </button>
+              </div>
+              <div className="col-2"></div>
+            </div>
           </div>
-        </div>
-        <div className="row">
-          <div className="col">
-            <Calendar
-              defaultValue={new Date()}
-              onChange={this.handleCalenderChange}
-              value={this.state.date}
-            />
-          </div>
-        </div>
-        <div className="row">
-          <div className="col">{this.renderDayView()}</div>
-        </div>
-        <div className="row">
-          <div className="col">
-            <button className="btn btn-lg bookBtn" onClick={this.handleBooking}>
-              Book Appointment
-            </button>
-          </div>
+          <div className="col-6">{this.renderDayView()}</div>
         </div>
       </div>
     );

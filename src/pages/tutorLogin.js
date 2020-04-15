@@ -7,7 +7,7 @@ class TutorLogin extends Component {
     this.state = {
       tutorEmail: "",
       tutorPassword: "",
-      emailValidated: true
+      emailValidated: true,
     };
   }
 
@@ -18,7 +18,7 @@ class TutorLogin extends Component {
     else if (a) this.props.history.push("/adminhome");
   };
 
-  handleEmail = e => {
+  handleEmail = (e) => {
     this.setState({ tutorEmail: e.target.value });
   };
 
@@ -35,7 +35,7 @@ class TutorLogin extends Component {
     } else this.setState({ emailValidated: true });
   };
 
-  handlePass = e => {
+  handlePass = (e) => {
     this.setState({ tutorPassword: e.target.value });
   };
 
@@ -49,7 +49,7 @@ class TutorLogin extends Component {
     if (this.state.emailValidated && this.state.tutorEmail !== "") {
       let s = this.state.tutorEmail.search("@");
       let tID = this.state.tutorEmail.substr(0, s);
-      db.get(tID).then(function(doc) {
+      db.get(tID).then(function (doc) {
         if (tPass === doc.password) {
           if (doc.role === "Tutor") {
             sessionStorage.setItem("Tutor", tID);
@@ -57,6 +57,9 @@ class TutorLogin extends Component {
           } else if (doc.role === "Admin") {
             sessionStorage.setItem("Admin", tID);
             x.props.history.push("/adminhome");
+          } else if (doc.role === "Appointment") {
+            sessionStorage.setItem("Appointment", tID);
+            x.props.history.push("/appointmentdashboard");
           }
         } else alert("Invalid password");
       });
