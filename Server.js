@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const pino = require('express-pino-logger')();
+const MessageResponse = require('twilio').twiml.MessagingResponse;
 const app = express();
 const port = 5000;
 app.use(bodyParser.urlencoded({extended: false}));
@@ -39,6 +40,13 @@ app.post('/SMS', (req, res) => {
       console.log(err);
       res.send(JSON.stringify({ success: false }));
     });
+});
+
+app.post('/CatchSMS', (req, res) => {
+const twiml = new MessageResponse();
+twiml.message("You have Cancled Your Appointment");
+res.writeHead(200, {'Content-Type': 'text/xml'});
+res.end(twiml.toString());
 });
    
  

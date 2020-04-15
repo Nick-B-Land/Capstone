@@ -11,6 +11,7 @@ import DashboardProf from "./components/dashboardProf.js";
 import DashboardAnalytics from "./components/dashboardAnalytics.js";
 import AdminHome from "./pages/adminHome";
 import { observer } from "mobx-react";
+import TutorOptions from "./pages/peerTutor.js";
 
 const app = observer(
   class App extends Component {
@@ -69,6 +70,13 @@ const app = observer(
               path="/adminhome"
               render={props => (
                 <AdminHome {...props} tutorStore={this.props.tutorStore} />
+              )}
+            />
+              <Route
+              exact
+              path="/peertutor"
+              render={props => (
+                <TutorOptions {...props} tutorStore={this.props.tutorStore} />
               )}
             />
           </Switch>

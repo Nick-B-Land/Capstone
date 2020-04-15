@@ -4,10 +4,10 @@ import "../css/main.css";
 
 class Home extends Component {
   state = {
-    data: null
+    data: null,
   };
 
-  render() {
+  render()  {
     return (
       <div className="container-fluid">
         <div className="row">
