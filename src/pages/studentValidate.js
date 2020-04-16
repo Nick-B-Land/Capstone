@@ -131,10 +131,9 @@ class StudentValidate extends Component {
       time: this.props.time,
     };
 
-    if (this.props.addStudentToPeer(peerobj) !== null) {
+
       this.props.addStudentToPeer(peerobj);
       this.props.addStudentToQueue(peerobj.student_id);
-    } else {
     
    
     let db = new PouchDB(
@@ -146,6 +145,7 @@ class StudentValidate extends Component {
         if (doc) {
           sessionStorage.setItem("studentID", x.state.sIDInput);
           x.props.history.push("/categories");
+          
         }
       })
       .catch(function(err) {
@@ -153,7 +153,6 @@ class StudentValidate extends Component {
           x.setState({ scene: 1 });
         }
       });
-  };
 };
 
   checkSID = () => {
