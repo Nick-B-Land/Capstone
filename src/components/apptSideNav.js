@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
-class SideNav extends Component {
+class ApptSideNav extends Component {
   handleLogout = () => {
     this.props.tutorStore.Clear();
     this.props.history.push("/");
@@ -36,4 +36,4 @@ class SideNav extends Component {
   }
 }
 
-export default SideNav;
+export default ApptSideNav;

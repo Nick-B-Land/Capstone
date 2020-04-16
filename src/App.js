@@ -11,55 +11,66 @@ import DashboardProf from "./components/dashboardProf.js";
 import DashboardAnalytics from "./components/dashboardAnalytics.js";
 import AdminHome from "./pages/adminHome";
 import { observer } from "mobx-react";
+import AppointmentDashboard from "./pages/appointmentDash.js";
 
 const app = observer(
   class App extends Component {
-    componentDidMount () {
+    componentDidMount() {
       // let t = sessionStorage.getItem("Tutor");
       // if (t) {
       //   this.props.tutorStore.Fetch();
       // }
-    };
+    }
 
     render() {
       return (
         <BrowserRouter>
           <Nav />
           <Switch>
-            <Route exact path="/" render={props => <Home {...props} />} />
+            <Route exact path="/" render={(props) => <Home {...props} />} />
             <Route
               exact
               path="/validate"
-              render={props => <StudentValidate {...props} />}
+              render={(props) => <StudentValidate {...props} />}
             />
             <Route
               exact
               path="/categories"
-              render={props => (
+              render={(props) => (
                 <TutoringCategories {...props} catStore={this.props.catStore} />
               )}
             />
             <Route
               exact
               path="/waitlisted"
-              render={props => <WaitListed {...props} />}
+              render={(props) => <WaitListed {...props} />}
             />
             <Route
               exact
               path="/tutorlogin"
-              render={props => <TutorLogin {...props} />}
+              render={(props) => <TutorLogin {...props} />}
             />
             <Route
               exact
               path="/tutordashboard"
-              render={props => (
+              render={(props) => (
                 <DashboardHome {...props} tutorStore={this.props.tutorStore} />
               )}
             />
             <Route
               exact
+              path="/appointmentdashboard"
+              render={(props) => (
+                <AppointmentDashboard
+                  {...props}
+                  tutorStore={this.props.tutorStore}
+                />
+              )}
+            />
+            <Route
+              exact
               path="/tutorprofile"
-              render={props => (
+              render={(props) => (
                 <DashboardProf {...props} tutorStore={this.props.tutorStore} />
               )}
             />
@@ -67,8 +78,12 @@ const app = observer(
             <Route
               exact
               path="/adminhome"
-              render={props => (
-                <AdminHome {...props} tutorStore={this.props.tutorStore} />
+              render={(props) => (
+                <AdminHome
+                  {...props}
+                  tutorStore={this.props.tutorStore}
+                  catStore={this.props.catStore}
+                />
               )}
             />
           </Switch>

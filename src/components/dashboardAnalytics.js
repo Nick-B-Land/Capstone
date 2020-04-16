@@ -24,18 +24,18 @@ const dashboardAnalytics = observer(
       let promiseX = new Promise((resolve, reject) => {
         pdb
           .allDocs({
-            include_docs: true
+            include_docs: true,
           })
-          .then(function(result) {
+          .then(function (result) {
             resolve(result);
           })
-          .catch(function(err) {
+          .catch(function (err) {
             reject(err);
           });
       });
       let catProm = await promiseX;
       let catArr = [];
-      catProm.rows.forEach(e => {
+      catProm.rows.forEach((e) => {
         let catOb = { name: e.id, count: 0 };
         catArr.push(catOb);
       });
@@ -44,18 +44,18 @@ const dashboardAnalytics = observer(
       );
       let promiseY = new Promise((resolve, reject) => {
         db.allDocs({
-          include_docs: true
+          include_docs: true,
         })
-          .then(function(doc) {
+          .then(function (doc) {
             resolve(doc);
           })
-          .catch(function(err) {
+          .catch(function (err) {
             reject(err);
           });
       });
       let histProm = await promiseY;
-      histProm.rows.forEach(e => {
-        catArr.forEach(i => {
+      histProm.rows.forEach((e) => {
+        catArr.forEach((i) => {
           if (i.name === e.doc.programID) {
             i.count += 1;
           }
@@ -63,7 +63,7 @@ const dashboardAnalytics = observer(
       });
       let high = 0;
       let highCat = "";
-      catArr.forEach(e => {
+      catArr.forEach((e) => {
         if (e.count > high) {
           high = e.count;
           highCat = e.name;
@@ -81,13 +81,13 @@ const dashboardAnalytics = observer(
       let promise = new Promise((resolve, reject) => {
         db.find({
           selector: {
-            tutor: { $eq: x.props.tutorStore.Tutor._id }
-          }
+            tutor: { $eq: x.props.tutorStore.Tutor._id },
+          },
         })
-          .then(function(result) {
+          .then(function (result) {
             resolve(result);
           })
-          .catch(function(err) {
+          .catch(function (err) {
             console.log(err);
             reject(err);
           });
@@ -97,7 +97,7 @@ const dashboardAnalytics = observer(
       let totalLength = 0;
       let aCount = 0;
 
-      matches.docs.forEach(e => {
+      matches.docs.forEach((e) => {
         if (e.appointmentStart && e.appointmentEnd) {
           //first colon in time string, used to find position of hours, mins, secs
           let startColon = e.appointmentStart.indexOf(":");
@@ -215,13 +215,13 @@ const dashboardAnalytics = observer(
       let promise = new Promise((resolve, reject) => {
         db.find({
           selector: {
-            tutor: { $eq: x.props.tutorStore.Tutor._id }
-          }
+            tutor: { $eq: x.props.tutorStore.Tutor._id },
+          },
         })
-          .then(function(result) {
+          .then(function (result) {
             resolve(result);
           })
-          .catch(function(err) {
+          .catch(function (err) {
             console.log(err);
             reject(err);
           });
@@ -315,7 +315,7 @@ const dashboardAnalytics = observer(
                     <h5>Number of No Shows</h5>
                   </span>
                   <span>
-                    <h6>1</h6>
+                    <h6>NOT DONE YET</h6>
                   </span>
                 </div>
               </div>

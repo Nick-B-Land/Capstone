@@ -11,7 +11,7 @@ const adminHome = observer(
       super(props);
       this.state = {
         scene: "tutor",
-        history: []
+        history: [],
       };
     }
 
@@ -23,18 +23,18 @@ const adminHome = observer(
       let x = this;
       db.allDocs({
         include_docs: true,
-        attachments: true
+        attachments: true,
       })
-        .then(function(result) {
+        .then(function (result) {
           x.setState({ history: result.rows });
         })
-        .catch(function(err) {
+        .catch(function (err) {
           console.log(err);
         });
     };
 
     renderHistory = () => {
-      return this.state.history.map(e => (
+      return this.state.history.map((e) => (
         <div className="col">
           <section key={e.doc.id}>
             <HistoryRender
@@ -71,7 +71,7 @@ const adminHome = observer(
     renderScene = () => {
       let scene = this.state.scene;
       if (scene === "tutor") {
-        return <AdminTutors />;
+        return <AdminTutors catStore={this.props.catStore} />;
       } else if (scene === "categories") {
         return <h1>cat to be added</h1>;
       } else if (scene === "analytics") {
