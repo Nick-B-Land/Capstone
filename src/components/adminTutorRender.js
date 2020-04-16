@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PouchDB from "pouchdb";
 import Modal from "react-bootstrap/Modal";
+import bodyParser from "body-parser";
 
 //
 // Props -
@@ -42,6 +43,7 @@ class AdminTutorRender extends Component {
       phoneValidated: true,
       emailValidated: true,
       showDeletePopup: false,
+      programArray: null,
     };
   }
 
@@ -56,6 +58,8 @@ class AdminTutorRender extends Component {
         this.renderTutor();
         console.log("TUTOR DB UPDATED");
       });
+    this.fetchPeerTutoring();
+    // this.generatePrograms();
   };
 
   handleEditVisibility = () => {
@@ -145,9 +149,97 @@ class AdminTutorRender extends Component {
       "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/tutors"
     );
 
+    db.get(this.props.id, function err(err, doc) {
+      if (err) {
+        return console.log(err);
+      }
+      db.remove(doc, function err(repsonse) {
+        if (err) {
+          return console.log(err);
+        }
+      });
+    });
+    this.hideDeletePopupVisabilty();
     // have to fix id logic in order to grab id
   };
 
+  // generatePrograms = () => {
+  //   let array = this.fetchPrograms();
+  //   console.log(array);
+  //   if (array !== null) {
+  //     //return array.map((e) => <option value={e.id}>{e.id}</option>);
+  //   }
+  // };
+
+  // fetchPrograms = async () => {
+  //   let pDB = new PouchDB(
+  //     "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/programs"
+  //   );
+
+  //   pDB
+  //     .allDocs(
+  //       {
+  //         include_docs: true,
+  //         attachments: false,
+  //       },
+  //       function err(response) {
+  //         if (err) {
+  //           return console.log(err);
+  //         }
+  //       }
+  //     )
+  //     .then(function (result) {
+  //       console.log(result);
+  //       return result.rows.map((e) => <option value={e.id}>{e.id}</option>);
+  //     });
+  //   // let pPromise = new Promise((resolve, reject) => {
+  //   //   ptDB
+  //   //     .allDocs({
+  //   //       include_docs: true,
+  //   //       attachments: false,
+  //   //     })
+  //   //     .then(function (docs) {
+  //   //       resolve(docs.rows);
+  //   //     })
+  //   //     .catch(function (err) {
+  //   //       reject(console.log(err));
+  //   //     });
+  //   // });
+
+  //   // let pResult = await pPromise;
+  //   // console.log(pResult.id);
+  //   // return pResult;
+  // };
+  generatePrograms = () => {
+    let array = this.state.programArray;
+
+    if (array !== null) {
+      return array.map((e) => <option value={e.id}>{e.id}</option>);
+    }
+  };
+
+  fetchPeerTutoring = async () => {
+    let pDB = new PouchDB(
+      "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/programs"
+    );
+
+    let pPromise = new Promise((resolve, reject) => {
+      pDB
+        .allDocs({
+          include_docs: true,
+          attachments: true,
+        })
+        .then(function (docs) {
+          resolve(docs.rows);
+        })
+        .catch(function (err) {
+          reject(console.log(err));
+        });
+    });
+
+    let pResult = await pPromise;
+    await this.setState({ programArray: pResult });
+  };
   renderTutor = () => {
     return (
       <>
@@ -195,7 +287,7 @@ class AdminTutorRender extends Component {
                   No
                 </button>{" "}
                 <button
-                  onClick={this.hideDeletePopupVisabilty}
+                  onClick={this.handleDeleteTutor}
                   className="btn btn-primary"
                 >
                   Yes
@@ -271,11 +363,17 @@ class AdminTutorRender extends Component {
                 <h4>Program ID</h4>
               </div>
               <div className="col-6 text-center">
-                <input
+                <select
+                  value={this.state.progInput}
+                  onChange={this.handleProgInput}
+                >
+                  {this.generatePrograms()}
+                </select>
+                {/* <input
                   className="form-control"
                   defaultValue={this.state.progInput}
                   onChange={this.handleProgInput}
-                />
+                /> */}
               </div>
             </div>
             <div
@@ -491,7 +589,6 @@ class AdminTutorRender extends Component {
       this.state.passInput === this.props.pass &&
       this.state.progInput === this.props.programID &&
       this.state.phoneInput === this.props.phone &&
-      this.state.emailInput === this.props.email &&
       this.state.addressInput === this.props.address &&
       this.state.cityInput === this.props.city &&
       this.state.provinceInput === this.props.province &&

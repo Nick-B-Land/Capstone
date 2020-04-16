@@ -29,6 +29,7 @@ class AdminTutors extends Component {
       addBtnState: false,
       phoneValidated: true,
       emailValidated: true,
+      programArray: null,
     };
   }
 
@@ -44,7 +45,7 @@ class AdminTutors extends Component {
       });
 
     await this.fetchTutors();
-    console.log(this.state.currentTutors);
+    await this.fetchPeerTutoring();
   };
 
   handleUpdates = async () => {
@@ -93,6 +94,7 @@ class AdminTutors extends Component {
     return filteredTutors.map((e) => (
       <AdminTutorRender
         rowType={this.isOdd(counter++)}
+        catStore={this.props.catStore}
         id={e.doc._id}
         fName={e.doc.firstName}
         lName={e.doc.lastName}
@@ -204,7 +206,37 @@ class AdminTutors extends Component {
 
     this.handleAddVisibility();
   };
+  generatePrograms = () => {
+    let array = this.state.programArray;
 
+    if (array !== null) {
+      return array.map((e) => <option value={e.id}>{e.id}</option>);
+    }
+  };
+
+  fetchPeerTutoring = async () => {
+    let pDB = new PouchDB(
+      "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/programs"
+    );
+
+    let pPromise = new Promise((resolve, reject) => {
+      pDB
+        .allDocs({
+          include_docs: true,
+          attachments: true,
+        })
+        .then(function (docs) {
+          resolve(docs.rows);
+        })
+        .catch(function (err) {
+          reject(console.log(err));
+        });
+    });
+
+    let pResult = await pPromise;
+    await this.setState({ programArray: pResult });
+    console.log(this.state.programArray);
+  };
   renderAddTutor = () => {
     return (
       <>
@@ -265,10 +297,11 @@ class AdminTutors extends Component {
                 <h4>Program ID</h4>
               </div>
               <div className="col-6 text-center">
-                <input
+                <select>{this.generatePrograms()}</select>
+                {/* <input
                   className="form-control"
                   onInput={this.handleProgInput}
-                />
+                /> */}
               </div>
             </div>
             <div className="row d-flex falseEditRow">
