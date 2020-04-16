@@ -79,7 +79,11 @@ const app = observer(
               exact
               path="/adminhome"
               render={(props) => (
-                <AdminHome {...props} tutorStore={this.props.tutorStore} />
+                <AdminHome
+                  {...props}
+                  tutorStore={this.props.tutorStore}
+                  catStore={this.props.catStore}
+                />
               )}
             />
           </Switch>
