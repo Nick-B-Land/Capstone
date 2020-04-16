@@ -58,7 +58,7 @@ class AdminTutorRender extends Component {
         this.renderTutor();
         console.log("TUTOR DB UPDATED");
       });
-    this.fetchPeerTutoring();
+    await this.fetchPeerTutoring();
     // this.generatePrograms();
   };
 
@@ -212,8 +212,7 @@ class AdminTutorRender extends Component {
   // };
   generatePrograms = () => {
     let array = this.state.programArray;
-
-    if (array !== null) {
+    if (array) {
       return array.map((e) => <option value={e.id}>{e.id}</option>);
     }
   };
@@ -231,15 +230,19 @@ class AdminTutorRender extends Component {
         })
         .then(function (docs) {
           resolve(docs.rows);
-        })
-        .catch(function (err) {
-          reject(console.log(err));
         });
     });
 
     let pResult = await pPromise;
     await this.setState({ programArray: pResult });
   };
+
+  // getProgramArray = async (data) => {
+  //   console.log(data);
+  //   await this.fetchPeerTutoring();
+  //   this.setState({ programArray: data });
+  // };
+
   renderTutor = () => {
     return (
       <>
