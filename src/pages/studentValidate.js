@@ -123,6 +123,20 @@ class StudentValidate extends Component {
       alert("Invalid ID");
       return;
     }
+    let peerobj = {
+      _id: (this.state.sIDInput+"/"+this.props.date),
+      student_id: this.state.sIDInput,
+      date: this.props.date,
+      programID: this.props.peerCategorie,
+      time: this.props.time,
+    };
+
+    if (this.props.addStudentToPeer(peerobj) !== null) {
+      this.props.addStudentToPeer(peerobj);
+      this.props.addStudentToQueue(peerobj.student_id);
+    } else {
+    
+   
     let db = new PouchDB(
       "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/students"
     );
@@ -140,6 +154,7 @@ class StudentValidate extends Component {
         }
       });
   };
+};
 
   checkSID = () => {
     return (

@@ -72,6 +72,7 @@ class TutorOptions extends Component {
   handleChange = (event) => {
     this.setState({scene: "PeerTutor"});
     this.setState({peerCategorie: event.target.value});
+    console.log(this.state.peerCategorie);
     this.getPeerTutorList();
   };
 
@@ -140,9 +141,25 @@ class TutorOptions extends Component {
     }
   };
 
+  addStudentToQueue = (e) =>{
+    this.state.Queue.push(e);
+    this.setState({scene: "PeerTutor"});
+  }
+
+  renderQueue = () => {
+  return this.state.Queue.map((e) => <p key={e}>Student Id: {e}</p>);
+  }
+
   renderStudentScene = () => {
     return (
-    <StudentValidate/>
+    <StudentValidate 
+    date = {this.state.date}
+    time = {this.state.time}
+    scene = {this.state.scene}
+    queue = {this.state.queue}
+    peerCategorie = {this.state.peerCategorie}
+    addStudentToQueue= {this.addStudentToQueue}
+    addStudentToPeer = {this.addStudentToPeer}/>
     );
   }
 
@@ -155,7 +172,7 @@ class TutorOptions extends Component {
           <div className="container-fluid">
             <div className="row">
               <div className="col-6">
-                {this.getQueue()}
+                {this.renderQueue()}
               </div>
             </div>
           </div>
