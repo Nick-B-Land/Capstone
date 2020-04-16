@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PouchDB from "pouchdb";
+import Modal from "react-bootstrap/Modal";
 
 //
 // Props -
@@ -17,12 +18,11 @@ import PouchDB from "pouchdb";
 //
 
 // ----- TODO ------
-// Input validation for entry into db
 // Functionality on delete to remove tutor from db - should have a warning step
 // Force a rerender on a successful update of tutor DB
 // (Not a 100% needed, but would be nice. Might have to be done in AdminTutors)
 //
-
+// if we want id to be updated everytime we nned to add more functionality
 class AdminTutorRender extends Component {
   constructor(props) {
     super(props);
@@ -36,7 +36,12 @@ class AdminTutorRender extends Component {
       cityInput: this.props.city,
       provinceInput: this.props.province,
       roleInput: this.props.role,
-      updateBtnState: false
+      fNameInput: this.props.fName,
+      lNameInput: this.props.lName,
+      updateBtnState: false,
+      phoneValidated: true,
+      emailValidated: true,
+      showDeletePopup: false,
     };
   }
 
@@ -57,36 +62,90 @@ class AdminTutorRender extends Component {
     this.setState({ showEdit: !this.state.showEdit });
   };
 
-  handlePassInput = e => {
+  handlePassInput = (e) => {
     this.setState({ passInput: e.target.value, updateBtnState: true });
   };
 
-  handleProgInput = e => {
+  handleFNameInput = (e) => {
+    this.setState({ fNameInput: e.target.value, updateBtnState: true });
+  };
+
+  handleLNameInput = (e) => {
+    this.setState({ lNameInput: e.target.value, updateBtnState: true });
+  };
+
+  handleProgInput = (e) => {
     this.setState({ progInput: e.target.value, updateBtnState: true });
   };
 
-  handlePhoneInput = e => {
-    this.setState({ phoneInput: e.target.value, updateBtnState: true });
+  handlePhoneInput = (e) => {
+    this.setState({ phoneInput: e.target.value });
   };
 
-  handleEmailInput = e => {
-    this.setState({ emailInput: e.target.value, updateBtnState: true });
+  showDeletePopupVisability = () => {
+    this.setState({ showDeletePopup: true });
   };
 
-  handleAddressInput = e => {
+  hideDeletePopupVisabilty = () => {
+    this.setState({ showDeletePopup: false });
+  };
+
+  cleanPhone = async () => {
+    let fixedNumber = null;
+
+    if (this.state.phoneInput.length === 13) {
+      if (
+        this.state.phoneInput.charAt(0) === "(" &&
+        this.state.phoneInput.charAt(4) === ")" &&
+        this.state.phoneInput.charAt(8) === "-"
+      ) {
+        fixedNumber =
+          this.state.phoneInput.substring(1, 4) +
+          this.state.phoneInput.substring(5, 8) +
+          this.state.phoneInput.substring(9);
+        return fixedNumber;
+      }
+    }
+  };
+
+  validatePhone = async () => {
+    let re = new RegExp("^[0-9]*$");
+    //let re = new RegExp("^[0-9]{6}$");
+
+    let cleanedNumber = await this.cleanPhone();
+    if (this.state.phoneInput.length === 13)
+      this.setState({ phoneInput: cleanedNumber });
+
+    if (
+      re.test(this.state.phoneInput) === false ||
+      this.state.phoneInput.length !== 10
+    ) {
+      this.setState({ phoneValidated: false, updateBtnState: false });
+    } else this.setState({ phoneValidated: true, updateBtnState: true });
+  };
+
+  handleAddressInput = (e) => {
     this.setState({ addressInput: e.target.value, updateBtnState: true });
   };
 
-  handleCityInput = e => {
+  handleCityInput = (e) => {
     this.setState({ cityInput: e.target.value, updateBtnState: true });
   };
 
-  handleProvinceInput = e => {
+  handleProvinceInput = (e) => {
     this.setState({ provinceInput: e.target.value, updateBtnState: true });
   };
 
-  handleRoleInput = e => {
+  handleRoleInput = (e) => {
     this.setState({ roleInput: e.target.value, updateBtnState: true });
+  };
+
+  handleDeleteTutor = () => {
+    let db = new PouchDB(
+      "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/tutors"
+    );
+
+    // have to fix id logic in order to grab id
   };
 
   renderTutor = () => {
@@ -101,7 +160,9 @@ class AdminTutorRender extends Component {
         >
           <div className="col">
             <div className="row d-flex justify-content-center">
-              <h3>Tutor: {this.props.email}</h3>
+              <h3>
+                Tutor: {this.props.fName} {this.props.lName}
+              </h3>
             </div>
             <div className="row d-flex justify-content-around">
               <button
@@ -110,8 +171,37 @@ class AdminTutorRender extends Component {
               >
                 Edit tutor
               </button>
-              <button className="btn btn-lg tutorBtn">Delete tutor</button>
+              <button
+                className="btn btn-lg tutorBtn"
+                onClick={this.showDeletePopupVisability}
+              >
+                Delete tutor
+              </button>
             </div>
+            <Modal show={this.state.showDeletePopup}>
+              <Modal.Header>
+                <Modal.Title>Warning</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                Are you sure you want to delete {this.props.fName}{" "}
+                {this.props.lName} once deleted it cannot be reversed!
+              </Modal.Body>
+              <Modal.Footer>
+                {" "}
+                <button
+                  onClick={this.hideDeletePopupVisabilty}
+                  className="btn btn-secondary"
+                >
+                  No
+                </button>{" "}
+                <button
+                  onClick={this.hideDeletePopupVisabilty}
+                  className="btn btn-primary"
+                >
+                  Yes
+                </button>
+              </Modal.Footer>
+            </Modal>
           </div>
         </div>
         <div className={this.state.showEdit ? "showEdit" : "hideEdit"}>
@@ -131,6 +221,42 @@ class AdminTutorRender extends Component {
                   className="form-control"
                   defaultValue={this.state.passInput}
                   onChange={this.handlePassInput}
+                />
+              </div>
+            </div>
+            <div
+              className={
+                this.props.rowType
+                  ? "row d-flex trueEditRow"
+                  : "row d-flex falseEditRow"
+              }
+            >
+              <div className="col-6 text-center">
+                <h4>First Name</h4>
+              </div>
+              <div className="col-6 text-center">
+                <input
+                  className="form-control"
+                  defaultValue={this.state.fNameInput}
+                  onChange={this.handleFNameInput}
+                />
+              </div>
+            </div>
+            <div
+              className={
+                this.props.rowType
+                  ? "row d-flex trueEditRow"
+                  : "row d-flex falseEditRow"
+              }
+            >
+              <div className="col-6 text-center">
+                <h4>Last Name</h4>
+              </div>
+              <div className="col-6 text-center">
+                <input
+                  className="form-control"
+                  defaultValue={this.state.lNameInput}
+                  onChange={this.handleLNameInput}
                 />
               </div>
             </div>
@@ -167,25 +293,18 @@ class AdminTutorRender extends Component {
                   className="form-control"
                   defaultValue={this.state.phoneInput}
                   onChange={this.handlePhoneInput}
+                  onBlur={this.validatePhone}
+                  maxLength="13"
                 />
-              </div>
-            </div>
-            <div
-              className={
-                this.props.rowType
-                  ? "row d-flex trueEditRow"
-                  : "row d-flex falseEditRow"
-              }
-            >
-              <div className="col-6 text-center">
-                <h4>Email</h4>
-              </div>
-              <div className="col-6 text-center">
-                <input
-                  className="form-control"
-                  defaultValue={this.state.emailInput}
-                  onChange={this.handleEmailInput}
-                />
+                <div
+                  className={
+                    this.state.phoneValidated
+                      ? "hidePhoneVerified card-body"
+                      : "showPhoneVerified card-body"
+                  }
+                >
+                  Invalid Phone Number!
+                </div>
               </div>
             </div>
             <div
@@ -294,7 +413,7 @@ class AdminTutorRender extends Component {
     let t = this;
     tDB
       .get(this.props.id)
-      .then(function(doc) {
+      .then(function (doc) {
         if (
           t.state.passInput !== t.props.pass &&
           t.state.passInput.trim() !== ""
@@ -316,15 +435,16 @@ class AdminTutorRender extends Component {
           doc.phoneNumber = t.state.phoneInput;
         }
 
-        //
         // Since ID runs off email, need proper validation first
         // Will have to update ._id here to whatever comes before
         // @ in email
-        //
+
         // if (
         //   t.state.emailInput !== t.props.email &&
         //   t.state.emailInput.trim() !== ""
         // ) {
+        //   doc._id = t.state.emailInput.split("@")[0];
+        //   console.log(doc._id);
         //   doc.email = t.state.emailInput;
         // }
 
@@ -361,7 +481,7 @@ class AdminTutorRender extends Component {
       .then(() => {
         return tDB.get(t.props.id);
       })
-      .catch(function(err) {
+      .catch(function (err) {
         console.log(err);
       });
   };

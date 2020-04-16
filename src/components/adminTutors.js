@@ -23,9 +23,12 @@ class AdminTutors extends Component {
       roleInput: "",
       fNameInput: "",
       lNameInput: "",
+      tutorId: "",
       showAdd: false,
       canAddNewTutor: true,
-      addbtn: false
+      addBtnState: false,
+      phoneValidated: true,
+      emailValidated: true,
     };
   }
 
@@ -38,7 +41,6 @@ class AdminTutors extends Component {
       .changes({ since: "now", live: true, include_docs: true })
       .on("change", () => {
         this.fetchTutors();
-        console.log("TUTOR DB UPDATED");
       });
 
     await this.fetchTutors();
@@ -63,12 +65,12 @@ class AdminTutors extends Component {
       tDB
         .allDocs({
           include_docs: true,
-          attachments: true
+          attachments: true,
         })
-        .then(function(docs) {
+        .then(function (docs) {
           resolve(docs.rows);
         })
-        .catch(function(err) {
+        .catch(function (err) {
           reject(console.log(err));
         });
     });
@@ -77,21 +79,23 @@ class AdminTutors extends Component {
     await this.setState({ currentTutors: tResult });
   };
 
-  isOdd = n => {
+  isOdd = (n) => {
     if (n % 2 === 0) return true;
     else return false;
   };
 
   renderTutors = () => {
     let filteredTutors = this.state.currentTutors.filter(
-      e => e.doc.role !== "Admin"
+      (e) => e.doc.role !== "Admin"
     );
     let counter = 0;
 
-    return filteredTutors.map(e => (
+    return filteredTutors.map((e) => (
       <AdminTutorRender
         rowType={this.isOdd(counter++)}
         id={e.doc._id}
+        fName={e.doc.firstName}
+        lName={e.doc.lastName}
         pass={e.doc.password}
         programID={e.doc.programID}
         phone={e.doc.phoneNumber}
@@ -104,45 +108,72 @@ class AdminTutors extends Component {
     ));
   };
 
-  handlePassInput = e => {
-    this.setState({ passInput: e.target.value });
+  handlePassInput = (e) => {
+    this.setState({ passInput: e.target.value, addBtnState: true });
   };
 
-  handleProgInput = e => {
-    this.setState({ progInput: e.target.value });
+  handleProgInput = (e) => {
+    this.setState({ progInput: e.target.value, addBtnState: true });
   };
 
-  handlePhoneInput = e => {
-    this.setState({ phoneInput: e.target.value });
+  handlePhoneInput = (e) => {
+    this.setState({ phoneInput: e.target.value, addBtnState: true });
   };
 
-  handleEmailInput = e => {
-    this.setState({ emailInput: e.target.value });
+  cleanPhone = async () => {
+    let fixedNumber = null;
+
+    if (this.state.phoneInput.length === 13) {
+      if (
+        this.state.phoneInput.charAt(0) === "(" &&
+        this.state.phoneInput.charAt(4) === ")" &&
+        this.state.phoneInput.charAt(8) === "-"
+      ) {
+        fixedNumber =
+          this.state.phoneInput.substring(1, 4) +
+          this.state.phoneInput.substring(5, 8) +
+          this.state.phoneInput.substring(9);
+        return fixedNumber;
+      }
+    }
   };
 
-  handleAddressInput = e => {
-    this.setState({ addressInput: e.target.value });
+  validatePhone = async () => {
+    let re = new RegExp("^[0-9]*$");
+    //let re = new RegExp("^[0-9]{6}$");
+
+    let cleanedNumber = await this.cleanPhone();
+    if (this.state.phoneInput.length === 13)
+      this.setState({ phoneInput: cleanedNumber });
+
+    if (
+      re.test(this.state.phoneInput) === false ||
+      this.state.phoneInput.length !== 10
+    ) {
+      this.setState({ phoneValidated: false, addBtnState: false });
+    } else this.setState({ phoneValidated: true, addBtnState: true });
   };
 
-  handleCityInput = e => {
-    this.setState({ cityInput: e.target.value });
+  handleAddressInput = (e) => {
+    this.setState({ addressInput: e.target.value, addBtnState: true });
   };
 
-  handleProvinceInput = e => {
-    this.setState({ provinceInput: e.target.value });
+  handleCityInput = (e) => {
+    this.setState({ cityInput: e.target.value, addBtnState: true });
   };
 
-  handleRoleInput = e => {
-    this.setState({ roleInput: e.target.value });
+  handleProvinceInput = (e) => {
+    this.setState({ provinceInput: e.target.value, addBtnState: true });
   };
 
-  handleAddTutor = () => {
-    this.setState({ canAddNewTutor: true });
+  handleRoleInput = (e) => {
+    this.setState({ roleInput: e.target.value, addBtnState: true });
   };
-  handleFNameInput = e => {
+
+  handleFNameInput = (e) => {
     this.setState({ fNameInput: e.target.value });
   };
-  handleLNameInput = e => {
+  handleLNameInput = (e) => {
     this.setState({ lNameInput: e.target.value });
   };
 
@@ -152,21 +183,22 @@ class AdminTutors extends Component {
     );
 
     let tutorObj = {
-      _id: this.state.emailInput,
+      _id: this.props._id,
       password: this.state.passInput,
       firstName: this.state.fNameInput,
       lastName: this.state.lNameInput,
       programID: this.state.progInput,
       phoneNumber: this.state.phoneInput,
-      email: this.state.emailInput,
+      email: this.props.email,
       streetAddress: this.state.addressInput,
       city: this.state.cityInput,
       province: this.state.provinceInput,
       role: this.state.roleInput,
-      isLoggedIn: false
+      isLoggedIn: false,
+      activeAppointment: {},
     };
-
-    db.put(tutorObj).catch(function(err) {
+    console.log(tutorObj);
+    db.put(tutorObj).catch(function (err) {
       console.log(err);
     });
 
@@ -247,10 +279,21 @@ class AdminTutors extends Component {
                 <input
                   className="form-control"
                   onInput={this.handlePhoneInput}
+                  onBlur={this.validatePhone}
+                  maxLength="13"
                 />
+                <div
+                  className={
+                    this.state.phoneValidated
+                      ? "hidePhoneVerified card-body"
+                      : "showPhoneVerified card-body"
+                  }
+                >
+                  Invalid Phone Number!
+                </div>
               </div>
             </div>
-            <div className="row d-flex falseEditRow">
+            {/* <div className="row d-flex falseEditRow">
               <div className="col-6 text-center">
                 <h4>Email</h4>
               </div>
@@ -258,9 +301,19 @@ class AdminTutors extends Component {
                 <input
                   className="form-control"
                   onInput={this.handleEmailInput}
+                  onBlur={this.validateEmail}
                 />
+                <div
+                  className={
+                    this.state.emailValidated
+                      ? "hideEmailVerified card-body"
+                      : "showEmailVerified card-body"
+                  }
+                >
+                  Invalid Email!
+                </div>
               </div>
-            </div>
+            </div> */}
             <div className="row d-flex falseEditRow">
               <div className="col-6 text-center">
                 <h4>Street Address</h4>
@@ -306,7 +359,7 @@ class AdminTutors extends Component {
               </div>
             </div>
             <div className="row d-flex justify-content-center falseEditRow">
-              {this.state.canAddNewTutor ? (
+              {this.state.addBtnState ? (
                 <button
                   className="btn btn-lg tutorBtn"
                   onClick={this.handleTutor}
