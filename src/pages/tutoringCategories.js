@@ -47,7 +47,7 @@ const tutoringCategories = observer(
         taDB
           .find({
             selector: {
-              role: { $eq: "appointment" },
+              role: { $eq: "Appointment" },
             },
           })
           .then(function (result) {

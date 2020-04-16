@@ -31,11 +31,6 @@ class SideNav extends Component {
             </li>
           </Link>
         </ul>
-        {/* <span>
-          <button onClick={this.handleLogout} className="btn btn-dark">
-            Logout
-          </button>
-        </span> */}
       </nav>
     );
   }

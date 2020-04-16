@@ -13,7 +13,7 @@ class StudentValidate extends Component {
       emailValidated: true,
       sIDValidated: true,
       phoneValidated: true,
-      scene: 0
+      scene: 0,
     };
   }
 
@@ -22,15 +22,13 @@ class StudentValidate extends Component {
     //if (s) this.props.history.push("/categories");
   };
 
-  handleEmail = e => {
+  handleEmail = (e) => {
     this.setState({ emailInput: e.target.value });
   };
 
   validateEmail = () => {
     //let re = new RegExp("[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,}");
-    let re = new RegExp(
-      "^[a-zA-Z0-9.!#$%&’*+\/=?^_`{|}~-]+@+(mybvc.ca)*$", 'i'
-    );
+    let re = new RegExp("^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@+(mybvc.ca)*$", "i");
     if (re.test(this.state.emailInput) === false) {
       this.setState({ emailValidated: false });
     } else this.setState({ emailValidated: true });
@@ -43,42 +41,49 @@ class StudentValidate extends Component {
     // } else this.setState({ sIDValidated: true });
   };
 
-  cleanPhone = async() => {
-
+  cleanPhone = async () => {
     let fixedNumber = null;
 
     if (this.state.phoneInput.length === 13) {
-
-      if (this.state.phoneInput.charAt(0) === '(' && this.state.phoneInput.charAt(4) === ')' && this.state.phoneInput.charAt(8) === '-') {
-
-        fixedNumber = this.state.phoneInput.substring(1,4) + this.state.phoneInput.substring(5,8) + this.state.phoneInput.substring(9)
-        return fixedNumber
+      if (
+        this.state.phoneInput.charAt(0) === "(" &&
+        this.state.phoneInput.charAt(4) === ")" &&
+        this.state.phoneInput.charAt(8) === "-"
+      ) {
+        fixedNumber =
+          this.state.phoneInput.substring(1, 4) +
+          this.state.phoneInput.substring(5, 8) +
+          this.state.phoneInput.substring(9);
+        return fixedNumber;
       }
     }
-  }
+  };
 
-  validatePhone = async() => {
+  validatePhone = async () => {
     let re = new RegExp("^[0-9]*$");
     //let re = new RegExp("^[0-9]{6}$");
 
-    let cleanedNumber = await this.cleanPhone()
-    if (this.state.phoneInput.length === 13) 
-      this.setState({phoneInput: cleanedNumber})
+    let cleanedNumber = await this.cleanPhone();
+    if (this.state.phoneInput.length === 13)
+      this.setState({ phoneInput: cleanedNumber });
 
-    if (re.test(this.state.phoneInput) === false || this.state.phoneInput.length !== 10) {
+    if (
+      re.test(this.state.phoneInput) === false ||
+      this.state.phoneInput.length !== 10
+    ) {
       this.setState({ phoneValidated: false });
     } else this.setState({ phoneValidated: true });
   };
 
-  handleSID = e => {
+  handleSID = (e) => {
     this.setState({ sIDInput: e.target.value });
   };
 
-  handlePhone = e => {
+  handlePhone = (e) => {
     this.setState({ phoneInput: e.target.value });
   };
 
-  handleProgram = e => {
+  handleProgram = (e) => {
     this.setState({ programInput: e.target.value });
   };
 
@@ -99,10 +104,10 @@ class StudentValidate extends Component {
       email: this.state.emailInput,
       notes: [],
       totalAppointments: 0,
-      noShows: 0
+      noShows: 0,
     };
 
-    db.put(studentObj).catch(function(err) {
+    db.put(studentObj).catch(function (err) {
       console.log(err);
     });
     // db.get(this.state.sIDInput)
@@ -128,13 +133,13 @@ class StudentValidate extends Component {
     );
     let x = this;
     db.get(this.state.sIDInput)
-      .then(function(doc) {
+      .then(function (doc) {
         if (doc) {
           sessionStorage.setItem("studentID", x.state.sIDInput);
           x.props.history.push("/categories");
         }
       })
-      .catch(function(err) {
+      .catch(function (err) {
         if (err.status === 404) {
           x.setState({ scene: 1 });
         }
@@ -232,7 +237,7 @@ class StudentValidate extends Component {
                 id="validPhone"
                 onInput={this.handlePhone}
                 onBlur={this.validatePhone}
-                maxLength = "13"
+                maxLength="13"
               />
               <div
                 className={

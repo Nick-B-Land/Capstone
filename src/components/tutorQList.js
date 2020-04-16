@@ -17,7 +17,7 @@ const tutorQList = observer(
       this.state = {
         activeAppointment: false,
         firstQID: null,
-        btnState: true
+        btnState: true,
       };
     }
     componentDidMount = () => {
@@ -31,7 +31,7 @@ const tutorQList = observer(
     componentDidUpdate = () => {
       this.checkBtn();
     };
-    isOdd = n => {
+    isOdd = (n) => {
       if (n % 2 === 0) return true;
     };
 
@@ -41,7 +41,7 @@ const tutorQList = observer(
       );
 
       let tttt = this;
-      tdb.get(sessionStorage.getItem("Tutor")).then(function(doc) {
+      tdb.get(sessionStorage.getItem("Tutor")).then(function (doc) {
         if (doc.activeAppointment.id) {
           tttt.setState({ btnState: false });
         } else tttt.setState({ btnState: true });
@@ -49,16 +49,6 @@ const tutorQList = observer(
     };
 
     renderQList = () => {
-      // let minusCurrentQ = [];
-      // if (this.props.tutorStore.Queue.length !== 0) {
-      //   let firstQ = this.props.tutorStore.Queue[0];
-      //   this.props.tutorStore.Queue.forEach(e => {
-      //     if (e.id < firstQ.id) firstQ = e;
-      //   });
-      //   minusCurrentQ = this.props.tutorStore.Queue.filter(
-      //     e => e.id !== firstQ.id
-      //   );
-      // }
       let counter = 0;
       if (this.props.tutorStore.Queue.length === 0) {
         return (
@@ -67,8 +57,7 @@ const tutorQList = observer(
           </div>
         );
       } else {
-        //let reverseMinusCurrentQ = minusCurrentQ.reverse();
-        return this.props.tutorStore.Queue.map(e => (
+        return this.props.tutorStore.Queue.map((e) => (
           <div className="col" key={e.id}>
             <div
               className={
@@ -102,25 +91,25 @@ const tutorQList = observer(
 
         tdb
           .get(tID)
-          .then(function(doc) {
+          .then(function (doc) {
             doc.activeAppointment = qPop;
             return tdb.put(doc);
           })
           .then(() => {
             return tdb.get(tID);
           })
-          .catch(function(doc) {
+          .catch(function (doc) {
             console.log(doc);
           });
 
         let qPromise = new Promise((resolve, reject) => {
           db.get(this.props.tutorStore.Tutor.programID)
-            .then(function(doc) {
-              doc.activeQ = doc.activeQ.filter(e => e.id !== aID);
+            .then(function (doc) {
+              doc.activeQ = doc.activeQ.filter((e) => e.id !== aID);
               db.put(doc);
               resolve(doc.activeQ);
             })
-            .catch(function(err) {
+            .catch(function (err) {
               reject(err);
             });
         });
