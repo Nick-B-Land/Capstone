@@ -8,13 +8,14 @@ const dashboardAnalytics = observer(
     constructor(props) {
       super(props);
       PouchDB.plugin(PouchdbFind);
-      this.state = { appCount: 0, avgLength: 0, highestCat: "" };
+      this.state = { appCount: 0, avgLength: 0, highestCat: "", studentTime: 0 };
     }
 
     componentDidMount = () => {
       this.getAppointmentNumber();
       this.getAvgAppointmentLength();
       this.getMostUsedCat();
+      this.getStudentsPerTime()
     };
 
     getMostUsedCat = async () => {
@@ -240,8 +241,26 @@ const dashboardAnalytics = observer(
     Number of students/department
   */
 
-  getStudentsPerTime = async(time) => {
+  handleDateInfo(apptDate, time) {
+
     let date = new Date();
+    let date2 = new Date();
+    if (time === "day")
+      date2.setTime(date2.getTime() - (24*60*60*1000));
+    else if (time === "month") {
+      date2.setMonth(date2.getMonth() - 1);      
+    }
+    else if (time === "year") {
+      date2.setFullYear(date2.getFullYear() - 1);
+    }
+
+    if (apptDate <= date && apptDate >= date2)
+      return true;
+    else
+      return false;
+  }
+
+  getStudentsPerTime = async() => {
     let db = new PouchDB(
       "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/history"
     );
@@ -262,13 +281,60 @@ const dashboardAnalytics = observer(
         });
     });
 
+    let e = document.getElementById("timeWindow");
+    let time = e.options[e.selectedIndex].value;
+    //console.log(time)
     let matches = await promise;
-    console.log(matches);
+    let matchList = matches.docs;
+    let list = [];
+
+    if (time === "day") {
+
+      matchList.forEach(e => {
+        let inList = false;
+        let apptDate = new Date (e.date)
+        if (list.includes(e.studentID))
+            inList = true;
+        if (inList === false  && this.handleDateInfo(apptDate, time))
+          list.push(e.studentID)
+      })
+
+      this.setState({studentTime:list.length});
+    }
+
+    else if (time === "month") {
+
+      matchList.forEach(e => {
+        let inList = false;
+        let apptDate = new Date(e.date)
+        if (list.includes(e.studentID))
+          inList = true;
+        if (inList === false && this.handleDateInfo(apptDate, time))
+          list.push(e.studentID)
+      })
+
+      this.setState({studentTime:list.length})
+    }
+
+    else if (time === "year") {
+
+      matchList.forEach(e => {
+        let inList = false;
+        let apptDate = new Date(e.date)
+        if (list.includes(e.studentID))
+          inList = true;
+        if (inList === false && this.handleDateInfo(apptDate, time))
+          list.push(e.studentID)
+      })
+
+      this.setState({studentTime:list.length})
+    }
+
   }
 
     render() {
       return (
-        <div test={this.getStudentsPerTime("sec")} className="container dashAnal">
+        <div className="container dashAnal">
           <div className="row">
             <div className="col-6">
               <div className="card">
@@ -321,6 +387,25 @@ const dashboardAnalytics = observer(
               </div>
             </div>
           </div>
+          <div className="row">
+            <div className="col-6">
+              <div className="card">
+                <div className="card-body">
+                  <span>
+                    <h5>Unique students per</h5>
+                    <select onChange={this.getStudentsPerTime} id="timeWindow">
+                      <option value="day">Day</option>
+                      <option value="month">Month</option>
+                      <option value="year">Year</option>
+                    </select>
+                  </span>
+                  <span>
+                    <h6>{this.state.studentTime}</h6>
+                  </span>
+                </div>
+              </div>
+            </div>
+            </div>
         </div>
       );
     }
