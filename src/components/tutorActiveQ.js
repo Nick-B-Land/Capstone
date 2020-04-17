@@ -28,7 +28,7 @@ const tutorActiveQ = observer(
         AA: null,
         interval: null,
         timeout: null,
-        started: false
+        started: false,
       };
     }
 
@@ -46,7 +46,7 @@ const tutorActiveQ = observer(
       this.checkActiveAppointment();
     };
 
-    componentDidUpdate = prevProps => {
+    componentDidUpdate = (prevProps) => {
       // if (this.props.activeQ !== prevProps.activeQ) {
       //   this.setState({
       //     isFull: true,
@@ -67,25 +67,25 @@ const tutorActiveQ = observer(
       let aPromise = new Promise((resolve, reject) => {
         tdb
           .get(t)
-          .then(function(doc) {
+          .then(function (doc) {
             if (Object.keys(doc.activeAppointment).length !== 0) {
               if (doc.activeAppointment.appointmentStart !== 0)
                 tttt.setState({
                   started: true,
                   appointmentState: "started",
-                  scene: "appointmentReady"
+                  scene: "appointmentReady",
                 });
               else if (doc.activeAppointment.appointmentEnd === 0) {
                 tttt.setState({
                   isFull: true,
                   appointmentState: "readyToStart",
-                  scene: "appointmentReady"
+                  scene: "appointmentReady",
                 });
               }
               resolve(doc.activeAppointment);
             }
           })
-          .catch(function(err) {
+          .catch(function (err) {
             console.log(err);
           });
       });
@@ -99,7 +99,7 @@ const tutorActiveQ = observer(
       } else if (this.state.appointmentState === "started") {
         return "Appointment is started";
       } else if (this.state.appointmentState === "extended") {
-        return "Appointment is extented";
+        return "Appointment is extended";
       } else return "No appointment status";
     };
 

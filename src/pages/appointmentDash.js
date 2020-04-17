@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PouchDB from "pouchdb";
 import ApptSideNav from "../components/apptSideNav";
 import AppointmentTutorList from "../components/appointmentTutorList";
+import AppointmentTutorCurrentAppt from "../components/appointmentTutorCurrentAppt";
 
 class AppointmentDashboard extends Component {
   constructor(props) {
@@ -40,7 +41,55 @@ class AppointmentDashboard extends Component {
     });
 
     let currentAppointments = await tutorPromise;
-    this.setState({ bookedAppointments: currentAppointments });
+    console.log(currentAppointments);
+    let sortedAppointments = this.sortAppointments(currentAppointments);
+    this.setState({ bookedAppointments: sortedAppointments });
+  };
+
+  sortAppointments = (appts) => {
+    let len = appts.length;
+    for (let i = 0; i < len; ++i) {
+      for (let j = 0; j < len - 1; ++j) {
+        let firstDate = new Date(appts[j].date);
+        let secondDate = new Date(appts[j + 1].date);
+        if (firstDate.getTime() > secondDate.getTime()) {
+          let temp = appts[j];
+          appts[j] = appts[j + 1];
+          appts[j + 1] = temp;
+        } else if (firstDate.getTime() === secondDate.getTime()) {
+          let firstTime = this.convertTimeStringTo24(appts[j].startTime);
+          let secondTime = this.convertTimeStringTo24(appts[j + 1].startTime);
+          if (firstTime > secondTime) {
+            let temp = appts[j];
+            appts[j] = appts[j + 1];
+            appts[j + 1] = temp;
+          }
+        }
+      }
+    }
+    return appts;
+  };
+
+  convertTimeStringTo24 = (time) => {
+    let startColon = time.indexOf(":");
+    let start24 = time.substr(time.length - 2);
+    let startH, startM;
+
+    if (startColon === 1) {
+      startH = parseInt(time.charAt(0));
+      if (start24 === "PM") {
+        startH = startH + 12;
+      }
+    } else if (startColon === 2) {
+      startH = parseInt(time.substr(0, 2));
+      if (start24 === "PM") {
+        if (startH !== 12) startH = startH + 12;
+      }
+    }
+
+    startM = parseInt(time.substr(startColon + 1, startColon + 2));
+    if (startM !== 0) startH += 0.5;
+    return startH;
   };
 
   render() {
@@ -52,14 +101,18 @@ class AppointmentDashboard extends Component {
           analytics={this.handleAnalyticsScene}
           home={this.handleHomeScene}
         />
-        <div className="container-fluid">
+        <div className="container-fluid smooth-scroll">
           <div className="row">
-            <div className="col-6">
+            <div className="col-6 ">
               <AppointmentTutorList
                 appointments={this.state.bookedAppointments}
               />
             </div>
-            <div className="col-6"></div>
+            <div className="col-6">
+              <AppointmentTutorCurrentAppt
+                sortedAppointments={this.state.bookedAppointments}
+              />
+            </div>
           </div>
         </div>
       </div>

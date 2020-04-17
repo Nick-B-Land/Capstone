@@ -64,7 +64,9 @@ class CategoryAppointmentBooking extends Component {
       let startH, endH, startM, endM;
       if (
         this.state.date.getDay() === date.getDay() &&
-        this.state.date.getMonth() === date.getMonth()
+        this.state.date.getMonth() === date.getMonth() &&
+        e.startTime &&
+        e.endTime
       ) {
         let startColon = e.startTime.indexOf(":");
         let endColon = e.endTime.indexOf(":");
@@ -103,13 +105,9 @@ class CategoryAppointmentBooking extends Component {
         if (startM !== 0) startH += 0.5;
         if (endM !== 0) endH += 0.5;
 
-        console.log(startH + " " + endH);
-
         for (let i = availableTimes.length - 1; i >= 0; --i) {
           if (availableTimes[i] >= startH && availableTimes[i] < endH) {
-            console.log(availableTimes[i]);
             availableTimes.splice(i, 1);
-            console.log(availableTimes[i]);
           }
         }
       }
@@ -180,6 +178,7 @@ class CategoryAppointmentBooking extends Component {
     else if (time === 15.5) return "3:30:00 PM";
     else if (time === 16) return "4:00:00 PM";
     else if (time === 16.5) return "4:30:00 PM";
+    else if (time === 17) return "5:00:00 PM";
   };
 
   handleBooking = () => {

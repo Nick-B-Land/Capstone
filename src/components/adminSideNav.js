@@ -20,8 +20,13 @@ class AdminSideNav extends Component {
             </li>
           </Link>
           <Link>
-            <li className="sideNavLI" onClick={this.props.catScene}>
-              Categories
+            <li className="sideNavLI" onClick={this.props.queueCatScene}>
+              Queue Categories
+            </li>
+          </Link>
+          <Link>
+            <li className="sideNavLI" onClick={this.props.peerCatScene}>
+              Peer Tutor Categories
             </li>
           </Link>
           <Link>

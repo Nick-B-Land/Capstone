@@ -54,7 +54,7 @@ class AppointmentTutorList extends Component {
 
   render() {
     return (
-      <div className="row">
+      <div className="row ">
         <div className="col">
           <div className="row d-flex justify-content-around">
             <h3 className="appointmentHead">Upcoming Appointmets</h3>
