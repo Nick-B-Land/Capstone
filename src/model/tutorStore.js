@@ -253,6 +253,7 @@ TutorStore.EndAppointment = (aID) => {
   let time = date.toLocaleTimeString();
   let completedAppointment = {};
   let studentID = 0;
+  console.log(aID)
 
   //get the appropriate program database
   //update the end time, copy the activeQ object for posting to historydb

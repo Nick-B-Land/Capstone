@@ -46,6 +46,7 @@ class AdminTutors extends Component {
 
     await this.fetchTutors();
     await this.fetchPeerTutoring();
+    console.log(this.state.programArray);
   };
 
   handleUpdates = async () => {
@@ -94,7 +95,7 @@ class AdminTutors extends Component {
     return filteredTutors.map((e) => (
       <AdminTutorRender
         rowType={this.isOdd(counter++)}
-        catStore={this.props.catStore}
+        programArray={this.state.programArray}
         id={e.doc._id}
         fName={e.doc.firstName}
         lName={e.doc.lastName}

@@ -117,6 +117,7 @@ const tutorActiveQ = observer(
     };
 
     handleEndingAppointment = () => {
+      console.log(this.props.activeQ)
       this.props.tutorStore.EndAppointment();
       clearInterval(this.state.interval);
       clearTimeout(this.state.timeout);
