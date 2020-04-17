@@ -73,7 +73,7 @@ const adminHome = observer(
       if (scene === "tutor") {
         return <AdminTutors catStore={this.props.catStore} />;
       } else if (scene === "categories") {
-        return <h1>cat to be added</h1>;
+        return <h1>PEEER to be added</h1>;
       } else if (scene === "analytics") {
         return <h1>anals to be added</h1>;
       } else if (scene === "history") {
