@@ -105,6 +105,23 @@ class StudentValidate extends Component {
     db.put(studentObj).catch(function(err) {
       console.log(err);
     });
+
+    let x = this;
+
+    if (typeof x.props.addStudentToPeer === 'function'){
+      let peerobj = {
+        _id: (this.state.sIDInput+"/"+this.props.date),
+        student_id: this.state.sIDInput,
+        date: this.props.date,
+        programID: this.props.peerCategorie,
+        time: this.props.time,
+      };
+      x.props.addStudentToPeer(peerobj);
+      x.props.addStudentToQueue(peerobj.student_id);
+    } else {
+      sessionStorage.setItem("studentID", x.state.sIDInput);
+      x.props.history.push("/categories");
+    }
     // db.get(this.state.sIDInput)
     //   .catch(function(err) {
     //     if (err.status === 404) docExists = false;
@@ -123,6 +140,7 @@ class StudentValidate extends Component {
       alert("Invalid ID");
       return;
     }
+    
     let peerobj = {
       _id: (this.state.sIDInput+"/"+this.props.date),
       student_id: this.state.sIDInput,
@@ -132,8 +150,8 @@ class StudentValidate extends Component {
     };
 
 
-      this.props.addStudentToPeer(peerobj);
-      this.props.addStudentToQueue(peerobj.student_id);
+      //this.props.addStudentToPeer(peerobj);
+      //this.props.addStudentToQueue(peerobj.student_id);
     
    
     let db = new PouchDB(
@@ -143,10 +161,14 @@ class StudentValidate extends Component {
     db.get(this.state.sIDInput)
       .then(function(doc) {
         if (doc) {
+          if (typeof x.props.addStudentToPeer === 'function'){
+            x.props.addStudentToPeer(peerobj);
+            x.props.addStudentToQueue(peerobj.student_id);
+          } else {
           sessionStorage.setItem("studentID", x.state.sIDInput);
           x.props.history.push("/categories");
-          
-        }
+          }
+        }; 
       })
       .catch(function(err) {
         if (err.status === 404) {
@@ -287,14 +309,13 @@ class StudentValidate extends Component {
                     : "hideCatBtn"
                 }
               >
-                <Link to="/categories">
+                
                   <button
                     className="btn btn-lg btn-dark homeBtn"
                     onClick={this.handleStudent}
                   >
                     Get Tutoring
                   </button>
-                </Link>
               </div>
             </div>
           </form>
