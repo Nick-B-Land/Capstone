@@ -43,7 +43,6 @@ class AdminTutorRender extends Component {
       phoneValidated: true,
       emailValidated: true,
       showDeletePopup: false,
-      programArray: null,
     };
   }
 
@@ -58,7 +57,7 @@ class AdminTutorRender extends Component {
         this.renderTutor();
         console.log("TUTOR DB UPDATED");
       });
-    await this.fetchPeerTutoring();
+    //await this.fetchPeerTutoring();
     // this.generatePrograms();
   };
 
@@ -211,31 +210,31 @@ class AdminTutorRender extends Component {
   //   // return pResult;
   // };
   generatePrograms = () => {
-    let array = this.state.programArray;
+    let array = this.props.programArray;
     if (array) {
       return array.map((e) => <option value={e.id}>{e.id}</option>);
     }
   };
 
-  fetchPeerTutoring = async () => {
-    let pDB = new PouchDB(
-      "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/programs"
-    );
+  // fetchPeerTutoring = async () => {
+  //   let pDB = new PouchDB(
+  //     "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/programs"
+  //   );
 
-    let pPromise = new Promise((resolve, reject) => {
-      pDB
-        .allDocs({
-          include_docs: true,
-          attachments: true,
-        })
-        .then(function (docs) {
-          resolve(docs.rows);
-        });
-    });
+  //   let pPromise = new Promise((resolve, reject) => {
+  //     pDB
+  //       .allDocs({
+  //         include_docs: true,
+  //         attachments: true,
+  //       })
+  //       .then(function (docs) {
+  //         resolve(docs.rows);
+  //       });
+  //   });
 
-    let pResult = await pPromise;
-    await this.setState({ programArray: pResult });
-  };
+  //   let pResult = await pPromise;
+  //   await this.setState({ programArray: pResult });
+  // };
 
   // getProgramArray = async (data) => {
   //   console.log(data);

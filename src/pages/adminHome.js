@@ -56,8 +56,13 @@ const adminHome = observer(
       this.setState({ scene: "tutor" });
     };
 
-    handleCategoriesScene = () => {
-      this.setState({ scene: "categories" });
+    handlePeerCategoriesScene = () => {
+      this.setState({ scene: "peerCategories" });
+    };
+    handleQueueCategoriesScene = () => {
+      this.setState({ scene: "queueCategories" });
+
+      console.log("clicked");
     };
 
     handleAnalyticsScene = () => {
@@ -71,9 +76,11 @@ const adminHome = observer(
     renderScene = () => {
       let scene = this.state.scene;
       if (scene === "tutor") {
-        return <AdminTutors catStore={this.props.catStore} />;
-      } else if (scene === "categories") {
-        return <h1>cat to be added</h1>;
+        return <AdminTutors />;
+      } else if (scene === "queueCategories") {
+        return <h1>queue cat to be added</h1>;
+      } else if (scene === "peerCategories") {
+        return <h1>peer cat to be added</h1>;
       } else if (scene === "analytics") {
         return <h1>anals to be added</h1>;
       } else if (scene === "history") {
@@ -88,7 +95,8 @@ const adminHome = observer(
             tutorStore={this.props.tutorStore}
             history={this.props.history}
             tutorScene={this.handleTutorScene}
-            catScene={this.handleCategoriesScene}
+            peerCatScene={this.handlePeerCategoriesScene}
+            queueCatScene={this.handleQueueCategoriesScene}
             analyticsScene={this.handleAnalyticsScene}
             historyScene={this.handleHistoryScene}
           />
