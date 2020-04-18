@@ -176,8 +176,10 @@ const tutoringCategories = observer(
               <p>Book an appointment with a LSS learning coach</p>
             </div>
           </div>
-          <div className="row row-cols-4">
-            {this.renderAppointmentCategories()}
+          <div className="cards">
+            <div className="row row-cols-sm">
+              {this.renderAppointmentCategories()}
+            </div>
           </div>
         </div>
       );

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-//import { Logo } from "../logo.png";
+import  Logo  from "../logo.jpg";
 import "../css/main.css";
 
 class Nav extends Component {
@@ -8,9 +8,7 @@ class Nav extends Component {
     return (
       <nav className="navbar navbar-expand-lg navContainer">
         <Link to="/">
-          <span className="navbar-brand">
-            <div className="logoPH"> </div>
-          </span>
+          <img className="logoPH" src={Logo}/>
         </Link>
         <div
           className="collapse navbar-collapse container-fluid"
