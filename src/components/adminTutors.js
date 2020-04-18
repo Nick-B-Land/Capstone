@@ -25,7 +25,6 @@ class AdminTutors extends Component {
       lNameInput: "",
       tutorId: "",
       showAdd: false,
-      canAddNewTutor: true,
       addBtnState: false,
       phoneValidated: true,
       emailValidated: true,

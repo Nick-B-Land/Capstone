@@ -4,6 +4,7 @@ import PouchDB from "pouchdb";
 import HistoryRender from "../components/historyRender";
 import AdminSideNav from "../components/adminSideNav";
 import AdminTutors from "../components/adminTutors";
+import AdminPeerCat from "../components/adminPeerCat";
 
 const adminHome = observer(
   class AdminHome extends Component {
@@ -80,7 +81,7 @@ const adminHome = observer(
       } else if (scene === "queueCategories") {
         return <h1>queue cat to be added</h1>;
       } else if (scene === "peerCategories") {
-        return <h1>peer cat to be added</h1>;
+        return <AdminPeerCat />;
       } else if (scene === "analytics") {
         return <h1>anals to be added</h1>;
       } else if (scene === "history") {
