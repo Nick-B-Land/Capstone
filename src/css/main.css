@@ -20,6 +20,10 @@
   margin-bottom: 5%;
 }
 
+.card {
+  width: 14rem;
+}
+
 .historyCard {
   margin-bottom: 5%;
   margin-left: 2.5%;
