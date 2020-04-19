@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PouchDB from "pouchdb";
+import { Link } from "react-router-dom";
 
 class TutorLogin extends Component {
   constructor(props) {
@@ -8,6 +9,7 @@ class TutorLogin extends Component {
       tutorEmail: "",
       tutorPassword: "",
       emailValidated: true,
+      scene: "default"
     };
   }
 
@@ -66,7 +68,12 @@ class TutorLogin extends Component {
     } else alert("Please enter a valid email");
   };
 
-  render() {
+  handleTutorSelection = () => {
+    this.setState({scene: "Tutor"})
+    this.renderScene()
+  }
+
+  renderHome = () => {
     return (
       <div className="container">
         <h1 className="validateLead">Enter Tutor Information</h1>
@@ -113,6 +120,41 @@ class TutorLogin extends Component {
         </div>
       </div>
     );
+  }
+  renderOptions = () => {
+    return (
+      <div className="container">
+        <h1 className="validateLead">Select Tutor Type</h1>
+        <div className="validateContainer">
+            <div className="form-group validateBtn">
+                <button className="btn btn-lg btn-dark homeBtn" onClick={this.handleTutorSelection}>
+                  Tutor
+                  </button>
+              <div className= "form-group validateBtn">
+                <Link to="/peertutor">
+                  <button className="btn btn-lg btn-dark homeBtn">Peer Tutor</button>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+    );
+  }
+
+  renderScene = () => {
+    let scene = this.state.scene;
+    if (scene === "default") return this.renderOptions();
+    else if (scene === "Tutor") return this.renderHome();
+  };
+
+  render () {
+    return ( 
+      <div>
+        {this.renderScene()}
+        {console.log(this.state.scene)}
+      </div>
+      
+    )
   }
 }
 
