@@ -9,6 +9,8 @@ class StudentValidate extends Component {
       emailInput: "",
       sIDInput: "",
       phoneInput: "",
+      fName: "",
+      lName: "",
       programInput: "Writing",
       emailValidated: true,
       sIDValidated: true,
@@ -79,6 +81,14 @@ class StudentValidate extends Component {
     this.setState({ sIDInput: e.target.value });
   };
 
+  handleFName = (e) => {
+    this.setState({ fName: e.target.value });
+  };
+
+  handleLName = (e) => {
+    this.setState({ lName: e.target.value });
+  };
+
   handlePhone = (e) => {
     this.setState({ phoneInput: e.target.value });
   };
@@ -100,6 +110,8 @@ class StudentValidate extends Component {
     let studentObj = {
       _id: this.state.sIDInput,
       programID: this.state.programInput,
+      fName: this.state.fName,
+      lName: this.state.lName,
       phone: this.state.phoneInput,
       email: this.state.emailInput,
       notes: [],
@@ -111,12 +123,11 @@ class StudentValidate extends Component {
       console.log(err);
     });
 
-
     let x = this;
 
-    if (typeof x.props.addStudentToPeer === 'function'){
+    if (typeof x.props.addStudentToPeer === "function") {
       let peerobj = {
-        _id: (this.state.sIDInput+"/"+this.props.date),
+        _id: this.state.sIDInput + "/" + this.props.date,
         student_id: this.state.sIDInput,
         date: this.props.date,
         programID: this.props.peerCategorie,
@@ -128,18 +139,6 @@ class StudentValidate extends Component {
       sessionStorage.setItem("studentID", x.state.sIDInput);
       x.props.history.push("/categories");
     }
-
-    // db.get(this.state.sIDInput)
-    //   .catch(function(err) {
-    //     if (err.status === 404) docExists = false;
-    //   })
-    //   .then(() => {
-    //     if (!docExists) {
-    //       db.put(studentObj).catch(function(err) {
-    //         console.log(err);
-    //       });
-    //     }
-    //   });
   };
 
   checkStudent = () => {
@@ -149,7 +148,7 @@ class StudentValidate extends Component {
     }
 
     let peerobj = {
-      _id: (this.state.sIDInput+"/"+this.props.date),
+      _id: this.state.sIDInput + "/" + this.props.date,
       student_id: this.state.sIDInput,
       date: this.props.date,
       programID: this.props.peerCategorie,
@@ -163,12 +162,12 @@ class StudentValidate extends Component {
     db.get(this.state.sIDInput)
       .then(function (doc) {
         if (doc) {
-          if (typeof x.props.addStudentToPeer === 'function'){
+          if (typeof x.props.addStudentToPeer === "function") {
             x.props.addStudentToPeer(peerobj);
             x.props.addStudentToQueue(peerobj.student_id);
           } else {
-          sessionStorage.setItem("studentID", x.state.sIDInput);
-          x.props.history.push("/categories");
+            sessionStorage.setItem("studentID", x.state.sIDInput);
+            x.props.history.push("/categories");
           }
         }
       })
@@ -264,6 +263,24 @@ class StudentValidate extends Component {
               </div>
             </div>
             <div className="form-group">
+              <label for="validPhone">First Name</label>
+              <input
+                className="form-control"
+                id="validPhone"
+                onInput={this.handleFName}
+                maxLength="13"
+              />
+            </div>
+            <div className="form-group">
+              <label for="validPhone">Last Name</label>
+              <input
+                className="form-control"
+                id="validPhone"
+                onInput={this.handleLName}
+                maxLength="13"
+              />
+            </div>
+            <div className="form-group">
               <label for="validPhone">Phone Number</label>
               <input
                 className="form-control"
@@ -304,6 +321,8 @@ class StudentValidate extends Component {
                   this.state.sIDValidated &&
                   this.state.emailValidated &&
                   this.state.phoneValidated &&
+                  this.state.fName.length > 2 &&
+                  this.state.lName.length > 2 &&
                   this.state.emailInput !== "" &&
                   this.state.sIDInput !== "" &&
                   this.state.phoneInput !== ""
@@ -311,12 +330,12 @@ class StudentValidate extends Component {
                     : "hideCatBtn"
                 }
               >
-                  <button
-                    className="btn btn-lg btn-dark homeBtn"
-                    onClick={this.handleStudent}
-                  >
-                    Get Tutoring
-                  </button>
+                <button
+                  className="btn btn-lg btn-dark homeBtn"
+                  onClick={this.handleStudent}
+                >
+                  Get Tutoring
+                </button>
               </div>
             </div>
           </form>

@@ -8,14 +8,19 @@ const dashboardAnalytics = observer(
     constructor(props) {
       super(props);
       PouchDB.plugin(PouchdbFind);
-      this.state = { appCount: 0, avgLength: 0, highestCat: "", studentTime: 0 };
+      this.state = {
+        appCount: 0,
+        avgLength: 0,
+        highestCat: "",
+        studentTime: 0,
+      };
     }
 
     componentDidMount = () => {
       this.getAppointmentNumber();
       this.getAvgAppointmentLength();
       this.getMostUsedCat();
-      this.getStudentsPerTime()
+      this.getStudentsPerTime();
     };
 
     getMostUsedCat = async () => {
@@ -235,102 +240,86 @@ const dashboardAnalytics = observer(
     };
 
     //TODO Analytics
-  /*
+    /*
     Students/day,month,year
     New students this month
     Number of students/department
   */
 
-  handleDateInfo(apptDate, time) {
+    handleDateInfo(apptDate, time) {
+      let date = new Date();
+      let date2 = new Date();
+      if (time === "day") date2.setTime(date2.getTime() - 24 * 60 * 60 * 1000);
+      else if (time === "month") {
+        date2.setMonth(date2.getMonth() - 1);
+      } else if (time === "year") {
+        date2.setFullYear(date2.getFullYear() - 1);
+      }
 
-    let date = new Date();
-    let date2 = new Date();
-    if (time === "day")
-      date2.setTime(date2.getTime() - (24*60*60*1000));
-    else if (time === "month") {
-      date2.setMonth(date2.getMonth() - 1);      
+      if (apptDate <= date && apptDate >= date2) return true;
+      else return false;
     }
-    else if (time === "year") {
-      date2.setFullYear(date2.getFullYear() - 1);
-    }
 
-    if (apptDate <= date && apptDate >= date2)
-      return true;
-    else
-      return false;
-  }
+    getStudentsPerTime = async () => {
+      let db = new PouchDB(
+        "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/history"
+      );
 
-  getStudentsPerTime = async() => {
-    let db = new PouchDB(
-      "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/history"
-    );
-
-    let x = this;
-    let promise = new Promise((resolve, reject) => {
-      db.find({
-        selector: {
-          tutor: { $eq: x.props.tutorStore.Tutor._id }
-        }
-      })
-        .then(function(result) {
-          resolve(result);
+      let x = this;
+      let promise = new Promise((resolve, reject) => {
+        db.find({
+          selector: {
+            tutor: { $eq: x.props.tutorStore.Tutor._id },
+          },
         })
-        .catch(function(err) {
-          console.log(err);
-          reject(err);
+          .then(function (result) {
+            resolve(result);
+          })
+          .catch(function (err) {
+            console.log(err);
+            reject(err);
+          });
+      });
+
+      let e = document.getElementById("timeWindow");
+      let time = e.options[e.selectedIndex].value;
+      //console.log(time)
+      let matches = await promise;
+      let matchList = matches.docs;
+      let list = [];
+
+      if (time === "day") {
+        matchList.forEach((e) => {
+          let inList = false;
+          let apptDate = new Date(e.date);
+          if (list.includes(e.studentID)) inList = true;
+          if (inList === false && this.handleDateInfo(apptDate, time))
+            list.push(e.studentID);
         });
-    });
 
-    let e = document.getElementById("timeWindow");
-    let time = e.options[e.selectedIndex].value;
-    //console.log(time)
-    let matches = await promise;
-    let matchList = matches.docs;
-    let list = [];
+        this.setState({ studentTime: list.length });
+      } else if (time === "month") {
+        matchList.forEach((e) => {
+          let inList = false;
+          let apptDate = new Date(e.date);
+          if (list.includes(e.studentID)) inList = true;
+          if (inList === false && this.handleDateInfo(apptDate, time))
+            list.push(e.studentID);
+        });
 
-    if (time === "day") {
+        this.setState({ studentTime: list.length });
+      } else if (time === "year") {
+        matchList.forEach((e) => {
+          let inList = false;
+          let apptDate = new Date(e.date);
+          if (list.includes(e.studentID)) inList = true;
+          if (inList === false && this.handleDateInfo(apptDate, time))
+            list.push(e.studentID);
+        });
 
-      matchList.forEach(e => {
-        let inList = false;
-        let apptDate = new Date (e.date)
-        if (list.includes(e.studentID))
-            inList = true;
-        if (inList === false  && this.handleDateInfo(apptDate, time))
-          list.push(e.studentID)
-      })
-
-      this.setState({studentTime:list.length});
-    }
-
-    else if (time === "month") {
-
-      matchList.forEach(e => {
-        let inList = false;
-        let apptDate = new Date(e.date)
-        if (list.includes(e.studentID))
-          inList = true;
-        if (inList === false && this.handleDateInfo(apptDate, time))
-          list.push(e.studentID)
-      })
-
-      this.setState({studentTime:list.length})
-    }
-
-    else if (time === "year") {
-
-      matchList.forEach(e => {
-        let inList = false;
-        let apptDate = new Date(e.date)
-        if (list.includes(e.studentID))
-          inList = true;
-        if (inList === false && this.handleDateInfo(apptDate, time))
-          list.push(e.studentID)
-      })
-
-      this.setState({studentTime:list.length})
-    }
-
-  }
+        this.setState({ studentTime: list.length });
+      }
+    };
 
     render() {
       return (
@@ -405,7 +394,7 @@ const dashboardAnalytics = observer(
                 </div>
               </div>
             </div>
-            </div>
+          </div>
         </div>
       );
     }

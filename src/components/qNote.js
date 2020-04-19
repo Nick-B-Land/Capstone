@@ -21,7 +21,7 @@ const qNote = observer(
         currentQNotes: [],
         showAddNote: false,
         noteText: null,
-        cleared: false
+        cleared: false,
       };
     }
 
@@ -57,12 +57,10 @@ const qNote = observer(
       if (this.props.sID) {
         let p = new Promise((resolve, reject) => {
           db.get(this.props.sID)
-            .then(function(doc) {
-              //x.setState({ currentQNotes: doc.notes });
+            .then(function (doc) {
               resolve(doc.notes);
             })
-            .catch(function(err) {
-              //console.log(err);
+            .catch(function (err) {
               reject(err);
             });
         });
@@ -75,28 +73,31 @@ const qNote = observer(
     renderQNotes = () => {
       let sortedQ = this.state.currentQNotes;
 
-      sortedQ.sort((a, b) => {
-        if (a.date < b.date) return -1;
+      if (sortedQ) {
+        sortedQ.sort((a, b) => {
+          if (a.date < b.date) return -1;
+          if (a.date > b.date) return 1;
 
-        if (a.date > b.date) return 1;
+          return 0;
+        });
+      }
 
-        return 0;
-      });
-
-      if (this.state.currentQNotes.length === 0) {
-        return <h3>No notes added</h3>;
-      } else {
-        return sortedQ.map(e => (
-          <tr key={Math.random()}>
-            <td>{e.date}</td>
-            <td>{e.tutor}</td>
-            <td>{e.description}</td>
-          </tr>
-        ));
+      if (this.state.currentQNotes) {
+        if (this.state.currentQNotes.length === 0) {
+          return <h3>No notes added</h3>;
+        } else {
+          return sortedQ.map((e) => (
+            <tr key={Math.random()}>
+              <td>{e.date}</td>
+              <td>{e.tutor}</td>
+              <td>{e.description}</td>
+            </tr>
+          ));
+        }
       }
     };
 
-    handleNoteText = e => {
+    handleNoteText = (e) => {
       this.setState({ noteText: e.target.value });
     };
 
@@ -118,16 +119,16 @@ const qNote = observer(
       let noteObject = {
         date: today,
         tutor: sessionStorage.getItem("Tutor"),
-        description: this.state.noteText
+        description: this.state.noteText,
       };
 
       if (this.state.noteText !== null && this.props.sID) {
         db.get(this.props.sID)
-          .then(function(doc) {
+          .then(function (doc) {
             doc.notes.push(noteObject);
             return db.put(doc);
           })
-          .catch(function(err) {
+          .catch(function (err) {
             console.log(err);
           });
         this.refs.noteTextRef.value = "";
