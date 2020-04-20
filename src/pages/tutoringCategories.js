@@ -157,7 +157,9 @@ const tutoringCategories = observer(
             </div>
           </div>
           <div className="cards">
-            <div className="row row-cols-sm">{this.renderPeerCategories()}</div>
+            <div className="row row-cols-sm d-flex justify-content-around">
+              {this.renderPeerCategories()}
+            </div>
           </div>
           <div className="row">
             <div className="col categoryLead">
@@ -168,7 +170,9 @@ const tutoringCategories = observer(
             </div>
           </div>
           <div className="cards">
-            <div className="row row-cols-sm">{this.renderCategories()}</div>
+            <div className="row row-cols-sm d-flex justify-content-center">
+              {this.renderCategories()}
+            </div>
           </div>
           <div className="row">
             <div className="col categoryLead">
@@ -177,7 +181,7 @@ const tutoringCategories = observer(
             </div>
           </div>
           <div className="cards">
-            <div className="row row-cols-sm">
+            <div className="row row-cols-sm d-flex justify-content-around">
               {this.renderAppointmentCategories()}
             </div>
           </div>

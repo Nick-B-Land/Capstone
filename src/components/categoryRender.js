@@ -10,7 +10,7 @@ const categoryRender = observer(
       this.state = {
         currentQ: this.props.currentQ,
         ETA: this.props.ETA,
-        error: false
+        error: false,
       };
     }
 
@@ -85,10 +85,10 @@ const categoryRender = observer(
 
       let sInfoPromise = new Promise((resolve, reject) => {
         db.get(sID)
-          .then(function(doc) {
+          .then(function (doc) {
             resolve(doc);
           })
-          .catch(function(err) {
+          .catch(function (err) {
             reject(err);
           });
       });
@@ -102,15 +102,15 @@ const categoryRender = observer(
           this.props.name +
           " tutoring. \n Your appointment should be ready in " +
           this.props.ETA +
-          " minutes. \n Thank you for using Learner Success Services"
+          " minutes. \n Thank you for using Learner Success Services",
       };
 
       //console.log(message);
       fetch("/SMS", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(message)
-      }).then(res => {
+        body: JSON.stringify(message),
+      }).then((res) => {
         res.json();
         console.log(res);
       });
@@ -123,9 +123,9 @@ const categoryRender = observer(
 
     render() {
       return (
-        <div className="col catCard">
+        <div className="col">
           <div className="card">
-            <div className="card-header">{this.props.name}</div>
+            <div className="card-header tutorCatH">{this.props.name}</div>
             <div className="card-body">
               <p>{this.props.desc}</p>
               <span>

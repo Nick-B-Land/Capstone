@@ -20,8 +20,8 @@ class PeerCategoryRender extends Component {
     if (this.state.selectedDay === "mon") {
       if (this.props.mondayTimes.length === 0) {
         return (
-          <div className="row">
-            <div className="coll">
+          <div className="row mainBG">
+            <div className="col text-center">
               <h3>No times for this day</h3>
             </div>
           </div>
@@ -38,8 +38,8 @@ class PeerCategoryRender extends Component {
     } else if (this.state.selectedDay === "tues") {
       if (this.props.tuesdayTimes.length === 0) {
         return (
-          <div className="row">
-            <div className="col">
+          <div className="row mainBG">
+            <div className="col text-center">
               <h3>No times for this day</h3>
             </div>
           </div>
@@ -56,8 +56,8 @@ class PeerCategoryRender extends Component {
     } else if (this.state.selectedDay === "wed") {
       if (this.props.wednesdayTimes.length === 0) {
         return (
-          <div className="row">
-            <div className="coll">
+          <div className="row mainBG">
+            <div className="col text-center">
               <h3>No times for this day</h3>
             </div>
           </div>
@@ -74,8 +74,8 @@ class PeerCategoryRender extends Component {
     } else if (this.state.selectedDay === "thurs") {
       if (this.props.thursdayTimes.length === 0) {
         return (
-          <div className="row">
-            <div className="coll">
+          <div className="row mainBG">
+            <div className="col text-center">
               <h3>No times for this day</h3>
             </div>
           </div>
@@ -92,8 +92,8 @@ class PeerCategoryRender extends Component {
     } else if (this.state.selectedDay === "fri") {
       if (this.props.fridayTimes.length === 0) {
         return (
-          <div className="row">
-            <div className="coll">
+          <div className="row mainBG">
+            <div className="col text-center">
               <h3>No times for this day</h3>
             </div>
           </div>
@@ -120,9 +120,9 @@ class PeerCategoryRender extends Component {
         <div className="row">
           <div className="col">{this.props.department}</div>
         </div>
-        <div className="row d-flex justify-content-center">
+        <div className="row d-flex">
           <div className="col">
-            <select onChange={this.handleSelectChange}>
+            <select className="form-control" onChange={this.handleSelectChange}>
               <option value="mon">Monday</option>
               <option value="tues">Tuesday</option>
               <option value="wed">Wednesday</option>
