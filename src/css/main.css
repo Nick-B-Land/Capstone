@@ -93,13 +93,6 @@
   border-radius: 25px;
 }
 
-.validateForm {
-  margin: auto;
-  width: 80%;
-  padding-top: 5%;
-  padding-bottom: 5%;
-}
-
 .hideEmailVerified {
   display: none;
 }

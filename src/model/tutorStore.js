@@ -235,9 +235,6 @@ TutorStore.StartAppointment = (aID) => {
 };
 
 TutorStore.EndAppointment = (aID) => {
-  let db = new PouchDB(
-    "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/programs"
-  );
   let histDB = new PouchDB(
     "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/history"
   );
@@ -253,7 +250,6 @@ TutorStore.EndAppointment = (aID) => {
   let time = date.toLocaleTimeString();
   let completedAppointment = {};
   let studentID = 0;
-  console.log(aID)
 
   //get the appropriate program database
   //update the end time, copy the activeQ object for posting to historydb
@@ -271,24 +267,6 @@ TutorStore.EndAppointment = (aID) => {
       completedAppointment.cancelled = false;
       studentID = doc.activeAppointment.studentID;
       doc.activeAppointment = {};
-
-      // doc.activeQ.forEach((e) => {
-
-      //     e.appointmentEnd = time;
-      //     studentID = e.studentID;
-      //     console.log("Appointment ended at " + time);
-      //     completedAppointment = e;
-      //     completedAppointment._id = completedAppointment.id.toString();
-      //     completedAppointment.tutor = TutorStore.Tutor._id;
-      //     completedAppointment.noShow = false;
-      //     completedAppointment.cancelled = false;
-      //     doc.currentQ = doc.currentQ - 1;
-      //     doc.ETA = doc.ETA - doc.qLength;
-      //     doc.activeQ = doc.activeQ.filter((e) => e.id !== aID);
-      //     //TutorStore.Tutor.Queue = doc.activeQ;
-      //TutorStore.Fetch(TutorStore.Tutor._id);
-
-      // });
       return tDB.put(doc);
     })
     .then(function () {
@@ -337,26 +315,28 @@ TutorStore.NoShow = (aID) => {
     "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/students"
   );
 
+  let tDB = new PouchDB(
+    "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/tutors"
+  );
+
   let completedAppointment = {};
+  let date = new Date();
+  let time = date.toLocaleTimeString();
   let studentID = 0;
 
-  db.get(TutorStore.Tutor.programID)
+  tDB
+    .get(TutorStore.Tutor._id)
     .then(function (doc) {
-      doc.activeQ.forEach((e) => {
-        if (aID === e.id) {
-          studentID = e.studentID;
-          completedAppointment = e;
-          completedAppointment._id = completedAppointment.id.toString();
-          completedAppointment.tutor = TutorStore.Tutor._id;
-          completedAppointment.noShow = true;
-          completedAppointment.cancelled = false;
-          doc.currentQ = doc.currentQ - 1;
-          doc.ETA = doc.ETA - doc.qLength;
-          doc.activeQ = doc.activeQ.filter((e) => e.id !== aID);
-          TutorStore.Fetch(TutorStore.Tutor._id);
-        }
-      });
-      return db.put(doc);
+      completedAppointment = doc.activeAppointment;
+      completedAppointment._id = completedAppointment.id.toString();
+      completedAppointment.appointmentEnd = time;
+      completedAppointment.tutor = TutorStore.Tutor._id;
+      completedAppointment.noShow = false;
+      completedAppointment.cancelled = false;
+      studentID = doc.activeAppointment.studentID;
+      console.log(completedAppointment);
+      doc.activeAppointment = {};
+      return tDB.put(doc);
     })
     .then(function () {
       histDB.put(completedAppointment);
