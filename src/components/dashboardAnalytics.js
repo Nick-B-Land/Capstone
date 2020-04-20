@@ -105,12 +105,15 @@ const dashboardAnalytics = observer(
           });
       });
 
+      let option = document.getElementById("timeSelectLength");
+      let time = option.options[option.selectedIndex].value;
       let matches = await promise;
       let totalLength = 0;
       let aCount = 0;
 
       matches.docs.forEach((e) => {
-        if (e.appointmentStart && e.appointmentEnd) {
+        let apptDate = new Date(e.date);
+        if (e.appointmentStart && e.appointmentEnd && this.handleDateInfo(apptDate, time)) {
           //first colon in time string, used to find position of hours, mins, secs
           let startColon = e.appointmentStart.indexOf(":");
           let endColon = e.appointmentEnd.indexOf(":");
@@ -239,10 +242,18 @@ const dashboardAnalytics = observer(
           });
       });
 
-      let count = await promise;
-      let c = count.docs.length;
+      let option = document.getElementById("timeSelectAppt");
+      let time = option.options[option.selectedIndex].value;
+      let matches = await promise;
+      let matchList = matches.docs;
+      let list = [];      
 
-      this.setState({ appCount: c });
+      matchList.forEach((e) => {
+        let apptDate = new Date(e.date);
+        if (this.handleDateInfo(apptDate, time)) list.push(e.studentID);
+      })
+
+      this.setState({ appCount: list.length });
     };
 
     handleDateInfo(apptDate, time) {
@@ -451,35 +462,14 @@ const dashboardAnalytics = observer(
                 <div className="card-body">
                   <span>
                     <h5>Number of Completed Appointments</h5>
+                    <select onChange={this.getAppointmentNumber} id="timeSelectAppt">
+                      <option value="day">Day</option>
+                      <option value="month">Month</option>
+                      <option value="year">Year</option>
+                    </select>
                   </span>
                   <span>
                     <h6>{this.state.appCount}</h6>
-                  </span>
-                </div>
-              </div>
-            </div>
-            <div className="col-6">
-              <div className="card">
-                <div className="card-body">
-                  <span>
-                    <h5>Number of Students Cancelled</h5>
-                  </span>
-                  <span>
-                    <h6>{this.state.highestCat}</h6>
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-6">
-              <div className="card">
-                <div className="card-body">
-                  <span>
-                    <h5>Average Length of Sessions</h5>
-                  </span>
-                  <span>
-                    <h6>{this.state.avgLength} Minutes</h6>
                   </span>
                 </div>
               </div>
@@ -507,6 +497,23 @@ const dashboardAnalytics = observer(
               <div className="card">
                 <div className="card-body">
                   <span>
+                    <h5>Average Length of Sessions</h5>
+                    <select onChange={this.getAvgAppointmentLength} id="timeSelectLength">
+                      <option value="day">Day</option>
+                      <option value="month">Month</option>
+                      <option value="year">Year</option>
+                    </select>
+                  </span>
+                  <span>
+                    <h6>{this.state.avgLength} Minutes</h6>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div className="col-6">
+              <div className="card">
+                <div className="card-body">
+                  <span>
                     <h5>Unique students per</h5>
                     <select onChange={this.getStudentsPerTime} id="timeWindow">
                       <option value="day">Day</option>
@@ -520,21 +527,9 @@ const dashboardAnalytics = observer(
                 </div>
               </div>
             </div>
-            <div className="col-6">
-              <div className="card">
-                <div className="card-body">
-                  <span>
-                    <h5>New students this month</h5>
-                  </span>
-                  <span>
-                    <h6>{this.state.newMonthly}</h6>
-                  </span>
-                </div>
-              </div>
-            </div>
           </div>
           <div className="row">
-            <div className="col-6">
+          <div className="col-6">
               <div className="card">
                 <div className="card-body">
                   <span>
@@ -546,12 +541,26 @@ const dashboardAnalytics = observer(
                     </select>
                     <select onChange={this.getStudentsPerDept} id="deptSelect">
                       <option value="Creative Technologies">Creative Technologies</option>
-                      <option value="Test 1">Test 1</option>
-                      <option value="Test 2">Test 2</option>
+                      <option value="Health and Wellness">Health and Wellness</option>
+                      <option value="Learning Coach">Learning Coach</option>
+                      <option value="Reading">Reading</option>
+                      <option value="Writing">Writing</option>
                     </select>
                   </span>
                   <span>
                     <h6>{this.state.studentDept}</h6>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div className="col-6">
+              <div className="card">
+                <div className="card-body">
+                  <span>
+                    <h5>New students this month</h5>
+                  </span>
+                  <span>
+                    <h6>{this.state.newMonthly}</h6>
                   </span>
                 </div>
               </div>
