@@ -84,6 +84,7 @@ const dashboardAnalytics = observer(
       this.setState({ highestCat: highCat });
     };
     //calculate a tutors average appointment length
+    //convert timestring to 24
     getAvgAppointmentLength = async () => {
       let db = new PouchDB(
         "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/history"
@@ -112,8 +113,9 @@ const dashboardAnalytics = observer(
       let aCount = 0;
 
       matches.docs.forEach((e) => {
-        let apptDate = new Date(e.date);
-        if (e.appointmentStart && e.appointmentEnd && this.handleDateInfo(apptDate, time)) {
+        let apptDateStart = new Date(e.date);
+        let apptDateEnd = new Date(e.date);
+        if (e.appointmentStart && e.appointmentEnd && this.handleDateInfo(apptDateStart, time)) {
           //first colon in time string, used to find position of hours, mins, secs
           let startColon = e.appointmentStart.indexOf(":");
           let endColon = e.appointmentEnd.indexOf(":");
@@ -122,59 +124,25 @@ const dashboardAnalytics = observer(
           let end24 = e.appointmentEnd.substr(e.appointmentEnd.length - 2);
           //console.log(end24);
           let endH;
-          if (endColon === 1) {
-            endH = parseInt(e.appointmentEnd.charAt(0));
-            if (end24 === "PM") {
-              if (endH === 12) endH = 0;
-              else endH = endH + 12;
-            }
-          } else if (endColon === 2) {
-            endH = parseInt(e.appointmentEnd.substr(0, 1));
-            if (end24 === "PM") {
-              if (endH === 12) endH = 0;
-              else endH = endH + 12;
-            }
+          let s = e.appointmentStart.split(":");
+          if (s[2].endsWith("PM") === true) {
+
+            s[0] = parseInt(s[0]) + 12;
+            s[0] = s[0].toString();
           }
+          s[2] = s[2].substr(0,2);
 
-          let endM = parseInt(
-            e.appointmentEnd.substr(endColon + 1, endColon + 2)
-          );
-          let endS = parseInt(
-            e.appointmentEnd.substr(endColon + 4, endColon + 5)
-          );
+          let en = e.appointmentEnd.split(":");
+          if (en[2].endsWith("PM") === true) {
 
-          let start24 = e.appointmentEnd.substr(e.appointmentStart.length - 2);
-          let startH;
-          if (startColon === 1) {
-            startH = parseInt(e.appointmentStart.charAt(0));
-            if (start24 === "PM") {
-              if (startH === 12) startH = 0;
-              else startH = startH + 12;
-            }
-          } else if (startColon === 2) {
-            startH = parseInt(e.appointmentStart.substr(0, 1));
+            en[0] = parseInt(en[0]) + 12;
+            en[0] = en[0].toString();
           }
+          en[2] = en[2].substr(0,2);
 
-          let startM = parseInt(
-            e.appointmentStart.substr(startColon + 1, startColon + 2)
-          );
-          let startS = parseInt(
-            e.appointmentStart.substr(startColon + 4, startColon + 5)
-          );
-          // console.log("history ID " + e._id);
-          // console.log(
-          //   "STARTTIME = hour " + startH + " min " + startM + " sec " + startS
-          // );
-          // console.log(
-          //   "ENDTIME = hour " + endH + " min " + endM + " sec " + endS
-          // );
-
-          //convert everything to seconds
-          let endT = endH * 3600 + endM * 60 + endS;
-          let startT = startH * 3600 + startM * 60 + startS;
-
-          let timeToAdd = endT - startT;
-          totalLength += timeToAdd;
+          apptDateStart.setHours(s[0], s[1], s[2]);
+          apptDateEnd.setHours(en[0], en[1], en[2]);
+          totalLength += ((apptDateEnd - apptDateStart)/60000);
           aCount += 1;
         } else {
           console.log(e.appointmentStart);
@@ -201,8 +169,7 @@ const dashboardAnalytics = observer(
       });
 
       //calculate average and convert to minutes
-      let avgSecs = totalLength / aCount;
-      let avg = avgSecs / 60;
+      let avg = totalLength / aCount;
       this.setState({ avgLength: avg.toFixed(2) });
     };
 
