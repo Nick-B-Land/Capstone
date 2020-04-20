@@ -14,7 +14,8 @@ const dashboardAnalytics = observer(
         highestCat: "",
         studentTime: 0,
         newMonthly: 0,
-        studentDept: 0
+        studentDept: 0,
+        noShows: 0
       };
     }
 
@@ -22,6 +23,7 @@ const dashboardAnalytics = observer(
       this.getAppointmentNumber();
       this.getAvgAppointmentLength();
       this.getMostUsedCat();
+      this.getNoShows();
       this.getStudentsPerTime();
       this.newThisMonth();
       this.getStudentsPerDept();
@@ -243,11 +245,6 @@ const dashboardAnalytics = observer(
       this.setState({ appCount: c });
     };
 
-    //TODO Analytics
-    /*
-    Number of students/department
-  */
-
     handleDateInfo(apptDate, time) {
       let date = new Date();
       let date2 = new Date();
@@ -408,6 +405,43 @@ const dashboardAnalytics = observer(
       this.setState({ studentDept: list.length });
     }
 
+    getNoShows = async () => {
+
+      let db = new PouchDB(
+        "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/history"
+      );
+
+      let x = this;
+      let promise = new Promise((resolve, reject) => {
+        db.find({
+          selector: {
+            tutor: { $eq: x.props.tutorStore.Tutor._id },
+          },
+        })
+          .then(function (result) {
+            resolve(result);
+          })
+          .catch(function (err) {
+            console.log(err);
+            reject(err);
+          });
+      });
+
+      let option = document.getElementById("timeSelectNoShow");
+      let time = option.options[option.selectedIndex].value;
+      let matches = await promise;
+      let matchList = matches.docs;
+      let list = [];
+
+      matchList.forEach((e) => {
+        let apptDate = new Date(e.date);
+        if (this.handleDateInfo(apptDate, time) && e.noShow === true)
+          list.push(e.studentID);
+      });
+
+      this.setState({ noShows: list.length });
+    }
+
     render() {
       return (
         <div className="container dashAnal">
@@ -455,9 +489,14 @@ const dashboardAnalytics = observer(
                 <div className="card-body">
                   <span>
                     <h5>Number of No Shows</h5>
+                    <select onChange={this.getNoShows} id="timeSelectNoShow">
+                      <option value="day">Day</option>
+                      <option value="month">Month</option>
+                      <option value="year">Year</option>
+                    </select>
                   </span>
                   <span>
-                    <h6>NOT DONE YET</h6>
+                    <h6>{this.state.noShows}</h6>
                   </span>
                 </div>
               </div>
@@ -517,7 +556,7 @@ const dashboardAnalytics = observer(
                 </div>
               </div>
             </div>
-            </div>
+          </div>
         </div>
       );
     }
