@@ -13,7 +13,8 @@ const dashboardAnalytics = observer(
         avgLength: 0,
         highestCat: "",
         studentTime: 0,
-        newMonthly: 0
+        newMonthly: 0,
+        studentDept: 0
       };
     }
 
@@ -23,6 +24,7 @@ const dashboardAnalytics = observer(
       this.getMostUsedCat();
       this.getStudentsPerTime();
       this.newThisMonth();
+      this.getStudentsPerDept();
     };
 
     getMostUsedCat = async () => {
@@ -243,7 +245,6 @@ const dashboardAnalytics = observer(
 
     //TODO Analytics
     /*
-    New students this month
     Number of students/department
   */
 
@@ -367,6 +368,46 @@ const dashboardAnalytics = observer(
       this.setState({ newMonthly: list.length });
     }
 
+    getStudentsPerDept = async () => {
+      let db = new PouchDB(
+        "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/history"
+      );
+
+      let x = this;
+      let promise = new Promise((resolve, reject) => {
+        db.find({
+          selector: {
+            tutor: { $eq: x.props.tutorStore.Tutor._id },
+          },
+        })
+          .then(function (result) {
+            resolve(result);
+          })
+          .catch(function (err) {
+            console.log(err);
+            reject(err);
+          });
+      });
+
+      let option = document.getElementById("timeSelect");
+      let time = option.options[option.selectedIndex].value;
+      let deptOption = document.getElementById("deptSelect")
+      let dept = deptOption.options[deptOption.selectedIndex].value;
+      let matches = await promise;
+      let matchList = matches.docs;
+      let list = [];
+
+      matchList.forEach((e) => {
+        let inList = false;
+        let apptDate = new Date(e.date);
+        if (list.includes(e.studentID)) inList = true;
+        if (inList === false && this.handleDateInfo(apptDate, time) && e.programID === dept)
+          list.push(e.studentID);
+      });
+
+      this.setState({ studentDept: list.length });
+    }
+
     render() {
       return (
         <div className="container dashAnal">
@@ -453,6 +494,30 @@ const dashboardAnalytics = observer(
               </div>
             </div>
           </div>
+          <div className="row">
+            <div className="col-6">
+              <div className="card">
+                <div className="card-body">
+                  <span>
+                    <h5>Unique students per</h5>
+                    <select onChange={this.getStudentsPerDept} id="timeSelect">
+                      <option value="day">Day</option>
+                      <option value="month">Month</option>
+                      <option value="year">Year</option>
+                    </select>
+                    <select onChange={this.getStudentsPerDept} id="deptSelect">
+                      <option value="Creative Technologies">Creative Technologies</option>
+                      <option value="Test 1">Test 1</option>
+                      <option value="Test 2">Test 2</option>
+                    </select>
+                  </span>
+                  <span>
+                    <h6>{this.state.studentDept}</h6>
+                  </span>
+                </div>
+              </div>
+            </div>
+            </div>
         </div>
       );
     }
