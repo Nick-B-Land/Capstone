@@ -5,6 +5,7 @@ import HistoryRender from "../components/historyRender";
 import AdminSideNav from "../components/adminSideNav";
 import AdminTutors from "../components/adminTutors";
 import AdminPeerCat from "../components/adminPeerCat";
+import AdminQueueCat from "../components/adminQueueCat";
 
 const adminHome = observer(
   class AdminHome extends Component {
@@ -79,7 +80,7 @@ const adminHome = observer(
       if (scene === "tutor") {
         return <AdminTutors />;
       } else if (scene === "queueCategories") {
-        return <h1>queue cat to be added</h1>;
+        return <AdminQueueCat />;
       } else if (scene === "peerCategories") {
         return <AdminPeerCat />;
       } else if (scene === "analytics") {
