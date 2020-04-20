@@ -366,6 +366,7 @@ class AdminTutorRender extends Component {
               </div>
               <div className="col-6 text-center">
                 <select
+                  className="form-control"
                   value={this.state.progInput}
                   onChange={this.handleProgInput}
                 >
@@ -472,11 +473,15 @@ class AdminTutorRender extends Component {
                 <h4>Role</h4>
               </div>
               <div className="col-6 text-center">
-                <input
+                <select
+                  onChange={this.handleRoleInput}
                   className="form-control"
                   defaultValue={this.state.roleInput}
-                  onChange={this.handleRoleInput}
-                />
+                >
+                  <option value="Tutor">Tutor</option>
+                  <option value="Admin">Admin</option>
+                  <option value="Appointment">Appointment</option>
+                </select>
               </div>
             </div>
             <div

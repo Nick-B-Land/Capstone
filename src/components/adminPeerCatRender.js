@@ -223,31 +223,31 @@ class AdminPeerCatRender extends Component {
 
             <div className="row d-flex justify-content-center btn-group">
               <button
-                className="btn btn-lg tutorBtn"
+                className="btn btn-lg dayBtn"
                 onClick={this.handleMondayVisibility}
               >
                 Mon
               </button>
               <button
-                className="btn btn-lg tutorBtn"
+                className="btn btn-lg dayBtn"
                 onClick={this.handleTuesdayVisibility}
               >
                 Tues
               </button>
               <button
-                className="btn btn-lg tutorBtn"
+                className="btn btn-lg dayBtn"
                 onClick={this.handleWednesdayVisibility}
               >
                 Wed
               </button>
               <button
-                className="btn btn-lg tutorBtn"
+                className="btn btn-lg dayBtn"
                 onClick={this.handleThursdayVisibility}
               >
                 Thurs
               </button>
               <button
-                className="btn btn-lg tutorBtn"
+                className="btn btn-lg dayBtn"
                 onClick={this.handleFridayVisibility}
               >
                 Fri
@@ -399,7 +399,10 @@ class AdminPeerCatRender extends Component {
                     <h4>Start Time</h4>
                   </div>
                   <div className="col-6 text-center">
-                    <select onChange={this.handleEndTimeInput}>
+                    <select
+                      className="form-control"
+                      onChange={this.handleEndTimeInput}
+                    >
                       <option value="7:00:00 AM">7:00 AM</option>
                       <option value="7:15:00 AM">7:15 AM</option>
                       <option value="7:30:00 AM">7:30 AM</option>
@@ -459,7 +462,10 @@ class AdminPeerCatRender extends Component {
                     <h4>End Time</h4>
                   </div>
                   <div className="col-6 text-center">
-                    <select onChange={this.handleEndTimeInput}>
+                    <select
+                      className="form-control"
+                      onChange={this.handleEndTimeInput}
+                    >
                       <option value="7:00:00 AM">7:00 AM</option>
                       <option value="7:15:00 AM">7:15 AM</option>
                       <option value="7:30:00 AM">7:30 AM</option>
