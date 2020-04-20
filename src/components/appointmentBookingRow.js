@@ -58,9 +58,8 @@ class AppointmentBookingRow extends Component {
   render() {
     return (
       <div
-        className="row"
         onClick={this.handleRowAndClass}
-        className={this.state.clicked ? "rowSelected" : "rowDefault"}
+        className={this.state.clicked ? "row rowSelected" : "rowDefault"}
       >
         <div className="col">
           {this.convertAppointmentTime(this.props.timeSlot)} -{" "}
