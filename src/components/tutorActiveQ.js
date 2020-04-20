@@ -117,7 +117,7 @@ const tutorActiveQ = observer(
     };
 
     handleEndingAppointment = () => {
-      console.log(this.props.activeQ)
+      console.log(this.props.activeQ);
       this.props.tutorStore.EndAppointment();
       clearInterval(this.state.interval);
       clearTimeout(this.state.timeout);
@@ -174,52 +174,54 @@ const tutorActiveQ = observer(
         console.log(currentAppointment.studentID);
       }
       return (
-        <div className="row d-flex justify-content-end">
-          <div className="tutorActiveDiv">
-            <div className="row">
-              <div className="col-4 text-center">
-                <h2>
-                  {this.state.minutes} : {this.state.seconds}
-                </h2>
+        <div className="container">
+          <div className="row d-flex justify-content-end">
+            <div className="tutorActiveDiv">
+              <div className="row">
+                <div className="col-4 text-center">
+                  <h2>
+                    {this.state.minutes} : {this.state.seconds}
+                  </h2>
+                </div>
+                <div className="col-8 text-center">
+                  {" "}
+                  <h2>
+                    Student Name -
+                    {currentAppointment ? currentAppointment.studentID : "Oops"}
+                  </h2>{" "}
+                </div>
               </div>
-              <div className="col-8 text-center">
-                {" "}
-                <h2>
-                  Student Name -
-                  {currentAppointment ? currentAppointment.studentID : "Oops"}
-                </h2>{" "}
+              <div className="row d-flex justify-content-center">
+                <h3>{this.setAppointmentStatus()}</h3>
               </div>
-            </div>
-            <div className="row d-flex justify-content-center">
-              <h3>{this.setAppointmentStatus()}</h3>
-            </div>
-            <div className="row d-flex justify-content-between">
-              {this.state.appointmentState === "readyToStart" ? (
-                <button
-                  className="btn btn-lg qBtn lBtn"
-                  onClick={this.handleStartingAppointment}
-                >
-                  {" "}
-                  Start Appointment
-                </button>
-              ) : (
-                <button
-                  className="btn btn-lg qBtn lBtn"
-                  onClick={this.handleEndingAppointment}
-                >
-                  {" "}
-                  End Appointment
-                </button>
-              )}
-              {this.state.started ? null : (
-                <button
-                  className="btn btn-lg qBtn rBtn d-flex flex-row-reverse"
-                  onClick={this.handleNoShow}
-                >
-                  {" "}
-                  No Show
-                </button>
-              )}
+              <div className="row d-flex justify-content-between">
+                {this.state.appointmentState === "readyToStart" ? (
+                  <button
+                    className="btn btn-lg qBtn lBtn"
+                    onClick={this.handleStartingAppointment}
+                  >
+                    {" "}
+                    Start Appointment
+                  </button>
+                ) : (
+                  <button
+                    className="btn btn-lg qBtn lBtn"
+                    onClick={this.handleEndingAppointment}
+                  >
+                    {" "}
+                    End Appointment
+                  </button>
+                )}
+                {this.state.started ? null : (
+                  <button
+                    className="btn btn-lg qBtn rBtn d-flex flex-row-reverse"
+                    onClick={this.handleNoShow}
+                  >
+                    {" "}
+                    No Show
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -235,33 +237,35 @@ const tutorActiveQ = observer(
         console.log(currentAppointment.studentID);
       }
       return (
-        <div className="row d-flex justify-content-end">
-          <div className="tutorActiveDiv">
-            <div className="row">
-              <div className="col-4 text-center">
-                <h2>
-                  <CountUpTimer />
-                </h2>
+        <div className="container">
+          <div className="row d-flex justify-content-end">
+            <div className="tutorActiveDiv">
+              <div className="row">
+                <div className="col-4 text-center">
+                  <h2>
+                    <CountUpTimer />
+                  </h2>
+                </div>
+                <div className="col-8 text-center">
+                  {" "}
+                  <h2>
+                    Student Name -
+                    {currentAppointment ? currentAppointment.studentID : "Oops"}
+                  </h2>{" "}
+                </div>
               </div>
-              <div className="col-8 text-center">
-                {" "}
-                <h2>
-                  Student Name -
-                  {currentAppointment ? currentAppointment.studentID : "Oops"}
-                </h2>{" "}
+              <div className="row d-flex justify-content-center">
+                <h3>{this.setAppointmentStatus()}</h3>
               </div>
-            </div>
-            <div className="row d-flex justify-content-center">
-              <h3>{this.setAppointmentStatus()}</h3>
-            </div>
-            <div className="row d-flex justify-content-around">
-              <button
-                className="btn btn-lg qBtn lBtn"
-                onClick={this.handleEndingAppointment}
-              >
-                {" "}
-                End Appointment
-              </button>
+              <div className="row d-flex justify-content-around">
+                <button
+                  className="btn btn-lg qBtn lBtn"
+                  onClick={this.handleEndingAppointment}
+                >
+                  {" "}
+                  End Appointment
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -270,7 +274,7 @@ const tutorActiveQ = observer(
 
     renderEmptyQ = () => {
       return (
-        <div className="row d-flex justify-content-end">
+        <div className="container">
           <div className="tutorActiveDiv">
             <div className="row">
               <h3>No Appointment Selected</h3>
@@ -282,23 +286,25 @@ const tutorActiveQ = observer(
 
     renderTimedOut = () => {
       return (
-        <div className="row d-flex justify-content-end">
-          <div className="tutorActiveDiv">
-            <div className="row d-flex justify-content-between">
-              <button
-                className="btn btn-lg qBtn lBtn"
-                onClick={this.setExtendScene}
-              >
-                {" "}
-                Extend Appointment
-              </button>
-              <button
-                className="btn btn-lg qBtn lBtn"
-                onClick={this.handleEndingAppointment}
-              >
-                {" "}
-                End Appointment
-              </button>
+        <div className="container">
+          <div className="row d-flex justify-content-end">
+            <div className="tutorActiveDiv">
+              <div className="row d-flex justify-content-between">
+                <button
+                  className="btn btn-lg qBtn lBtn"
+                  onClick={this.setExtendScene}
+                >
+                  {" "}
+                  Extend Appointment
+                </button>
+                <button
+                  className="btn btn-lg qBtn lBtn"
+                  onClick={this.handleEndingAppointment}
+                >
+                  {" "}
+                  End Appointment
+                </button>
+              </div>
             </div>
           </div>
         </div>

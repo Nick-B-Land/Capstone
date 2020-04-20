@@ -122,12 +122,12 @@ const tutorQList = observer(
 
     render() {
       return (
-        <div className="row d-flex">
-          <div className="row ">
-            <div className="d-flex justify-content-start">
+        <div className="container">
+          <div className="row">
+            <div className="col">
               <h3 className="appointmentHead">Appointment Queue</h3>
             </div>
-            <div className="d-flex justify-content-end">
+            <div className="row">
               {this.state.btnState ? (
                 <button
                   type="button"

@@ -21,7 +21,7 @@ const qNote = observer(
         currentQNotes: [],
         showAddNote: false,
         noteText: null,
-        cleared: false
+        cleared: false,
       };
     }
 
@@ -57,11 +57,11 @@ const qNote = observer(
       if (this.props.sID) {
         let p = new Promise((resolve, reject) => {
           db.get(this.props.sID)
-            .then(function(doc) {
+            .then(function (doc) {
               //x.setState({ currentQNotes: doc.notes });
               resolve(doc.notes);
             })
-            .catch(function(err) {
+            .catch(function (err) {
               //console.log(err);
               reject(err);
             });
@@ -86,7 +86,7 @@ const qNote = observer(
       if (this.state.currentQNotes.length === 0) {
         return <h3>No notes added</h3>;
       } else {
-        return sortedQ.map(e => (
+        return sortedQ.map((e) => (
           <tr key={Math.random()}>
             <td>{e.date}</td>
             <td>{e.tutor}</td>
@@ -96,7 +96,7 @@ const qNote = observer(
       }
     };
 
-    handleNoteText = e => {
+    handleNoteText = (e) => {
       this.setState({ noteText: e.target.value });
     };
 
@@ -118,16 +118,16 @@ const qNote = observer(
       let noteObject = {
         date: today,
         tutor: sessionStorage.getItem("Tutor"),
-        description: this.state.noteText
+        description: this.state.noteText,
       };
 
       if (this.state.noteText !== null && this.props.sID) {
         db.get(this.props.sID)
-          .then(function(doc) {
+          .then(function (doc) {
             doc.notes.push(noteObject);
             return db.put(doc);
           })
-          .catch(function(err) {
+          .catch(function (err) {
             console.log(err);
           });
         this.refs.noteTextRef.value = "";
@@ -136,14 +136,18 @@ const qNote = observer(
 
     render() {
       return (
-        <div className="container-fluid">
-          <div className="row d-flex justify-content-around">
-            <button onClick={this.handleNoteClick} className="btn btn-dark">
-              {this.state.visibility ? "Hide Notes" : "Show Notes"}
-            </button>
-            <button className="btn btn-dark" onClick={this.handleShowAddNote}>
-              Add Note
-            </button>
+        <div className="container">
+          <div className="row">
+            <div className="buttons">
+              <button onClick={this.handleNoteClick} className="btn btn-dark">
+                {this.state.visibility ? "Hide Notes" : "Show Notes"}
+              </button>
+            </div>
+            <div className="buttons">
+              <button className="btn btn-dark" onClick={this.handleShowAddNote}>
+                Add Note
+              </button>
+            </div>
           </div>
           <div className={this.state.visibility ? "showQNotes" : "hideQNotes"}>
             <br />

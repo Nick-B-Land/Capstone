@@ -2,11 +2,11 @@
   background-color: #db7c1d !important;
   color: #fff !important;
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  margin-left: 4rem;
 }
 
 .appointmentHead {
-  margin: 0;
-  white-space: nowrap;
+  margin-left: 4rem;
 }
 
 .trueQRow {

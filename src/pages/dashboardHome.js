@@ -30,7 +30,7 @@ const dashboardHome = observer(
         timeout: null,
         activeQ: null,
         ts: null,
-        q: null
+        q: null,
       };
     }
     componentDidMount = async () => {
@@ -64,23 +64,23 @@ const dashboardHome = observer(
         console.log(currentAppointment.studentID);
       }
       return (
-        <div className="container-fluid">
+        <div className="container">
           <div className="row">
-            <div className="col-6">
+            <div className="row row-cols-sm">
               <TutorQList tutorStore={this.props.tutorStore} />
             </div>
-            <div className="col-6 ">
+            <div className="row row-cols-sm">
               <TutorActiveQ
                 activeQ={this.state.activeQ}
                 tutorStore={this.props.tutorStore}
                 tID={tid}
               />
-              <div className="row">
-                <QNote
-                  sID={currentAppointment ? currentAppointment.studentID : null}
-                  tutorStore={this.props.tutorStore}
-                />
-              </div>
+            </div>
+            <div className="row row-cols-sm">
+              <QNote
+                sID={currentAppointment ? currentAppointment.studentID : null}
+                tutorStore={this.props.tutorStore}
+              />
             </div>
           </div>
         </div>
