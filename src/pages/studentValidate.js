@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import PouchDB from "pouchdb";
+import "../css/studentValidate.css";
 
 class StudentValidate extends Component {
   constructor(props) {
@@ -9,6 +9,8 @@ class StudentValidate extends Component {
       emailInput: "",
       sIDInput: "",
       phoneInput: "",
+      fName: "",
+      lName: "",
       programInput: "Writing",
       emailValidated: true,
       sIDValidated: true,
@@ -79,6 +81,14 @@ class StudentValidate extends Component {
     this.setState({ sIDInput: e.target.value });
   };
 
+  handleFName = (e) => {
+    this.setState({ fName: e.target.value });
+  };
+
+  handleLName = (e) => {
+    this.setState({ lName: e.target.value });
+  };
+
   handlePhone = (e) => {
     this.setState({ phoneInput: e.target.value });
   };
@@ -100,6 +110,8 @@ class StudentValidate extends Component {
     let studentObj = {
       _id: this.state.sIDInput,
       programID: this.state.programInput,
+      fName: this.state.fName,
+      lName: this.state.lName,
       phone: this.state.phoneInput,
       email: this.state.emailInput,
       notes: [],
@@ -111,12 +123,11 @@ class StudentValidate extends Component {
       console.log(err);
     });
 
-
     let x = this;
 
-    if (typeof x.props.addStudentToPeer === 'function'){
+    if (typeof x.props.addStudentToPeer === "function") {
       let peerobj = {
-        _id: (this.state.sIDInput+"/"+this.props.date),
+        _id: this.state.sIDInput + "/" + this.props.date,
         student_id: this.state.sIDInput,
         date: this.props.date,
         programID: this.props.peerCategorie,
@@ -128,18 +139,6 @@ class StudentValidate extends Component {
       sessionStorage.setItem("studentID", x.state.sIDInput);
       x.props.history.push("/categories");
     }
-
-    // db.get(this.state.sIDInput)
-    //   .catch(function(err) {
-    //     if (err.status === 404) docExists = false;
-    //   })
-    //   .then(() => {
-    //     if (!docExists) {
-    //       db.put(studentObj).catch(function(err) {
-    //         console.log(err);
-    //       });
-    //     }
-    //   });
   };
 
   checkStudent = () => {
@@ -149,7 +148,7 @@ class StudentValidate extends Component {
     }
 
     let peerobj = {
-      _id: (this.state.sIDInput+"/"+this.props.date),
+      _id: this.state.sIDInput + "/" + this.props.date,
       student_id: this.state.sIDInput,
       date: this.props.date,
       programID: this.props.peerCategorie,
@@ -163,12 +162,12 @@ class StudentValidate extends Component {
     db.get(this.state.sIDInput)
       .then(function (doc) {
         if (doc) {
-          if (typeof x.props.addStudentToPeer === 'function'){
+          if (typeof x.props.addStudentToPeer === "function") {
             x.props.addStudentToPeer(peerobj);
             x.props.addStudentToQueue(peerobj.student_id);
           } else {
-          sessionStorage.setItem("studentID", x.state.sIDInput);
-          x.props.history.push("/categories");
+            sessionStorage.setItem("studentID", x.state.sIDInput);
+            x.props.history.push("/categories");
           }
         }
       })
@@ -181,147 +180,191 @@ class StudentValidate extends Component {
 
   checkSID = () => {
     return (
-      <div>
-        <h1 className="validateLead">Enter Your Student ID</h1>
-        <div className="validateContainer">
-          <form className="validateForm">
-            <div className="form-group">
+      <>
+        <div className="row">
+          <h1 className="validateLead">Enter Your Student ID</h1>
+        </div>
+        <div className="row">
+          <div className="validateContainer">
+            <form className="validateForm">
               <div className="form-group">
-                <label htmlFor="validID">Student ID</label>
-                <input
-                  className="form-control"
-                  id="validID"
-                  onInput={this.handleSID}
-                  onBlur={this.validateSID}
-                />
-                <div
-                  className={
-                    this.state.sIDValidated
-                      ? "hideSIDVerified card-body"
-                      : "showSIDVerified card-body"
-                  }
-                >
-                  Invalid StudentID!
+                <div className="form-group">
+                  <label htmlFor="validID">
+                    <h3>Student ID</h3>
+                  </label>
+                  <input
+                    className="form-control"
+                    id="validID"
+                    onInput={this.handleSID}
+                    onBlur={this.validateSID}
+                  />
+                  <div
+                    className={
+                      this.state.sIDValidated
+                        ? "hideSIDVerified card-body"
+                        : "showSIDVerified card-body"
+                    }
+                  >
+                    Invalid StudentID!
+                  </div>
                 </div>
               </div>
-            </div>
-            <button
-              type="button"
-              className="btn btn-lg btn-dark"
-              onClick={this.checkStudent}
-            >
-              Go
-            </button>
-          </form>
+              <button
+                type="button"
+                className="btn btn-lg bookBtn"
+                onClick={this.checkStudent}
+              >
+                Go!
+              </button>
+            </form>
+          </div>
         </div>
-      </div>
+      </>
     );
   };
 
   firstTimeStudent = () => {
     return (
-      <div>
-        <h1 className="validateLead">Enter Student Information</h1>
-        <div className="validateContainer">
-          <form className="validateForm">
-            <div className="form-group">
-              <label for="validEmail">BVC Email address</label>
-              <input
-                type="email"
-                className="form-control"
-                id="validEmail"
-                aria-describedby="emailHelp"
-                onInput={this.handleEmail}
-                onBlur={this.validateEmail}
-              />
-              <div
-                className={
-                  this.state.emailValidated
-                    ? "hideEmailVerified card-body"
-                    : "showEmailVerified card-body"
-                }
-              >
-                Invalid Email!
+      <>
+        <div className="row">
+          <h1 className="validateLead">Enter Student Information</h1>
+        </div>
+        <div className="row">
+          <div className="validateContainer">
+            <form className="validateForm">
+              <div className="form-group d-flex flex-column justify-content-center">
+                <label for="validEmail">
+                  <h3>BVC Email address</h3>
+                </label>
+                <input
+                  type="email"
+                  className="form-control"
+                  id="validEmail"
+                  aria-describedby="emailHelp"
+                  onInput={this.handleEmail}
+                  onBlur={this.validateEmail}
+                />
+                <div
+                  className={
+                    this.state.emailValidated
+                      ? "hideVerified card-body"
+                      : "showUnVerified card-body"
+                  }
+                >
+                  Invalid Email!
+                </div>
               </div>
-            </div>
-            <div className="form-group">
-              <label for="validID">Student ID</label>
-              <input
-                className="form-control"
-                id="validID"
-                onInput={this.handleSID}
-                onBlur={this.validateSID}
-                value={this.state.sIDInput}
-              />
-              <div
-                className={
-                  this.state.sIDValidated
-                    ? "hideSIDVerified card-body"
-                    : "showSIDVerified card-body"
-                }
-              >
-                Invalid StudentID!
+              <div className="form-group">
+                <label for="validID">
+                  <h3>Student ID</h3>
+                </label>
+                <input
+                  className="form-control"
+                  id="validID"
+                  onInput={this.handleSID}
+                  onBlur={this.validateSID}
+                  value={this.state.sIDInput}
+                />
+                <div
+                  className={
+                    this.state.sIDValidated
+                      ? "hideVerified card-body"
+                      : "showUnVerified card-body"
+                  }
+                >
+                  Invalid StudentID!
+                </div>
               </div>
-            </div>
-            <div className="form-group">
-              <label for="validPhone">Phone Number</label>
-              <input
-                className="form-control"
-                id="validPhone"
-                onInput={this.handlePhone}
-                onBlur={this.validatePhone}
-                maxLength="13"
-              />
-              <div
-                className={
-                  this.state.phoneValidated
-                    ? "hidePhoneVerified card-body"
-                    : "showPhoneVerified card-body"
-                }
-              >
-                Invalid Phone Number!
+              <div className="form-group">
+                <label for="validPhone">
+                  <h3>First Name</h3>
+                </label>
+                <input
+                  className="form-control"
+                  id="validPhone"
+                  onInput={this.handleFName}
+                  maxLength="13"
+                />
               </div>
-            </div>
-            <div className="form-group text-center">
-              <label for="validProgram">Tutoring Need</label>
-              <select
-                className="form-control text-center"
-                id="validProgram"
-                onChange={this.handleProgram}
-                value={this.state.programInput}
-              >
-                <option value="Writing">Writing</option>
-                <option value="Learning Coach">Learning Coach</option>
-                <option value="Health and Wellness">Health and Wellness</option>
-                <option value="Creative Technologies">
-                  Creative Technologies
-                </option>
-              </select>
-            </div>
-            <div className="form-group validateBtn">
-              <div
-                className={
-                  this.state.sIDValidated &&
-                  this.state.emailValidated &&
-                  this.state.phoneValidated &&
-                  this.state.emailInput !== "" &&
-                  this.state.sIDInput !== "" &&
-                  this.state.phoneInput !== ""
-                    ? "showCatBtn"
-                    : "hideCatBtn"
-                }
-              >
+              <div className="form-group">
+                <label for="validPhone">
+                  <h3>Last Name</h3>
+                </label>
+                <input
+                  className="form-control"
+                  id="validPhone"
+                  onInput={this.handleLName}
+                  maxLength="13"
+                />
+              </div>
+              <div className="form-group">
+                <label for="validPhone">
+                  <h3>Phone Number</h3>
+                </label>
+                <input
+                  className="form-control"
+                  id="validPhone"
+                  onInput={this.handlePhone}
+                  onBlur={this.validatePhone}
+                  maxLength="13"
+                />
+                <div
+                  className={
+                    this.state.phoneValidated
+                      ? "hideVerified card-body"
+                      : "showUnVerified card-body"
+                  }
+                >
+                  Invalid Phone Number!
+                </div>
+              </div>
+              <div className="form-group text-center">
+                <label for="validProgram">
+                  <h3>Tutoring Need</h3>
+                </label>
+                <select
+                  className="form-control text-center"
+                  id="validProgram"
+                  onChange={this.handleProgram}
+                  value={this.state.programInput}
+                >
+                  <option value="Writing">Writing</option>
+                  <option value="Learning Coach">Learning Coach</option>
+                  <option value="Health and Wellness">
+                    Health and Wellness
+                  </option>
+                  <option value="Creative Technologies">
+                    Creative Technologies
+                  </option>
+                </select>
+              </div>
+              <div className="form-group validateBtn">
+                <div
+                  className={
+                    this.state.sIDValidated &&
+                    this.state.emailValidated &&
+                    this.state.phoneValidated &&
+                    this.state.fName.length > 2 &&
+                    this.state.lName.length > 2 &&
+                    this.state.emailInput !== "" &&
+                    this.state.sIDInput !== "" &&
+                    this.state.phoneInput !== ""
+                      ? "showCatBtn"
+                      : "hideCatBtn"
+                  }
+                >
                   <button
-                    className="btn btn-lg btn-dark homeBtn"
+                    className="btn btn-lg bookBtn"
                     onClick={this.handleStudent}
                   >
-                    Get Tutoring
+                    Get Tutoring!
                   </button>
+                </div>
               </div>
-            </div>
-          </form>
+            </form>
+          </div>
         </div>
-      </div>
+      </>
     );
   };
 

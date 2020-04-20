@@ -3,6 +3,7 @@ import PouchDB from "pouchdb";
 import ApptSideNav from "../components/apptSideNav";
 import AppointmentTutorList from "../components/appointmentTutorList";
 import AppointmentTutorCurrentAppt from "../components/appointmentTutorCurrentAppt";
+import QNote from "../components/qNote";
 
 class AppointmentDashboard extends Component {
   constructor(props) {
@@ -112,6 +113,13 @@ class AppointmentDashboard extends Component {
               <AppointmentTutorCurrentAppt
                 sortedAppointments={this.state.bookedAppointments}
               />
+              <div className="row">
+                {this.state.bookedAppointments ? (
+                  <QNote sID={this.state.bookedAppointments[0].studentID} />
+                ) : (
+                  <QNote />
+                )}
+              </div>
             </div>
           </div>
         </div>

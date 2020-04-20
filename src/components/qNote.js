@@ -58,11 +58,17 @@ const qNote = observer(
         let p = new Promise((resolve, reject) => {
           db.get(this.props.sID)
             .then(function (doc) {
+<<<<<<< HEAD
               //x.setState({ currentQNotes: doc.notes });
               resolve(doc.notes);
             })
             .catch(function (err) {
               //console.log(err);
+=======
+              resolve(doc.notes);
+            })
+            .catch(function (err) {
+>>>>>>> 316a2766e0bcf1c2bcd02fdfcb1d0dc18d59b0c2
               reject(err);
             });
         });
@@ -75,14 +81,16 @@ const qNote = observer(
     renderQNotes = () => {
       let sortedQ = this.state.currentQNotes;
 
-      sortedQ.sort((a, b) => {
-        if (a.date < b.date) return -1;
+      if (sortedQ) {
+        sortedQ.sort((a, b) => {
+          if (a.date < b.date) return -1;
+          if (a.date > b.date) return 1;
 
-        if (a.date > b.date) return 1;
+          return 0;
+        });
+      }
 
-        return 0;
-      });
-
+<<<<<<< HEAD
       if (this.state.currentQNotes.length === 0) {
         return <h3>No notes added</h3>;
       } else {
@@ -93,6 +101,20 @@ const qNote = observer(
             <td>{e.description}</td>
           </tr>
         ));
+=======
+      if (this.state.currentQNotes) {
+        if (this.state.currentQNotes.length === 0) {
+          return <h3>No notes added</h3>;
+        } else {
+          return sortedQ.map((e) => (
+            <tr key={Math.random()}>
+              <td>{e.date}</td>
+              <td>{e.tutor}</td>
+              <td>{e.description}</td>
+            </tr>
+          ));
+        }
+>>>>>>> 316a2766e0bcf1c2bcd02fdfcb1d0dc18d59b0c2
       }
     };
 

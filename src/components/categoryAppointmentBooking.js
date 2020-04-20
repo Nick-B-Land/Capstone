@@ -210,6 +210,7 @@ class CategoryAppointmentBooking extends Component {
     );
 
     let appointment = {
+      id: d.getTime(),
       date: date,
       startTime: startTime,
       endTime: endTime,
