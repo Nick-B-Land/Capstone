@@ -25,7 +25,6 @@ const tutorQList = observer(
         console.log(this.props.tutorStore.Queue[0].id);
 
       this.checkBtn();
-      console.log(this.state.btnState);
     };
 
     componentDidUpdate = () => {
@@ -41,11 +40,16 @@ const tutorQList = observer(
       );
 
       let tttt = this;
-      tdb.get(sessionStorage.getItem("Tutor")).then(function (doc) {
-        if (doc.activeAppointment.id) {
-          tttt.setState({ btnState: false });
-        } else tttt.setState({ btnState: true });
-      });
+      tdb
+        .get(sessionStorage.getItem("Tutor"))
+        .then(function (doc) {
+          if (doc.activeAppointment.id) {
+            tttt.setState({ btnState: false });
+          } else tttt.setState({ btnState: true });
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
     };
 
     renderQList = () => {
@@ -115,8 +119,6 @@ const tutorQList = observer(
         });
 
         let x = await qPromise;
-        //this.props.tutorStore.Queue = x;
-        console.log(x);
       }
     };
 

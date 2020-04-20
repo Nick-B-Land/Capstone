@@ -50,8 +50,6 @@ const dashboardHome = observer(
         .on("change", () => {
           this.props.tutorStore.Fetch(tID);
         });
-
-      console.log(this.props.tutorStore.Queue);
     };
 
     renderHome = () => {
@@ -60,9 +58,7 @@ const dashboardHome = observer(
         this.props.tutorStore.Tutor.activeAppointment,
         false
       );
-      if (currentAppointment) {
-        console.log(currentAppointment.studentID);
-      }
+
       return (
         <div className="container">
           <div className="row row-cols-1 row-cols-sm-2">

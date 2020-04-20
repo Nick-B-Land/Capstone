@@ -8,7 +8,7 @@ class Nav extends Component {
     return (
       <nav className="navbar navbar-expand-lg navContainer">
         <Link to="/">
-          <img className="logoPH" src={Logo} />
+          <img className="logoPH" src={Logo} alt="BVC Logo" />
         </Link>
         <div className="navTitle">
           <ul className="navbar-nav mx-auto">Learner Success Services</ul>
@@ -18,7 +18,7 @@ class Nav extends Component {
             <h4>Welcome</h4>
           </div>
           <ul className="list-unstyled components">
-            <Link to ="/tutordashboard">
+            <Link to="/tutordashboard">
               <li className="topNavLI col" onClick={this.props.home}>
                 Home
               </li>

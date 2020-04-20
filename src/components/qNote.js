@@ -137,22 +137,26 @@ const qNote = observer(
 
     render() {
       return (
-        <div className="container">
+        <div
+          className={
+            this.state.visibility ? "container qContainer" : "container"
+          }
+        >
           <div className="row">
             <div className="buttons">
-              <button onClick={this.handleNoteClick} className="btn btn-dark">
+              <button onClick={this.handleNoteClick} className="btn qBtn">
                 {this.state.visibility ? "Hide Notes" : "Show Notes"}
               </button>
             </div>
             <div className="buttons">
-              <button className="btn btn-dark" onClick={this.handleShowAddNote}>
+              <button className="btn qBtn" onClick={this.handleShowAddNote}>
                 Add Note
               </button>
             </div>
           </div>
           <div className={this.state.visibility ? "showQNotes" : "hideQNotes"}>
             <br />
-            <table>
+            <table className="table table-dark tableColor">
               <thead>
                 <tr>
                   <th>Date</th>
@@ -178,7 +182,10 @@ const qNote = observer(
               ></textarea>
             </div>
             <div className="row d-flex justify-content-around">
-              <button className="btn btn-dark" onClick={this.handleNoteSubmit}>
+              <button
+                className="btn btn-lg qBtn"
+                onClick={this.handleNoteSubmit}
+              >
                 Submit Note
               </button>
             </div>

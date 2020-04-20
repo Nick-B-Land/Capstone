@@ -11,9 +11,6 @@ TutorStore.FetchTutor = async (id) => {
   let db = new PouchDB(
     "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/tutors"
   );
-  let qDB = new PouchDB(
-    "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/programs"
-  );
 
   return db
     .get(id)
@@ -39,7 +36,6 @@ TutorStore.Fetch = (id) => {
         doc.isLoggedIn = true;
         db.put(doc);
       }
-      //TutorStore.Tutor = doc;
       return doc;
     })
     .then(function (doc) {
@@ -69,7 +65,6 @@ TutorStore.FetchQueue = () => {
   return qDB
     .get(TutorStore.Tutor.programID)
     .then(function (doc) {
-      console.log(doc);
       return doc;
     })
     .catch(function (err) {
@@ -160,9 +155,11 @@ TutorStore.EndAppointment = (aID) => {
   let studDB = new PouchDB(
     "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/students"
   );
-
   let tDB = new PouchDB(
     "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/tutors"
+  );
+  let progDB = new PouchDB(
+    "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/programs"
   );
 
   let date = new Date();
@@ -201,20 +198,13 @@ TutorStore.EndAppointment = (aID) => {
       doc.totalAppointments = doc.totalAppointments + 1;
       return studDB.put(doc);
     })
-    .catch(function (err) {
-      console.log(err);
-    });
-};
-
-TutorStore.ExtendAppointment = (inc) => {
-  var db = new PouchDB(
-    "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/programs"
-  );
-
-  db.get(TutorStore.Tutor.programID)
+    .then(function () {
+      return progDB.get(TutorStore.Tutor.programID);
+    })
     .then(function (doc) {
-      doc.ETA += inc;
-      return db.put(doc);
+      doc.currentQ = doc.currentQ - 1;
+      doc.ETA = doc.ETA - doc.qLength;
+      return progDB.put(doc);
     })
     .catch(function (err) {
       console.log(err);
@@ -222,20 +212,17 @@ TutorStore.ExtendAppointment = (inc) => {
 };
 
 TutorStore.NoShow = (aID) => {
-  var db = new PouchDB(
-    "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/programs"
-  );
-
   let histDB = new PouchDB(
     "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/history"
   );
-
   let studDB = new PouchDB(
     "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/students"
   );
-
   let tDB = new PouchDB(
     "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/tutors"
+  );
+  let progDB = new PouchDB(
+    "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/programs"
   );
 
   let completedAppointment = {};
@@ -253,7 +240,6 @@ TutorStore.NoShow = (aID) => {
       completedAppointment.noShow = false;
       completedAppointment.cancelled = false;
       studentID = doc.activeAppointment.studentID;
-      console.log(completedAppointment);
       doc.activeAppointment = {};
       return tDB.put(doc);
     })
@@ -266,6 +252,14 @@ TutorStore.NoShow = (aID) => {
     .then(function (doc) {
       doc.noShows = doc.noShows + 1;
       return studDB.put(doc);
+    })
+    .then(function () {
+      return progDB.get(TutorStore.Tutor.programID);
+    })
+    .then(function (doc) {
+      doc.currentQ = doc.currentQ - 1;
+      doc.ETA = doc.ETA - doc.qLength;
+      return progDB.put(doc);
     })
     .catch(function (err) {
       console.log(err);
