@@ -94,12 +94,6 @@ class AdminQueueCatRender extends Component {
           <div className="col">
             <div className="row d-flex justify-content-around">
               <h3>Department: {this.props.id}</h3>
-              <button
-                className="btn btn-lg tutorBtn justify-content-end"
-                onClick={this.handleDeletePopupVisability}
-              >
-                Delete
-              </button>
             </div>
 
             <div className="row d-flex justify-content-around">
@@ -108,6 +102,12 @@ class AdminQueueCatRender extends Component {
                 onClick={this.handleEditVisability}
               >
                 Edit
+              </button>
+              <button
+                className="btn btn-lg tutorBtn justify-content-end"
+                onClick={this.handleDeletePopupVisability}
+              >
+                Delete
               </button>
             </div>
             <Modal show={this.state.showDeletePopup}>

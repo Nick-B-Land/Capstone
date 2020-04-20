@@ -223,31 +223,31 @@ class AdminPeerCatRender extends Component {
 
             <div className="row d-flex justify-content-center btn-group">
               <button
-                className="btn btn-lg tutorBtn"
+                className="btn btn-lg dayBtn"
                 onClick={this.handleMondayVisibility}
               >
                 Mon
               </button>
               <button
-                className="btn btn-lg tutorBtn"
+                className="btn btn-lg dayBtn"
                 onClick={this.handleTuesdayVisibility}
               >
                 Tues
               </button>
               <button
-                className="btn btn-lg tutorBtn"
+                className="btn btn-lg dayBtn"
                 onClick={this.handleWednesdayVisibility}
               >
                 Wed
               </button>
               <button
-                className="btn btn-lg tutorBtn"
+                className="btn btn-lg dayBtn"
                 onClick={this.handleThursdayVisibility}
               >
                 Thurs
               </button>
               <button
-                className="btn btn-lg tutorBtn"
+                className="btn btn-lg dayBtn"
                 onClick={this.handleFridayVisibility}
               >
                 Fri
