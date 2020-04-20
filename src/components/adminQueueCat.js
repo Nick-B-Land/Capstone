@@ -24,7 +24,7 @@ class AdminQueueCat extends Component {
     tDB
       .changes({ since: "now", live: true, include_docs: true })
       .on("change", () => {
-        this.fetchPeerCat();
+        this.fetchQueueCat();
       });
 
     await this.fetchQueueCat();
@@ -154,7 +154,9 @@ class AdminQueueCat extends Component {
               </div>
             </div>
             <div className="row d-flex justify-content-center falseEditRow">
-              {this.state.addBtnState ? (
+              {this.state.departmentInput !== "" &&
+              this.state.descriptionInput !== "" &&
+              this.state.qLengthInput !== "" ? (
                 <button
                   className="btn btn-lg tutorBtn"
                   onClick={this.handleQueueCatAdd}

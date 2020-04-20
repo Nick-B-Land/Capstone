@@ -173,10 +173,10 @@ class AdminTutors extends Component {
   };
 
   handleFNameInput = (e) => {
-    this.setState({ fNameInput: e.target.value });
+    this.setState({ fNameInput: e.target.value, addBtnState: true });
   };
   handleLNameInput = (e) => {
-    this.setState({ lNameInput: e.target.value });
+    this.setState({ lNameInput: e.target.value, addBtnState: true });
   };
 
   handleTutor = () => {
@@ -392,7 +392,14 @@ class AdminTutors extends Component {
               </div>
             </div>
             <div className="row d-flex justify-content-center falseEditRow">
-              {this.state.addBtnState ? (
+              {this.state.phoneValidated &&
+              this.state.fNameInput !== "" &&
+              this.state.lNameInput !== "" &&
+              this.state.passInput !== "" &&
+              this.state.streetAddress !== null &&
+              this.state.cityInput !== "" &&
+              this.state.provinceInput !== "" &&
+              this.state.roleInput !== "" ? (
                 <button
                   className="btn btn-lg tutorBtn"
                   onClick={this.handleTutor}
