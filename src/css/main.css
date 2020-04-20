@@ -243,8 +243,11 @@ a:focus {
 .navbar {
   min-height: 10vh;
 }
-
+.navTitle {
+  margin-left: 20%;
+}
 .sideNav {
+  position: relative;
   color: #f2f4f5;
   width: 13%;
   min-height: 90vh;
@@ -252,9 +255,28 @@ a:focus {
   color: #fff;
   transition: all 0.3s;
 }
+.topBarNav{
+  display:none;
+}
+@media only screen and (max-width: 1120px) {
+  .sideNav {
+    display: none;
+  }
+  .navTitle {
+    display: none;
+  }
+  .topBarNav{
+    display: inline-block;
+  }
+}
+.sideNavLI {
+  padding-bottom: 2rem;
+}
 
-.sideNavLI:hover {
-  background-color: #2087bc;
+.sideNavLILogout {
+  position: absolute;
+  left: 30%;
+  bottom: 1rem;
 }
 
 .sidebar-header {
@@ -269,25 +291,6 @@ a:focus {
   text-align: center;
 }
 
-.sideNav ul p {
-  color: #fff;
-}
-
-.sideNav ul li a {
-  padding: 10px;
-  font-size: 1.1em;
-  display: block;
-}
-.sideNav ul li a:hover {
-  color: #004e95;
-  background: #fff;
-}
-
-.sideNav ul li.active > a,
-a[aria-expanded="true"] {
-  color: #fff;
-  background: #004e95;
-}
 ul ul a {
   font-size: 0.9em !important;
   padding-left: 30px !important;

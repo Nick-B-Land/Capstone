@@ -173,10 +173,10 @@ class AdminTutors extends Component {
   };
 
   handleFNameInput = (e) => {
-    this.setState({ fNameInput: e.target.value });
+    this.setState({ fNameInput: e.target.value, addBtnState: true });
   };
   handleLNameInput = (e) => {
-    this.setState({ lNameInput: e.target.value });
+    this.setState({ lNameInput: e.target.value, addBtnState: true });
   };
 
   handleTutor = () => {
@@ -297,7 +297,9 @@ class AdminTutors extends Component {
                 <h4>Program ID</h4>
               </div>
               <div className="col-6 text-center">
-                <select>{this.generatePrograms()}</select>
+                <select className="form-control">
+                  {this.generatePrograms()}
+                </select>
                 {/* <input
                   className="form-control"
                   onInput={this.handleProgInput}
@@ -385,14 +387,25 @@ class AdminTutors extends Component {
                 <h4>Role</h4>
               </div>
               <div className="col-6 text-center">
-                <input
+                <select
                   className="form-control"
-                  onInput={this.handleRoleInput}
-                />
+                  onChange={this.handleRoleInput}
+                >
+                  <option value="Tutor">Tutor</option>
+                  <option value="Admin">Admin</option>
+                  <option value="Appointment">Appointment</option>
+                </select>
               </div>
             </div>
             <div className="row d-flex justify-content-center falseEditRow">
-              {this.state.addBtnState ? (
+              {this.state.phoneValidated &&
+              this.state.fNameInput !== "" &&
+              this.state.lNameInput !== "" &&
+              this.state.passInput !== "" &&
+              this.state.streetAddress !== null &&
+              this.state.cityInput !== "" &&
+              this.state.provinceInput !== "" &&
+              this.state.roleInput !== "" ? (
                 <button
                   className="btn btn-lg tutorBtn"
                   onClick={this.handleTutor}
