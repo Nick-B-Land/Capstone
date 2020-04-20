@@ -84,7 +84,6 @@ const dashboardAnalytics = observer(
       this.setState({ highestCat: highCat });
     };
     //calculate a tutors average appointment length
-    //convert timestring to 24
     getAvgAppointmentLength = async () => {
       let db = new PouchDB(
         "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/history"
@@ -116,14 +115,7 @@ const dashboardAnalytics = observer(
         let apptDateStart = new Date(e.date);
         let apptDateEnd = new Date(e.date);
         if (e.appointmentStart && e.appointmentEnd && this.handleDateInfo(apptDateStart, time)) {
-          //first colon in time string, used to find position of hours, mins, secs
-          let startColon = e.appointmentStart.indexOf(":");
-          let endColon = e.appointmentEnd.indexOf(":");
 
-          //handle single or double digit hours (5 or 11)
-          let end24 = e.appointmentEnd.substr(e.appointmentEnd.length - 2);
-          //console.log(end24);
-          let endH;
           let s = e.appointmentStart.split(":");
           if (s[2].endsWith("PM") === true) {
 
@@ -147,25 +139,6 @@ const dashboardAnalytics = observer(
         } else {
           console.log(e.appointmentStart);
         }
-
-        // //hours match, simple math
-        // if (endH === startH) {
-        //   let timeToAdd = endT - startT;
-        //   console.log("length in minutes " + timeToAdd / 60);
-        //   totalLength += timeToAdd;
-        //   aCount += 1;
-        // } else {
-        //   // when end hour is greater than start
-        //   //find start minutes to the hour, add to normal end minutes
-        //   // will only handle 1 hour difference, but that should be fine for us
-        //   let diff1 = 60 - startM;
-        //   console.log("start minute difference " + diff1);
-        //   console.log("end min " + endM);
-        //   let timeToAdd = (diff1 + endM) * 60 - startS + endS;
-        //   console.log("length in minutes " + timeToAdd / 60);
-        //   totalLength += timeToAdd;
-        //   aCount += 1;
-        // }
       });
 
       //calculate average and convert to minutes
@@ -174,24 +147,9 @@ const dashboardAnalytics = observer(
     };
 
     getAppointmentNumber = async () => {
-      // var PouchDB = require("pouchdb");
-      // PouchDB.plugin(require("pouchdb-find"));
       let db = new PouchDB(
         "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/history"
       );
-
-      // -- used to create a index, but index seems to persist so only have to call once? --
-      // db.createIndex({
-      //   index: {
-      //     fields: ["tutor"]
-      //   }
-      // })
-      //   .then(function(result) {
-      //     // yo, a result
-      //   })
-      //   .catch(function(err) {
-      //     console.log(err);
-      //   });
 
       let x = this;
       let promise = new Promise((resolve, reject) => {
