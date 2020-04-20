@@ -29,7 +29,7 @@ class Nav extends Component {
               </li>
             </Link>
             <Link>
-              <li className="topNavLILogout col" onClick={this.handleLogout}>
+              <li className="topNavLI col" onClick={this.handleLogout}>
                 {" "}
                 Logout{" "}
               </li>
