@@ -22,18 +22,9 @@ class TutorOptions extends Component {
   componentDidMount = async () => {
     this.fetchPeerTutoring();
     let s = sessionStorage.getItem("studentID");
-
-    var today = new Date(),
-      newdate =
-        today.getMonth() +
-        1 +
-        "/" +
-        today.getDate() +
-        "/" +
-        today.getFullYear(),
-      newtime = today.getTime();
-    this.setState({ date: newdate.toString() });
-    this.setState({ time: newtime.toString() });
+    let now = new Date();
+    this.setState({ date: now.toLocaleDateString() });
+    this.setState({ time: now.toLocaleTimeString() });
   };
 
   generateOptions = () => {
@@ -78,7 +69,6 @@ class TutorOptions extends Component {
   handleChange = (event) => {
     this.setState({ scene: "PeerTutor" });
     this.setState({ peerCategorie: event.target.value });
-    console.log(this.state.peerCategorie);
     this.getPeerTutorList();
   };
 
@@ -124,14 +114,10 @@ class TutorOptions extends Component {
           e.doc.Date === this.state.date
         ) {
           let students = e.doc.Students;
-          console.log(students);
           return students.map((a) => (
             <p key={a.student_id}> Student Id: {a.student_id}</p>
           ));
         }
-
-        console.log(this.state.Queue);
-        console.log("Date: " + this.state.date);
       });
     }
   };
@@ -163,11 +149,15 @@ class TutorOptions extends Component {
     return (
       <div className="container">
         <div className="row d-flex flex-column">
-          <h1 className="validateLead">{this.state.peerCategorie}</h1>
-          <h3 className="validateLead">{this.state.date}</h3>
+          <h1 className="validateLead">
+            {this.state.peerCategorie} Peer Tutoring
+          </h1>
         </div>
         <div className="row">
           <div className="validateContainer">
+            <div className="row d-flex justify-content-center">
+              <h2>Students in Session ({this.state.Queue.length})</h2>
+            </div>
             <div className="row">
               <div className="col">{this.renderQueue()}</div>
             </div>

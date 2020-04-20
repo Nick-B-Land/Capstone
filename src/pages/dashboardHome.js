@@ -65,23 +65,23 @@ const dashboardHome = observer(
       }
       return (
         <div className="container">
-          <div className="row">
-            <div className="row row-cols-sm">
+          <div className="row row-cols-1 row-cols-sm-2">
+            <div className="col">
               <TutorQList tutorStore={this.props.tutorStore} />
             </div>
-            <div className="row row-cols-sm">
+            <div className="col">
               <TutorActiveQ
                 activeQ={this.state.activeQ}
                 tutorStore={this.props.tutorStore}
                 tID={tid}
               />
             </div>
-            <div className="row row-cols-sm">
-              <QNote
-                sID={currentAppointment ? currentAppointment.studentID : null}
-                tutorStore={this.props.tutorStore}
-              />
-            </div>
+          </div>
+          <div className="row row-cols-1 row-cols-sm-2">
+            <QNote
+              sID={currentAppointment ? currentAppointment.studentID : null}
+              tutorStore={this.props.tutorStore}
+            />
           </div>
         </div>
       );

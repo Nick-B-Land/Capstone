@@ -276,7 +276,7 @@ const tutorActiveQ = observer(
       return (
         <div className="container">
           <div className="tutorActiveDiv">
-            <div className="row">
+            <div className="row d-flex flex-column align-content-center">
               <h3>No Appointment Selected</h3>
             </div>
           </div>
@@ -324,7 +324,7 @@ const tutorActiveQ = observer(
     };
 
     render() {
-      return <div>{this.renderScene()}</div>;
+      return <>{this.renderScene()}</>;
     }
   }
 );

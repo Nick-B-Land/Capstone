@@ -23,71 +23,6 @@ TutorStore.FetchTutor = async (id) => {
     .catch(function (err) {
       console.log(err);
     });
-
-  // db.get(id)
-  //   .then(function(doc) {
-  //     if (!doc.isLoggedIn) {
-  //       doc.isLoggedIn = true;
-  //       db.put(doc);
-  //     }
-  //     //TutorStore.Tutor = doc;
-  //     return doc;
-  //   })
-  //   .then(function(doc) {
-  //     TutorStore.Tutor = doc;
-  //   })
-  //   .then(() => {
-  //     qDB
-  //       .get(TutorStore.Tutor.programID)
-  //       .then(function(doc) {
-  //         // TutorStore.Queue = doc.activeQ;
-  //         // TutorStore.QLength = doc.qLength;
-  //         return doc;
-  //       })
-  //       .then(function(doc) {
-  //         TutorStore.Queue = doc.activeQ;
-  //         TutorStore.QLength = doc.qLength;
-  //       });
-  //   })
-  //   .catch(function(err) {
-  //     console.log(err);
-  //   });
-
-  // const tID = id;
-  // let tutorPromise = new Promise((resolve, reject) => {
-  //   db.get(tID)
-  //     .then(function(doc) {
-  //       doc.isLoggedIn = true;
-  //       //TutorStore.Tutor = doc;
-  //       db.put(doc);
-  //       resolve(doc);
-  //     })
-  //     .catch(function(err) {
-  //       reject(err);
-  //     });
-  // });
-
-  // let qPromise = new Promise((resolve, reject) => {
-  //   qDB
-  //     .get(TutorStore.Tutor.programID)
-  //     .then(function(doc) {
-  //       //TutorStore.Queue = doc.activeQ;
-  //       TutorStore.QLength = doc.qLength;
-  //       resolve(doc);
-  //     })
-  //     .catch(function(err) {
-  //       reject(err);
-  //     });
-  // });
-
-  // let t = await tutorPromise;
-  // console.log(t);
-  // TutorStore.Tutor = t;
-  // console.log(TutorStore.Tutor._id);
-  // let q = await qPromise;
-  // console.log(q);
-  // TutorStore.Queue = q.activeQ;
-  // TutorStore.QLength = q.qLength;
 };
 
 TutorStore.Fetch = (id) => {
@@ -114,8 +49,6 @@ TutorStore.Fetch = (id) => {
       qDB
         .get(TutorStore.Tutor.programID)
         .then(function (doc) {
-          // TutorStore.Queue = doc.activeQ;
-          // TutorStore.QLength = doc.qLength;
           return doc;
         })
         .then(function (doc) {
@@ -218,20 +151,6 @@ TutorStore.StartAppointment = (aID) => {
     .catch(function (err) {
       console.log(err);
     });
-  // db.get(TutorStore.Tutor.programID)
-  //   .then(function(doc) {
-  //     doc.activeQ.forEach(e => {
-  //       console.log(aID + " " + e.id);
-  //       if (aID === e.id) {
-  //         e.appointmentStart = time;
-  //         console.log("Appointment started at " + time);
-  //       }
-  //     });
-  //     return db.put(doc);
-  //   })
-  //   .catch(function(err) {
-  //     console.log(err);
-  //   });
 };
 
 TutorStore.EndAppointment = (aID) => {

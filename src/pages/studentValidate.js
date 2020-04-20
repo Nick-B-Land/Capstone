@@ -106,37 +106,53 @@ class StudentValidate extends Component {
     );
 
     sessionStorage.setItem("studentID", this.state.sIDInput);
-    //let docExists = true;
-    let studentObj = {
-      _id: this.state.sIDInput,
-      programID: this.state.programInput,
-      fName: this.state.fName,
-      lName: this.state.lName,
-      phone: this.state.phoneInput,
-      email: this.state.emailInput,
-      notes: [],
-      totalAppointments: 0,
-      noShows: 0,
-    };
-
-    db.put(studentObj).catch(function (err) {
-      console.log(err);
-    });
-
     let x = this;
+
+    let now = new Date();
 
     if (typeof x.props.addStudentToPeer === "function") {
       let peerobj = {
-        _id: this.state.sIDInput + "/" + this.props.date,
-        student_id: this.state.sIDInput,
+        _id: now.getTime().toString(),
+        studentId: this.state.sIDInput,
         date: this.props.date,
         programID: this.props.peerCategorie,
-        time: this.props.time,
+        time: now.toLocaleTimeString(),
       };
       x.props.addStudentToPeer(peerobj);
-      x.props.addStudentToQueue(peerobj.student_id);
+      x.props.addStudentToQueue(peerobj.studentId);
+
+      let studentObj = {
+        _id: this.state.sIDInput,
+        programID: this.state.programInput,
+        fName: this.state.fName,
+        lName: this.state.lName,
+        phone: this.state.phoneInput,
+        email: this.state.emailInput,
+        notes: [],
+        totalAppointments: 0,
+        noShows: 0,
+      };
+
+      db.put(studentObj).catch(function (err) {
+        console.log(err);
+      });
     } else {
       sessionStorage.setItem("studentID", x.state.sIDInput);
+      let studentObj = {
+        _id: this.state.sIDInput,
+        programID: this.state.programInput,
+        fName: this.state.fName,
+        lName: this.state.lName,
+        phone: this.state.phoneInput,
+        email: this.state.emailInput,
+        notes: [],
+        totalAppointments: 0,
+        noShows: 0,
+      };
+
+      db.put(studentObj).catch(function (err) {
+        console.log(err);
+      });
       x.props.history.push("/categories");
     }
   };
@@ -147,24 +163,24 @@ class StudentValidate extends Component {
       return;
     }
 
-    let peerobj = {
-      _id: this.state.sIDInput + "/" + this.props.date,
-      student_id: this.state.sIDInput,
-      date: this.props.date,
-      programID: this.props.peerCategorie,
-      time: this.props.time,
-    };
-
     let db = new PouchDB(
       "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/students"
     );
     let x = this;
+    let now = new Date();
+    let peerobj = {
+      _id: now.getTime().toString(),
+      studentId: this.state.sIDInput,
+      date: this.props.date,
+      programID: this.props.peerCategorie,
+      time: now.toLocaleTimeString(),
+    };
     db.get(this.state.sIDInput)
       .then(function (doc) {
         if (doc) {
           if (typeof x.props.addStudentToPeer === "function") {
             x.props.addStudentToPeer(peerobj);
-            x.props.addStudentToQueue(peerobj.student_id);
+            x.props.addStudentToQueue(peerobj.studentId);
           } else {
             sessionStorage.setItem("studentID", x.state.sIDInput);
             x.props.history.push("/categories");
