@@ -13,7 +13,6 @@ const dashboardAnalytics = observer(
         avgLength: 0,
         highestCat: "",
         studentTime: 0,
-        newMonthly: 0
       };
     }
 
@@ -22,7 +21,6 @@ const dashboardAnalytics = observer(
       this.getAvgAppointmentLength();
       this.getMostUsedCat();
       this.getStudentsPerTime();
-      this.newThisMonth();
     };
 
     getMostUsedCat = async () => {
@@ -243,6 +241,7 @@ const dashboardAnalytics = observer(
 
     //TODO Analytics
     /*
+    Students/day,month,year
     New students this month
     Number of students/department
   */
@@ -251,14 +250,13 @@ const dashboardAnalytics = observer(
       let date = new Date();
       let date2 = new Date();
       if (time === "day") date2.setTime(date2.getTime() - 24 * 60 * 60 * 1000);
-      else if (time === "month" || time === "monthInv") {
+      else if (time === "month") {
         date2.setMonth(date2.getMonth() - 1);
       } else if (time === "year") {
         date2.setFullYear(date2.getFullYear() - 1);
       }
 
-      if (apptDate <= date && apptDate >= date2 && time !== "monthInv") return true;
-      else if (apptDate < date2 && time === "monthInv") return true;
+      if (apptDate <= date && apptDate >= date2) return true;
       else return false;
     }
 
@@ -283,8 +281,9 @@ const dashboardAnalytics = observer(
           });
       });
 
-      let option = document.getElementById("timeWindow");
-      let time = option.options[option.selectedIndex].value;
+      let e = document.getElementById("timeWindow");
+      let time = e.options[e.selectedIndex].value;
+      //console.log(time)
       let matches = await promise;
       let matchList = matches.docs;
       let list = [];
@@ -321,51 +320,6 @@ const dashboardAnalytics = observer(
         this.setState({ studentTime: list.length });
       }
     };
-
-    newThisMonth = async () => {
-
-      let db = new PouchDB(
-        "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/history"
-      );
-
-      let x = this;
-      let promise = new Promise((resolve, reject) => {
-        db.find({
-          selector: {
-            tutor: { $eq: x.props.tutorStore.Tutor._id },
-          },
-        })
-          .then(function (result) {
-            resolve(result);
-          })
-          .catch(function (err) {
-            console.log(err);
-            reject(err);
-          });
-      });
-
-      let matches = await promise;
-      let matchList = matches.docs;
-      let list = [];
-      let time = "month";
-
-      matchList.forEach((e) => {
-        let inList = false;
-        let apptDate = new Date(e.date);
-        if (list.includes(e.studentID)) inList = true;
-        if (inList === false && this.handleDateInfo(apptDate, time))
-          list.push(e.studentID);
-      });
-
-      matchList.forEach((e) => {
-        let apptDate = new Date(e.date);
-        if(list.includes(e.studentID) && this.handleDateInfo(apptDate, "monthInv")){
-          list = list.filter(function(value, index, arr){return value != e.studentID});
-        }
-      });
-
-      this.setState({ newMonthly: list.length });
-    }
 
     render() {
       return (
@@ -436,18 +390,6 @@ const dashboardAnalytics = observer(
                   </span>
                   <span>
                     <h6>{this.state.studentTime}</h6>
-                  </span>
-                </div>
-              </div>
-            </div>
-            <div className="col-6">
-              <div className="card">
-                <div className="card-body">
-                  <span>
-                    <h5>New students this month</h5>
-                  </span>
-                  <span>
-                    <h6>{this.state.newMonthly}</h6>
                   </span>
                 </div>
               </div>
