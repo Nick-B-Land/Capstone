@@ -5,6 +5,11 @@ import AppointmentTutorList from "../components/appointmentTutorList";
 import AppointmentTutorCurrentAppt from "../components/appointmentTutorCurrentAppt";
 import QNote from "../components/qNote";
 
+//
+//Props-
+//
+//bookAppointments: an array of appointments which are booked
+
 class AppointmentDashboard extends Component {
   constructor(props) {
     super(props);

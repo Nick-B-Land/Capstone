@@ -10,13 +10,10 @@ import CategoryAppointmentBooking from "../components/categoryAppointmentBooking
 //
 // Props -
 //
-//
-
-// ----- TODO -----
-//
-// Add prop list
-// Normalize and finish styling
-//
+//peerCategories: array of peer tutoring categories
+//appointmentTutors: array of tutors
+//scene: set to main
+//selectedAppointmentTutor: the tutor which student tries to book appointment with
 
 const tutoringCategories = observer(
   class TutoringCategories extends Component {

@@ -2,6 +2,21 @@ import React, { Component } from "react";
 import PouchDB from "pouchdb";
 import "../css/studentValidate.css";
 
+
+//
+//Props -
+//
+//emailInput: the user input email
+//sIDInput: user input student id
+//phoneInput: user input phone number
+//fname: user input first name
+//lname: user input last name
+//programInput: writting set to default input, holds selected input
+//emailValidated: set to true if email is valid
+//sIDValidated: set to true if the ID is valid
+//phoneValidated: set to true if the phone is valid
+//scene: sets scene
+
 class StudentValidate extends Component {
   constructor(props) {
     super(props);
