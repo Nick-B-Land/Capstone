@@ -16,13 +16,25 @@
   text-align: center;
   padding-bottom: 2%;
 }
-
-.catCard {
-  margin-bottom: 5%;
+.card-header {
+  background-color: #2087bc !important;
+  font-size: x-large;
+}
+.card-body {
+  color: #fff !important;
 }
 
 .card {
-  width: 14rem;
+  width: 20rem;
+  background-color: #17406b !important;
+  color: #fff;
+  height: 18rem;
+  margin-bottom: 2em;
+}
+.waitlistBtn {
+  background-color: #cb7d1d !important;
+  color: #fff !important;
+  font-weight: bold !important;
 }
 
 .historyCard {
