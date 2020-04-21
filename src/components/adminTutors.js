@@ -400,16 +400,16 @@ class AdminTutors extends Component {
                   <option value="Appointment">Appointment</option>
                 </select>
               </div>
-              <div className="row d-flex falseEditRow">
-                <div className="col-6 text-center">
-                  <h4>Email</h4>
-                </div>
-                <div className="col-6 text-center">
-                  <input
-                    className="form-control"
-                    onInput={this.handleEmailInput}
-                  />
-                </div>
+            </div>
+            <div className="row d-flex falseEditRow">
+              <div className="col-6 text-center">
+                <h4>Email</h4>
+              </div>
+              <div className="col-6 text-center">
+                <input
+                  className="form-control"
+                  onInput={this.handleEmailInput}
+                />
               </div>
             </div>
             <div className="row d-flex justify-content-center falseEditRow">
