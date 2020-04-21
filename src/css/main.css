@@ -244,7 +244,9 @@ a:focus {
   min-height: 10vh;
 }
 .navTitle {
-  margin-left: 20%;
+  position: absolute;
+  left:50%;
+  transform: translateX(-50%);
 }
 .sideNav {
   position: relative;
