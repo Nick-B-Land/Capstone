@@ -4,6 +4,16 @@ import "../css/adminTutor.css";
 import AdminQueueCatRender from "./adminQueueCatRender";
 
 class AdminQueueCat extends Component {
+
+// --- PROPS ---
+// currentQueueCat: fetchQueueCat()
+// departmentInput: handleDepNameInput()
+// descriptionInput: handleDescInput()
+// qLengthInput: handleQLengthinput()
+// showAdd: componentDidMount(), handleAddVisability()
+// addBtnState: handleDepNameInput(), handleDescInput(), handleQLengthinput()
+// --- PROPS ---
+
   constructor(props) {
     super(props);
     this.state = {

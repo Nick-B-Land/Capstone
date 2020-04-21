@@ -23,7 +23,7 @@ import bodyParser from "body-parser";
 // Force a rerender on a successful update of tutor DB
 // (Not a 100% needed, but would be nice. Might have to be done in AdminTutors)
 //
-// if we want id to be updated everytime we nned to add more functionality
+// if we want id to be updated everytime we need to add more functionality
 class AdminTutorRender extends Component {
   constructor(props) {
     super(props);
@@ -57,8 +57,6 @@ class AdminTutorRender extends Component {
         this.renderTutor();
         console.log("TUTOR DB UPDATED");
       });
-    //await this.fetchPeerTutoring();
-    // this.generatePrograms();
   };
 
   handleEditVisibility = () => {
@@ -113,7 +111,6 @@ class AdminTutorRender extends Component {
 
   validatePhone = async () => {
     let re = new RegExp("^[0-9]*$");
-    //let re = new RegExp("^[0-9]{6}$");
 
     let cleanedNumber = await this.cleanPhone();
     if (this.state.phoneInput.length === 13)
@@ -159,88 +156,14 @@ class AdminTutorRender extends Component {
       });
     });
     this.hideDeletePopupVisabilty();
-    // have to fix id logic in order to grab id
   };
 
-  // generatePrograms = () => {
-  //   let array = this.fetchPrograms();
-  //   console.log(array);
-  //   if (array !== null) {
-  //     //return array.map((e) => <option value={e.id}>{e.id}</option>);
-  //   }
-  // };
-
-  // fetchPrograms = async () => {
-  //   let pDB = new PouchDB(
-  //     "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/programs"
-  //   );
-
-  //   pDB
-  //     .allDocs(
-  //       {
-  //         include_docs: true,
-  //         attachments: false,
-  //       },
-  //       function err(response) {
-  //         if (err) {
-  //           return console.log(err);
-  //         }
-  //       }
-  //     )
-  //     .then(function (result) {
-  //       console.log(result);
-  //       return result.rows.map((e) => <option value={e.id}>{e.id}</option>);
-  //     });
-  //   // let pPromise = new Promise((resolve, reject) => {
-  //   //   ptDB
-  //   //     .allDocs({
-  //   //       include_docs: true,
-  //   //       attachments: false,
-  //   //     })
-  //   //     .then(function (docs) {
-  //   //       resolve(docs.rows);
-  //   //     })
-  //   //     .catch(function (err) {
-  //   //       reject(console.log(err));
-  //   //     });
-  //   // });
-
-  //   // let pResult = await pPromise;
-  //   // console.log(pResult.id);
-  //   // return pResult;
-  // };
   generatePrograms = () => {
     let array = this.props.programArray;
     if (array) {
       return array.map((e) => <option value={e.id}>{e.id}</option>);
     }
   };
-
-  // fetchPeerTutoring = async () => {
-  //   let pDB = new PouchDB(
-  //     "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/programs"
-  //   );
-
-  //   let pPromise = new Promise((resolve, reject) => {
-  //     pDB
-  //       .allDocs({
-  //         include_docs: true,
-  //         attachments: true,
-  //       })
-  //       .then(function (docs) {
-  //         resolve(docs.rows);
-  //       });
-  //   });
-
-  //   let pResult = await pPromise;
-  //   await this.setState({ programArray: pResult });
-  // };
-
-  // getProgramArray = async (data) => {
-  //   console.log(data);
-  //   await this.fetchPeerTutoring();
-  //   this.setState({ programArray: data });
-  // };
 
   renderTutor = () => {
     return (
@@ -372,11 +295,7 @@ class AdminTutorRender extends Component {
                 >
                   {this.generatePrograms()}
                 </select>
-                {/* <input
-                  className="form-control"
-                  defaultValue={this.state.progInput}
-                  onChange={this.handleProgInput}
-                /> */}
+                {}
               </div>
             </div>
             <div
@@ -539,19 +458,6 @@ class AdminTutorRender extends Component {
         ) {
           doc.phoneNumber = t.state.phoneInput;
         }
-
-        // Since ID runs off email, need proper validation first
-        // Will have to update ._id here to whatever comes before
-        // @ in email
-
-        // if (
-        //   t.state.emailInput !== t.props.email &&
-        //   t.state.emailInput.trim() !== ""
-        // ) {
-        //   doc._id = t.state.emailInput.split("@")[0];
-        //   console.log(doc._id);
-        //   doc.email = t.state.emailInput;
-        // }
 
         if (
           t.state.addressInput !== t.props.address &&

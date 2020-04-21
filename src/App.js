@@ -17,12 +17,10 @@ import TutorOptions from "./pages/peerTutor.js";
 const app = observer(
   class App extends Component {
     componentDidMount() {
-      // let t = sessionStorage.getItem("Tutor");
-      // if (t) {
-      //   this.props.tutorStore.Fetch();
-      // }
     }
 
+    // this render method is where we create our Browser Routing
+    // and pass the props to those routes.
     render() {
       return (
         <BrowserRouter>

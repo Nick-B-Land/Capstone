@@ -3,6 +3,27 @@ import PouchDB from "pouchdb";
 import Modal from "react-bootstrap/Modal";
 
 class AdminPeerCatRender extends Component {
+
+// --- PROPS ---
+// showEdit: handleMondayVisibility(), handleTuesdayVisibility(), handleWednesdayVisibility(), handleThursdayVisibility(), handleFridayVisibility(), addPeerCatTimes(), deleteTimeSlot()
+// showMondayTimes: handleMondayVisibility()
+// showTuesdayTimes: handleTuesdayVisibility()
+// showWednesdayTimes: handleWednesdayVisibility()
+// showThursdayTimes: handleThursdayVisibility()
+// showFridayTimes: handleFridayVisibility()
+// stateTimes: addPeerCatTimes()
+// AddNewTimeSlot: handleAddNewTimeSlot()
+// day: handleMondayVisibility(), handleTuesdayVisibility(), handleWednesdayVisibility(), handleThursdayVisibility(), handleFridayVisibility(),
+// showDeletePopup: showDeletePopupVisability(), hideDeletePopupVisabilty()
+// addStartTime: handleStartTimeInput()
+// addEndTime: handleEndTimeInput()
+// addLocationTime: handleLocationInput()
+// addTime: addPeerCatTimes()
+// currentPeerCatTimes: fetchPeerCatTimes()
+// timeToDelete: handleDeleteTime()
+// showDeletetimePopup: hideDeleteTimePopup(), handleDeleteTime()
+// --- PROPS ---
+
   constructor(props) {
     super(props);
     this.state = {
@@ -154,6 +175,7 @@ class AdminPeerCatRender extends Component {
     this.setState({ showEdit: false });
     this.handleAddNewTimeSlot();
   };
+
   handleDeleteTime = (e) => {
     this.setState({ timeToDelete: e.target.value, showDeletetimePopup: true });
   };
@@ -164,7 +186,6 @@ class AdminPeerCatRender extends Component {
 
   deleteTimeSlot = () => {
     let times = this.state.stateTimes;
-    //let index = times.indexOf(this.state.timeToDelete);
     console.log(times);
     console.log(this.state.timeToDelete);
 

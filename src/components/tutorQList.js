@@ -8,7 +8,9 @@ import { toJS } from "mobx";
 // Props -
 //
 // setActiveQ: sets the activeQ state in dashboard home to the first appointment in Q
-//
+// activeAppointment: if the appointment is active
+// firstQId: is the first student ID within the Queue
+// btnState: is the state of the button if it is show or hide
 
 const tutorQList = observer(
   class TutorQList extends Component {

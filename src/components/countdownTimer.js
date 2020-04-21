@@ -1,6 +1,11 @@
 import React, { Component } from "react";
 
 class CountUpTimer extends Component {
+// --- PROPS ---
+// minutes: is the value of mintues
+// seconds: is the value of seconds
+// interval: is what the counter goes up by
+// --- PROPS --- 
   _isMounted = false;
   constructor(props) {
     super(props);
@@ -40,15 +45,6 @@ class CountUpTimer extends Component {
   };
 
   renderTimer = () => {
-    // let minutes = this.props.minutes;
-    // let seconds = 0;
-    // return (
-    //   <div>
-    //     <h3>
-    //       {minutes} : {seconds}
-    //     </h3>
-    //   </div>
-    // );
   };
 
   render() {

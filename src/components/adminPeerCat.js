@@ -4,6 +4,14 @@ import "../css/adminTutor.css";
 import AdminPeerCatRender from "./adminPeerCatRender";
 
 class AdminPeerCat extends Component {
+
+// --- PROPS ---
+// currentPeerCat: fetchPeerCat()
+// departmentInput: handleDepNameInput()
+// showAdd: handleAddVisibility()
+// addBtnState: handleDepNameInput()
+// --- PROPS ---
+
   constructor(props) {
     super(props);
     this.state = {
@@ -29,17 +37,26 @@ class AdminPeerCat extends Component {
     console.log(this.state.currentPeerCat);
   };
 
+  // hanleDepNameInput takes the value that the user inputed within the
+  // the deparementname input and passes it to departmentInput within the state
+  // and it also sets addbtnState to true within state
   handleDepNameInput = (e) => {
     this.setState({ addBtnState: true, departmentInput: e.target.value });
   };
+
+  // handleAddVisiblity sets the showAdd within state to not what is now (if false - turns to true, if true - turns to false).
   handleAddVisibility = () => {
     this.setState({ showAdd: !this.state.showAdd });
   };
 
+  // handleUpdates gets the PeerCat within and asynce call
   handleUpdates = async () => {
     await this.fetchPeerCat;
   };
 
+  // fetchPeerCat does an async call to the database of peer_categories
+  // and fetches all that data from the docs within the database
+  // and sets cureentPeerCat within state to the results that were fetched from the database
   fetchPeerCat = async () => {
     let tDB = new PouchDB(
       "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/peer_categories"
@@ -68,6 +85,7 @@ class AdminPeerCat extends Component {
     else return false;
   };
 
+  // renderPeerCat renders all the information from the curentPeerCat and maps our the data
   renderPeerCat = () => {
     let counter = 0;
     return this.state.currentPeerCat.map((e) => (
@@ -83,6 +101,9 @@ class AdminPeerCat extends Component {
       />
     ));
   };
+
+  // handlePeerCatDep calls the database of peer_categories and creates an object
+  // called peerCatDepObject and pushes this object to a new doc within the database
   handlePeerCatDep = () => {
     let tDB = new PouchDB(
       "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/peer_categories"
@@ -103,6 +124,8 @@ class AdminPeerCat extends Component {
     });
     this.handleAddVisibility();
   };
+
+  // renderAddPeerCat renders inputs to add a new Categiory to the database and takes user Inputs
   renderAddPeerCat = () => {
     return (
       <>

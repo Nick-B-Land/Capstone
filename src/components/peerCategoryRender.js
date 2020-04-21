@@ -10,6 +10,9 @@ import "../css/peerCategoryRender.css";
 //
 
 class PeerCategoryRender extends Component {
+// --- PROPS ---
+// selectedDay: is the day that is selected
+// --- PROPS ---
   constructor(props) {
     super(props);
     this.state = { selectedDay: "mon" };

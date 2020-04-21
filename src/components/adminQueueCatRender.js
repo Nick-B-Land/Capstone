@@ -3,6 +3,15 @@ import PouchDB from "pouchdb";
 import Modal from "react-bootstrap/Modal";
 
 class AdminQueueCatRender extends Component {
+
+// --- PROPS ---
+// showEdit: handleEditVisability()
+// showDeletePopup: handleDeletePopupVisability()
+// descriptionInput: handleDesciptionInput()
+// qLengthInput: handleqLengthInput()
+// updateBtnState: handleqLengthInput()
+// --- PROPS ---
+
   constructor(props) {
     super(props);
     this.state = {
@@ -13,6 +22,7 @@ class AdminQueueCatRender extends Component {
       updateBtnState: false,
     };
   }
+
 
   handleDeletePopupVisability = () => {
     this.setState({ showDeletePopup: !this.state.showDeletePopup });

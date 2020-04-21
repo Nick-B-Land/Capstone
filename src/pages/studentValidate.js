@@ -21,7 +21,6 @@ class StudentValidate extends Component {
 
   componentDidMount = () => {
     let s = sessionStorage.getItem("studentID");
-    //if (s) this.props.history.push("/categories");
   };
 
   handleEmail = (e) => {
@@ -29,7 +28,6 @@ class StudentValidate extends Component {
   };
 
   validateEmail = () => {
-    //let re = new RegExp("[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,}");
     let re = new RegExp("^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@+(mybvc.ca)*$", "i");
     if (re.test(this.state.emailInput) === false) {
       this.setState({ emailValidated: false });
@@ -37,10 +35,6 @@ class StudentValidate extends Component {
   };
 
   validateSID = () => {
-    // let re = new RegExp("^[0-9]{6}$");
-    // if (re.test(this.state.sIDInput) === false) {
-    //   this.setState({ sIDValidated: false });
-    // } else this.setState({ sIDValidated: true });
   };
 
   cleanPhone = async () => {
@@ -63,7 +57,6 @@ class StudentValidate extends Component {
 
   validatePhone = async () => {
     let re = new RegExp("^[0-9]*$");
-    //let re = new RegExp("^[0-9]{6}$");
 
     let cleanedNumber = await this.cleanPhone();
     if (this.state.phoneInput.length === 13)

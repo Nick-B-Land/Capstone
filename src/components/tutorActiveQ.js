@@ -10,7 +10,13 @@ import CountUpTimer from "./countdownTimer";
 // Props
 //
 // activeQ - The current q object being served
-//
+// isFull - if the queue is full
+// appointmentStat - is the state that the appointment is in
+// mintues: holds the mintues value
+// scene: holds the scene for what to render
+// AA: is if the queue is active
+// timeout: if timeout function happens
+// started: if the appointment has been started
 
 // scenes - empty, readyToStart, timedOut
 // appointmentStates - readyToStart, Started,  Extended, Ended

@@ -9,6 +9,10 @@ import AdminTutorRender from "./adminTutorRender";
 //
 
 class AdminTutors extends Component {
+
+ // --- PROPS ---
+ // --- PROPS --- 
+
   constructor(props) {
     super(props);
     this.state = {
@@ -300,10 +304,7 @@ class AdminTutors extends Component {
                 <select className="form-control">
                   {this.generatePrograms()}
                 </select>
-                {/* <input
-                  className="form-control"
-                  onInput={this.handleProgInput}
-                /> */}
+                {}
               </div>
             </div>
             <div className="row d-flex falseEditRow">
@@ -328,27 +329,7 @@ class AdminTutors extends Component {
                 </div>
               </div>
             </div>
-            {/* <div className="row d-flex falseEditRow">
-              <div className="col-6 text-center">
-                <h4>Email</h4>
-              </div>
-              <div className="col-6 text-center">
-                <input
-                  className="form-control"
-                  onInput={this.handleEmailInput}
-                  onBlur={this.validateEmail}
-                />
-                <div
-                  className={
-                    this.state.emailValidated
-                      ? "hideEmailVerified card-body"
-                      : "showEmailVerified card-body"
-                  }
-                >
-                  Invalid Email!
-                </div>
-              </div>
-            </div> */}
+            {}
             <div className="row d-flex falseEditRow">
               <div className="col-6 text-center">
                 <h4>Street Address</h4>
