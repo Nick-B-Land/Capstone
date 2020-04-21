@@ -2,6 +2,26 @@ import React, { Component } from "react";
 import PouchDB from "pouchdb";
 import Modal from "react-bootstrap/Modal";
 
+// --- PROPS ---
+// showEdit: handleMondayVisibility(), handleTuesdayVisibility(), handleWednesdayVisibility(), handleThursdayVisibility(), handleFridayVisibility(), addPeerCatTimes(), deleteTimeSlot()
+// showMondayTimes: handleMondayVisibility()
+// showTuesdayTimes: handleTuesdayVisibility()
+// showWednesdayTimes: handleWednesdayVisibility()
+// showThursdayTimes: handleThursdayVisibility()
+// showFridayTimes: handleFridayVisibility()
+// stateTimes: addPeerCatTimes()
+// AddNewTimeSlot: handleAddNewTimeSlot()
+// day: handleMondayVisibility(), handleTuesdayVisibility(), handleWednesdayVisibility(), handleThursdayVisibility(), handleFridayVisibility(),
+// showDeletePopup: showDeletePopupVisability(), hideDeletePopupVisabilty()
+// addStartTime: handleStartTimeInput()
+// addEndTime: handleEndTimeInput()
+// addLocationTime: handleLocationInput()
+// addTime: addPeerCatTimes()
+// currentPeerCatTimes: fetchPeerCatTimes()
+// timeToDelete: handleDeleteTime()
+// showDeletetimePopup: hideDeleteTimePopup(), handleDeleteTime()
+// --- PROPS ---
+
 class AdminPeerCatRender extends Component {
   constructor(props) {
     super(props);

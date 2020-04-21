@@ -2,6 +2,14 @@ import React, { Component } from "react";
 import PouchDB from "pouchdb";
 import Modal from "react-bootstrap/Modal";
 
+// --- PROPS ---
+// showEdit: handleEditVisability()
+// showDeletePopup: handleDeletePopupVisability()
+// descriptionInput: handleDesciptionInput()
+// qLengthInput: handleqLengthInput()
+// updateBtnState: handleqLengthInput()
+// --- PROPS ---
+
 class AdminQueueCatRender extends Component {
   constructor(props) {
     super(props);

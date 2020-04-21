@@ -3,6 +3,12 @@ import { observer } from "mobx-react";
 import { Link } from "react-router-dom";
 import PouchDB from "pouchdb";
 
+// --- PROPS ---
+// currentQ: is the current Queue 
+// ETA: is how long the student will have to wait to see the Tutor
+// error: passes any errors that happens. 
+// --- PROPS ---
+
 const categoryRender = observer(
   class CategoryRender extends Component {
     constructor(props) {

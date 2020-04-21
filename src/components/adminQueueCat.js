@@ -3,6 +3,15 @@ import PouchDB from "pouchdb";
 import "../css/adminTutor.css";
 import AdminQueueCatRender from "./adminQueueCatRender";
 
+// --- PROPS ---
+// currentQueueCat: fetchQueueCat()
+// departmentInput: handleDepNameInput()
+// descriptionInput: handleDescInput()
+// qLengthInput: handleQLengthinput()
+// showAdd: componentDidMount(), handleAddVisability()
+// addBtnState: handleDepNameInput(), handleDescInput(), handleQLengthinput()
+// --- PROPS ---
+
 class AdminQueueCat extends Component {
   constructor(props) {
     super(props);
