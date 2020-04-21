@@ -388,6 +388,7 @@ class AdminTutors extends Component {
                 <select
                   className="form-control"
                   onChange={this.handleRoleInput}
+                  defaultValue="Tutor"
                 >
                   <option value="Tutor">Tutor</option>
                   <option value="Admin">Admin</option>
