@@ -12,7 +12,7 @@ import "../css/dashboardAnalytics.css";
 // newMonthly: is the new unquie students that came for tutoring
 // studentDept: is the depertment the student is studing
 // noShows: is the number of no shows that happened
-// --- PROPS --- 
+// --- PROPS ---
 
 const dashboardAnalytics = observer(
   class DashboardAnalytics extends Component {
@@ -32,6 +32,7 @@ const dashboardAnalytics = observer(
 
     componentDidMount = () => {
       this.getAppointmentNumber();
+      console.log(this.state.appCount);
       this.getAvgAppointmentLength();
       this.getMostUsedCat();
       this.getNoShows();

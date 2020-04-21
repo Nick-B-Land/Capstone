@@ -74,7 +74,7 @@ class AdminTutorRender extends Component {
   };
 
   handleProgInput = (e) => {
-    this.setState({ progInput: e.target.value, updateBtnState: true });
+    this.setState({ progInput: e.target.value });
   };
 
   handlePhoneInput = (e) => {
@@ -136,7 +136,7 @@ class AdminTutorRender extends Component {
   };
 
   handleRoleInput = (e) => {
-    this.setState({ roleInput: e.target.value, updateBtnState: true });
+    this.setState({ roleInput: e.target.value });
   };
 
   handleDeleteTutor = () => {
