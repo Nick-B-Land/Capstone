@@ -53,7 +53,6 @@ const qNote = observer(
       let db = new PouchDB(
         "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/students"
       );
-      let x = this;
       if (this.props.sID) {
         let p = new Promise((resolve, reject) => {
           db.get(this.props.sID)

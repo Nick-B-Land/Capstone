@@ -21,7 +21,6 @@ class TutorOptions extends Component {
 
   componentDidMount = async () => {
     this.fetchPeerTutoring();
-    let s = sessionStorage.getItem("studentID");
     let now = new Date();
     this.setState({ date: now.toLocaleDateString() });
     this.setState({ time: now.toLocaleTimeString() });
@@ -103,23 +102,6 @@ class TutorOptions extends Component {
 
     let ptResult = await ptPromise;
     await this.setState({ peerHistory: ptResult });
-  };
-
-  getQueue = () => {
-    let array = this.state.peerHistory;
-    if (array !== null) {
-      return array.map((e) => {
-        if (
-          e.doc.department === this.state.peerCategorie &&
-          e.doc.Date === this.state.date
-        ) {
-          let students = e.doc.Students;
-          return students.map((a) => (
-            <p key={a.student_id}> Student Id: {a.student_id}</p>
-          ));
-        }
-      });
-    }
   };
 
   addStudentToQueue = (e) => {

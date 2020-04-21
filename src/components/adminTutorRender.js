@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PouchDB from "pouchdb";
 import Modal from "react-bootstrap/Modal";
-import bodyParser from "body-parser";
 
 //
 // Props -

@@ -19,28 +19,15 @@ class StudentValidate extends Component {
     };
   }
 
-  componentDidMount = () => {
-    let s = sessionStorage.getItem("studentID");
-    //if (s) this.props.history.push("/categories");
-  };
-
   handleEmail = (e) => {
     this.setState({ emailInput: e.target.value });
   };
 
   validateEmail = () => {
-    //let re = new RegExp("[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,}");
     let re = new RegExp("^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@+(mybvc.ca)*$", "i");
     if (re.test(this.state.emailInput) === false) {
       this.setState({ emailValidated: false });
     } else this.setState({ emailValidated: true });
-  };
-
-  validateSID = () => {
-    // let re = new RegExp("^[0-9]{6}$");
-    // if (re.test(this.state.sIDInput) === false) {
-    //   this.setState({ sIDValidated: false });
-    // } else this.setState({ sIDValidated: true });
   };
 
   cleanPhone = async () => {

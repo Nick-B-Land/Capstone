@@ -2,8 +2,7 @@ import React, { Component } from "react";
 import "../css/tutorActiveQ.css";
 import PouchDB from "pouchdb";
 import { observer } from "mobx-react";
-import { get, toJS } from "mobx";
-import TutorStore from "../model/tutorStore";
+import { toJS } from "mobx";
 import CountUpTimer from "./countdownTimer";
 
 //
@@ -48,14 +47,7 @@ const tutorActiveQ = observer(
       this.getStudentName();
     };
 
-    componentDidUpdate = (prevProps) => {
-      // if (this.props.activeQ !== prevProps.activeQ) {
-      //   this.setState({
-      //     isFull: true,
-      //     appointmentState: "readyToStart",
-      //     scene: "appointmentReady"
-      //   });
-      // }
+    componentDidUpdate = () => {
       this.getStudentName();
     };
 
@@ -92,7 +84,7 @@ const tutorActiveQ = observer(
           });
       });
 
-      let appointment = await aPromise;
+      await aPromise;
     };
 
     setAppointmentStatus = () => {

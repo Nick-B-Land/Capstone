@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { observer } from "mobx-react";
 import "../css/tutorQList.css";
 import PouchDB from "pouchdb";
-import { toJS } from "mobx";
 
 //
 // Props -
@@ -118,7 +117,7 @@ const tutorQList = observer(
             });
         });
 
-        let x = await qPromise;
+        await qPromise;
       }
     };
 

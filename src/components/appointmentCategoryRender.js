@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import "../css/appointmentCategoryRender.css";
-import Calendar from 'react-calendar';
 
 //
 // Props -

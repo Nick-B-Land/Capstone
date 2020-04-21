@@ -164,12 +164,7 @@ class TutorLogin extends Component {
   };
 
   render() {
-    return (
-      <>
-        {this.renderScene()}
-        {console.log(this.state.scene)}
-      </>
-    );
+    return <>{this.renderScene()}</>;
   }
 }
 

@@ -240,7 +240,6 @@ class CategoryAppointmentBooking extends Component {
   };
 
   render() {
-    let date = this.state.date;
     return (
       <div className="container">
         <div className="row d-flex justify-content-center">
