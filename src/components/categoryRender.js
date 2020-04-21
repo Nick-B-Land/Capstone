@@ -127,7 +127,7 @@ const categoryRender = observer(
           <div className="card">
             <div className="card-header tutorCatH">{this.props.name}</div>
             <div className="card-body">
-              <p>{this.props.desc}</p>
+              <p className="text-white">{this.props.desc}</p>
               <span>
                 <h5>
                   Queue : <b>{this.props.currentQ}</b>
@@ -139,12 +139,14 @@ const categoryRender = observer(
                 </h6>
               </span>
               <Link to="/waitlisted">
-                <button
-                  className="btn btn-dark"
-                  onClick={this.handleWaitAndSMS}
-                >
-                  Waitlist
-                </button>
+                <div className="text-center">
+                  <button
+                    className="btn waitlistBtn"
+                    onClick={this.handleWaitAndSMS}
+                  >
+                    Waitlist
+                  </button>
+                </div>
               </Link>
             </div>
           </div>
