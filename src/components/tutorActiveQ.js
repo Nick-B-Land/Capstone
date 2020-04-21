@@ -255,32 +255,30 @@ const tutorActiveQ = observer(
       return (
         <div className="container-fluid tutorActiveDiv">
           <div className="row d-flex justify-content-end">
-            <div className="row">
-              <div className="col-4 text-center">
-                <h2>
-                  <CountUpTimer />
-                </h2>
-              </div>
-              <div className="col-8 text-center">
-                {" "}
-                <h2>
-                  {this.state.fullName} -{" "}
-                  {currentAppointment ? currentAppointment.studentID : "Oops"}
-                </h2>{" "}
-              </div>
+            <div className="col-4 text-center">
+              <h2>
+                <CountUpTimer />
+              </h2>
             </div>
-            <div className="row d-flex justify-content-center">
-              <h3>{this.setAppointmentStatus()}</h3>
+            <div className="col-8 text-center">
+              {" "}
+              <h2>
+                {this.state.fullName} -{" "}
+                {currentAppointment ? currentAppointment.studentID : "Oops"}
+              </h2>{" "}
             </div>
-            <div className="row d-flex justify-content-around">
-              <button
-                className="btn btn-lg qBtn lBtn"
-                onClick={this.handleEndingAppointment}
-              >
-                {" "}
-                End Appointment
-              </button>
-            </div>
+          </div>
+          <div className="row d-flex justify-content-center">
+            <h3>{this.setAppointmentStatus()}</h3>
+          </div>
+          <div className="row d-flex justify-content-center">
+            <button
+              className="btn btn-lg qBtn lBtn"
+              onClick={this.handleEndingAppointment}
+            >
+              {" "}
+              End Appointment
+            </button>
           </div>
         </div>
       );
