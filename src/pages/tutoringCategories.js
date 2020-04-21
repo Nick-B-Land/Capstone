@@ -32,7 +32,6 @@ const tutoringCategories = observer(
       this.props.catStore.Fetch();
       await this.fetchPeerTutoring();
       await this.fetchAppointmentTutors();
-      console.log(this.state.appointmentTutors);
     };
 
     fetchAppointmentTutors = async () => {
