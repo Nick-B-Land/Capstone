@@ -3,6 +3,15 @@ import PouchDB from "pouchdb";
 import { Link } from "react-router-dom";
 import "../css/tutorLogin.css";
 
+
+//
+//Props -
+//
+//tutorEmail: user input email
+//tutorPassword: user input password
+//emailValidated: set to true if email is valid
+//scene: set to default
+
 class TutorLogin extends Component {
   constructor(props) {
     super(props);

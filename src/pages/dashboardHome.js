@@ -9,11 +9,19 @@ import TutorQList from "../components/tutorQList";
 import TutorActiveQ from "../components/tutorActiveQ";
 
 //
-// ----- TODO -----
-// Should have a function that sets the timer and states to appropriate
-// values on a refresh, rn the timer will be just 0:0 if you refresh
-// Timer should be formatted to show 00:00 instead of just 0:0
+//Props - 
 //
+//activeAppointment: boolean which sets whether appointment is active
+//showAddNote: boolean which toggles whether add note scene is rendered
+//firstQID: id of the next appointment
+//minutes: minutes for timer
+//seconds: seconds for timer
+//scene: sets scene to home
+//interval: holds interval for timer
+//timeout: when timer ticks out
+//activeQ: current appointment
+//ts: tutor store
+//q: array of students in the selected tutors program
 
 const dashboardHome = observer(
   class DashboardHome extends Component {

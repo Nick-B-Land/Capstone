@@ -3,6 +3,17 @@ import PouchDB from "pouchdb";
 import StudentValidate from "./studentValidate";
 import "../css/peerTutor.css";
 
+//
+//Props -
+//
+//peerCategories: list of categories for peer tutoring
+//peerHistory: list of history 
+//scene: sets scene to default
+//peerCategorie: selected category
+//date: the current date
+//time: current time
+//Queue: the queue of students
+
 class TutorOptions extends Component {
   constructor(props) {
     super(props);
@@ -10,7 +21,6 @@ class TutorOptions extends Component {
       peerCategories: null,
       peerHistory: null,
       scene: "default",
-      value: null,
       peerCategorie: "",
       date: "",
       time: null,

@@ -7,6 +7,13 @@ import AdminTutors from "../components/adminTutors";
 import AdminPeerCat from "../components/adminPeerCat";
 import AdminQueueCat from "../components/adminQueueCat";
 
+//
+//Props -
+//
+//scene: set scene to tutor
+//history: browser router prop for navigating
+
+
 const adminHome = observer(
   class AdminHome extends Component {
     constructor(props) {
