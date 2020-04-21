@@ -4,6 +4,9 @@ import "../css/peerCategoryRender.css";
 //
 // Props -
 //
+// --- PROPS ---
+// selectedDay: is the day that is selected
+// --- PROPS ---
 // department: department for peer tutoring
 // monday ... fridayTimes: array of objects with start & endtimes, as well as location
 // of the peertutoring session

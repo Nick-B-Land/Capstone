@@ -4,6 +4,16 @@ import PouchDB from "pouchdb";
 import PouchdbFind from "pouchdb-find";
 import "../css/dashboardAnalytics.css";
 
+// --- PROPS ---
+// appCount: is the count of students who came for help for that Tutor
+// avgLength: is the average wait time a student had to wait to see a tutor
+// highestCat: is the most used Category for tutoring
+// studentTime: is the time the student spent with the tutor
+// newMonthly: is the new unquie students that came for tutoring
+// studentDept: is the depertment the student is studing
+// noShows: is the number of no shows that happened
+// --- PROPS --- 
+
 const dashboardAnalytics = observer(
   class DashboardAnalytics extends Component {
     constructor(props) {

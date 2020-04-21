@@ -3,6 +3,13 @@ import PouchDB from "pouchdb";
 import "../css/adminTutor.css";
 import AdminPeerCatRender from "./adminPeerCatRender";
 
+// --- PROPS ---
+// currentPeerCat: fetchPeerCat()
+// departmentInput: handleDepNameInput()
+// showAdd: handleAddVisibility()
+// addBtnState: handleDepNameInput()
+// --- PROPS ---
+
 class AdminPeerCat extends Component {
   constructor(props) {
     super(props);
