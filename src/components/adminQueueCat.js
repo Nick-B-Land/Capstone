@@ -37,7 +37,6 @@ class AdminQueueCat extends Component {
       });
 
     await this.fetchQueueCat();
-    console.log(this.state.currentQueueCat);
   };
 
   handleAddVisability = () => {

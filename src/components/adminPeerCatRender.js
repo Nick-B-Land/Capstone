@@ -45,10 +45,6 @@ class AdminPeerCatRender extends Component {
       showDeletetimePopup: false,
     };
   }
-  componentDidMount = async () => {
-    console.log(this.props.timeToDelete);
-    console.log(this.state.currentPeerCatTimes);
-  };
 
   handleStartTimeInput = (e) => {
     this.setState({ addStartTime: e.target.value });

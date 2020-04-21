@@ -54,10 +54,7 @@ class AdminTutorRender extends Component {
       .changes({ since: "now", live: true, include_docs: true })
       .on("change", () => {
         this.renderTutor();
-        console.log("TUTOR DB UPDATED");
       });
-    //await this.fetchPeerTutoring();
-    // this.generatePrograms();
   };
 
   handleEditVisibility = () => {

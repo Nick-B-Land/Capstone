@@ -70,8 +70,6 @@ const adminHome = observer(
     };
     handleQueueCategoriesScene = () => {
       this.setState({ scene: "queueCategories" });
-
-      console.log("clicked");
     };
 
     handleAnalyticsScene = () => {

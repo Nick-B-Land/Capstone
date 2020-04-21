@@ -45,7 +45,6 @@ class AdminTutors extends Component {
 
     await this.fetchTutors();
     await this.fetchPeerTutoring();
-    console.log(this.state.programArray);
   };
 
   handleUpdates = async () => {
@@ -235,7 +234,6 @@ class AdminTutors extends Component {
 
     let pResult = await pPromise;
     await this.setState({ programArray: pResult });
-    console.log(this.state.programArray);
   };
   renderAddTutor = () => {
     return (

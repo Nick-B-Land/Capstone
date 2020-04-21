@@ -126,7 +126,6 @@ class CategoryAppointmentBooking extends Component {
       sArray.push(time);
       this.setState({ selectedTimes: sArray });
     }
-    console.log(this.state.selectedTimes);
   };
 
   renderDayAppointments = () => {

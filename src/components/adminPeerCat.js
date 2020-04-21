@@ -33,7 +33,6 @@ class AdminPeerCat extends Component {
       });
 
     await this.fetchPeerCat();
-    console.log(this.state.currentPeerCat);
   };
 
   handleDepNameInput = (e) => {
