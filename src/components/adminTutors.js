@@ -183,14 +183,16 @@ class AdminTutors extends Component {
       "https://b705ce6d-2856-466b-b76e-7ebd39bf5225-bluemix.cloudant.com/tutors"
     );
 
+    let s = this.state.emailInput.search("@");
+    let tID = this.state.emailInput.substr(0, s);
     let tutorObj = {
-      _id: this.props._id,
+      _id: tID,
       password: this.state.passInput,
       firstName: this.state.fNameInput,
       lastName: this.state.lNameInput,
       programID: this.state.progInput,
       phoneNumber: this.state.phoneInput,
-      email: this.props.email,
+      email: this.state.emailInput,
       streetAddress: this.state.addressInput,
       city: this.state.cityInput,
       province: this.state.provinceInput,
