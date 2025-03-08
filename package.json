@@ -46,6 +46,6 @@
   },
   "proxy": "http://localhost:5000/",
   "devDependencies": {
-    "twilio": "^3.42.1"
+    "twilio": "^5.4.5"
   }
 }
